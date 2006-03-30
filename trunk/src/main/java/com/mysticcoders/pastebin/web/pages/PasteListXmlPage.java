@@ -14,8 +14,9 @@
 package com.mysticcoders.pastebin.web.pages;
 
 
-import com.mysticcoders.pastebin.model.PasteEntriesModel;
 import com.mysticcoders.pastebin.model.PasteEntry;
+import com.mysticcoders.pastebin.web.model.PasteEntriesModel;
+
 import wicket.AttributeModifier;
 import wicket.PageMap;
 import wicket.PageParameters;

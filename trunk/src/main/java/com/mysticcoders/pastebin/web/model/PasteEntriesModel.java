@@ -1,4 +1,4 @@
-package com.mysticcoders.pastebin.model;
+package com.mysticcoders.pastebin.web.model;
 
 import java.util.List;
 
@@ -7,6 +7,7 @@ import wicket.model.AbstractReadOnlyDetachableModel;
 import wicket.model.IModel;
 
 import com.mysticcoders.pastebin.dao.PasteEntryDAO;
+import com.mysticcoders.pastebin.model.PasteEntry;
 import com.mysticcoders.pastebin.web.PastebinApplication;
 
 /**
