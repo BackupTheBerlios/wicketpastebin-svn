@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE web-app
+	  PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+	  "http://java.sun.com/dtd/web-app_2_3.dtd">
+
+<web-app>
+
+	<display-name>Pastebin</display-name>
+
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>/WEB-INF/base-context.xml /WEB-INF/pastebin-core.xml</param-value>
+    </context-param>
+
+
+    <!-- only available with servlet spec. 2.4
+     <locale-encoding-mapping-list>
+         <locale-encoding-mapping>
+             <locale>de</locale>
+             <encoding>UTF-8</encoding>
+         </locale-encoding-mapping>
+     </locale-encoding-mapping-list>
+     -->
+
+<!--  With wicket examples this is the means to configure deployment
+      resp. a development configuration.
+      Comment the following lines for "development" (reloading when templates change)
+-->
+
+		<context-param>
+		  <param-name>configuration</param-name>
+		  <param-value>development</param-value>
+		</context-param>
+
+    <!-- Filter Mappings -->
+    <filter>
+        <filter-name>openSessionInViewFilter</filter-name>
+        <filter-class>org.springframework.orm.hibernate3.support.OpenSessionInViewFilter</filter-class>
+    </filter>
+
+
+    <filter-mapping>
+        <filter-name>openSessionInViewFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+
+    <!-- Listeners -->
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+
+
+    <servlet>
+		<servlet-name>PastebinApplication</servlet-name>
+		<servlet-class>wicket.protocol.http.WicketServlet</servlet-class>
+		<init-param>
+		  <param-name>applicationClassName</param-name>
+		  <param-value>com.mysticcoders.pastebin.web.PastebinApplication</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+
+    <servlet-mapping>
+		<servlet-name>PastebinApplication</servlet-name>
+		<url-pattern>/app/*</url-pattern>
+	</servlet-mapping>
+
+
+    <welcome-file-list>
+	    <welcome-file>index.html</welcome-file>
+	</welcome-file-list>
+
+</web-app>

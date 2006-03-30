@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='utf-8'?>
+<pastebin>
+	<pastes xmlns:wicket="http://wicket.sourceforge.net/">
+		<paste wicket:id="pastes" creationtime="mm/dd/yyyy hh:mm:ss" imagecount="0" pasteid="0">
+			<channel><label wicket:id="channel"><![CDATA[channel]]></label></channel>
+			<line1><label wicket:id="line1"><![CDATA[line1]]></label></line1>
+			<url><label wicket:id="url">http://host/pastebin/view/1</label></url>
+			<user><label wicket:id="user"><![CDATA[user]]></label></user>
+		</paste>
+	</pastes>
+</pastebin>

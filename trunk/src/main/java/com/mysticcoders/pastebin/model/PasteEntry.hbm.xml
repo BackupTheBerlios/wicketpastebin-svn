@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping >
+
+    <class name="com.mysticcoders.pastebin.model.PasteEntry" table="pastebin_entry" lazy="true"
+        dynamic-update="false" dynamic-insert="false"
+        select-before-update="false" optimistic-lock="version">
+        <cache usage="read-write"/>
+        <id name="id" column="pastebin_entry_id" unsaved-value="null">
+            <generator class="native" />
+        </id>
+
+        <many-to-one name="parent" class="com.mysticcoders.pastebin.model.PasteEntry" column="parent_id" />
+
+        <set name="children" inverse="true">
+            <key column="parent_id"/>
+            <one-to-many class="com.mysticcoders.pastebin.model.PasteEntry"/>
+        </set>
+
+        <set name="images" inverse="true">
+            <key column="pastebin_entry_id"/>
+            <one-to-many class="com.mysticcoders.pastebin.model.ImageEntry"/>
+        </set>
+
+        <property name="name" type="string" column="name" />
+
+        <property name="channel" type="string" column="channel" />
+
+        <property name="code" type="string" column="code" />
+
+        <property name="created" type="timestamp" column="created" />
+
+        <property name="lastViewed" type="timestamp" column="last_viewed" />
+
+        <property name="viewCount" column="view_count" />
+
+        <property name="highlight" type="string" column="highlight" />
+
+    </class>
+
+</hibernate-mapping>

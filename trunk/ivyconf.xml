@@ -1,0 +1,17 @@
+<ivyconf>
+<!--
+    <properties file="ivyconf.properties"/>
+-->
+    <conf defaultResolver="default" checkUpToDate="true"/>
+    <resolvers>
+        <chain name="default">
+            <url name="mystic" checkmodified="true">
+<!--
+                <ivy pattern="http://ivyrep.opensymphony.com/[organisation]/[module]/ivy-[revision].xml"/>
+-->
+                <artifact pattern="http://www.mysticcoders.com/ivyrep/[organisation]/[type]s/[artifact]-[revision].[ext]"/>
+            </url>
+            <ibiblio name="ibiblio" />
+        </chain>
+    </resolvers>
+</ivyconf>

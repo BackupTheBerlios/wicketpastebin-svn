@@ -1,0 +1,38 @@
+<wicket:panel>
+
+<form wicket:id="pastebinForm" name="pastebinForm" id="pastebinForm">
+
+    <span wicket:id="feedback">Feedback</span>
+
+    <br />
+
+<strong>Code:</strong> To ensure legibility, keep your code lines under 80 characters long.<br />
+Include comments to indicate what you need feedback on.<br /><br />
+
+Use <select wicket:id="highlight"><option>No</option></select> syntax highlighting<br /><br/>
+
+To highlight particular lines, prefix each line with @@<br />
+
+
+<textarea class="codeedit" wicket:id="code" name="code" cols="80" rows="20" tabindex="1">
+</textarea>
+    <br />
+
+	<strong>Image</strong><br />
+	<input type="file" wicket:id="imageFile" name="imageFile" tabindex="4"></input>
+	<br />
+
+    <strong>Name</strong><br />
+    <input type="text" maxlength="24" size="24" wicket:id="name" name="name" value="" tabindex="2" />
+	<br />
+    <strong>Channel or nick (i.e. ##wicket, ##swing, ##java) </strong><br />
+    <input type="text" maxlength="24" size="24" wicket:id="channel" name="channel" value="" tabindex="3" />
+	<br />
+    <input type="submit" wicket:id="submit" name="submit" value="Send" tabindex="6" />
+    <br />
+    <input type="checkbox" name="rememberMe" wicket:id="rememberMe" value="1" tabindex="5" />Remember my name in a cookie
+
+
+</form>
+
+</wicket:panel>

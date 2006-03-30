@@ -1,0 +1,154 @@
+<?xml version="1.0"?>
+
+<project name="Pastebin Main Build" default="build" basedir="." xmlns:ivy="antlib:fr.jayasoft.ivy.ant">
+
+    <property file="build.properties" />
+    <property name="build" value="build" />
+    <property name="dist" value="dist" />
+    <property name="lib" value="lib" />
+    <property name="etc" value="etc" />
+    <property name="classes" value="build" />
+    <property name="src" value="src" />
+    <property name="web-inf" value="src/webapp/WEB-INF" />
+
+    <description>
+    Pastebin Build Script
+    </description>
+
+
+    <!--
+       <buildnumber task to manage version number
+    -->
+    <path id="project.class.path">
+        <pathelement path="${java.class.path}/"/>
+        <fileset dir="${lib}">
+            <include name="**/*.jar"/>
+        </fileset>
+    </path>
+
+    <target name="reload_app">
+        <touch file="${web-inf}/web.xml"/>
+    </target>
+
+<!--
+    <target name="configure">
+        <ivy:configure file="${ivy.conf.dir}/ivyconf.xml" />
+    </target>
+-->
+
+    <!-- =================================
+          target: resolve
+         ================================= -->
+    <target name="resolve" description="--> retrieve dependencies with ivy">
+        <ivy:retrieve pattern="${lib}/[conf]/[artifact].[ext]" conf="*"/>
+    </target>
+
+    <target name="init">
+        <!-- Create the time stamp -->
+        <tstamp/>
+        <!-- Create the build directory structure used by compile -->
+        <mkdir dir="${build}"/>
+        <mkdir dir="${dist}" />
+    </target>
+
+    <target name="clean" depends="init"
+        description="remove the source">
+
+        <delete file="${build}/**" />
+    </target>
+
+    <target name="compile" depends="clean"
+        description="compile the source ">
+        <!-- Compile the java code from ${src} into ${build} -->
+        <javac debug="true" srcdir="${src}/java" destdir="${build}" classpathref="project.class.path"/>
+    </target>
+
+    <target name="build" depends="compile">
+        <!-- remove existing JAR file -->
+        <delete file="${build}/${app.name}.jar"/>
+
+        <copy todir="${build}">
+            <fileset dir="${src}/java">
+                <include name="com/**/*.properties" />
+                <include name="com/**/*.hbm.xml" />
+                <include name="com/**/*.html" />
+                <include name="com/**/*.png" />
+                <include name="com/**/*.jpg" />
+                <include name="com/**/*.gif" />
+            </fileset>
+
+        </copy>
+
+
+        <jar jarfile="${build}/${app.name}.jar"
+             basedir="${classes}"
+             excludes=".*/**,*.properties"/>
+
+    </target>
+
+    <target name="dist" depends="build">
+        <!-- remove existing WAR file -->
+        <delete file="${dist}/${app.name}.war"/>
+        <delete file="${dist}/${app.name}.jar"/>
+
+        <move file="${build}/${app.name}.jar" todir="${dist}" />
+
+        <war warfile="${dist}/${app.name}.war" webxml="${etc}/web.xml" update="false">
+
+            <fileset dir="src/webapp">
+                <include name="**" />
+                <exclude name="WEB-INF/**" />
+                <exclude name="media/**" />
+                <exclude name="work/**" />
+                <exclude name="tmp/**" />
+                <exclude name="**/*.iml" />
+            </fileset>
+
+            <lib dir="${lib}/default">
+                <include name="**/*.jar" />
+                <!--<exclude name="urlrewrite.jar" />-->
+            </lib>
+
+            <lib dir="${dist}" includes="${app.name}.jar"/>
+
+            <!-- Include the files for the production server and not the local files -->
+            <classes dir="${src}/java">
+                <include name="*" />
+                <include name="templates/**" />
+
+                <exclude name="log4j.properties" />
+                <exclude name="webwork.properties" />
+                <exclude name="com/**" />
+                <exclude name="quickstart/**" />
+<!--
+                <exclude name="templates/**" />
+-->
+            </classes>
+
+            <classes dir="${etc}">
+                <include name="log4j.properties"/>
+            </classes>
+
+            <webinf dir="${src}/webapp/WEB-INF">
+                <include name="*" />
+
+                <exclude name="web.xml" />
+                <exclude name="locations.properties" />
+                <exclude name="mail.properties" />
+                <exclude name="base-context.xml" />
+                <exclude name="urlrewrite.xml" />
+                <exclude name="work/**" />
+                <exclude name="tmp/**" />
+             </webinf>
+
+             <webinf dir="${etc}">
+                <include name="web.xml" />
+                <include name="locations.properties" />
+                <include name="mail.properties" />
+                <include name="base-context.xml" />
+                <include name="urlrewrite.xml" />
+             </webinf>
+
+        </war>
+    </target>
+</project>

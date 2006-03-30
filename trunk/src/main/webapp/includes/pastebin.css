@@ -1,0 +1,331 @@
+    /* 
+    The cleverer parts of this stylesheet came from
+    The Layout Reservoir - well worth a look.
+    http://www.bluerobot.com/web/layouts/
+    */
+
+    body {
+        color:#333;
+        background-color: #c0c0c0;
+        margin:0px;
+        font:11px verdana, arial, helvetica, sans-serif;
+    }
+
+
+    h1 {
+/*
+        border-top: 1px solid #3d8ea8;
+        border-bottom: 1px solid #005069;
+        border-right: 1px solid #3d8ea8;
+        border-left: 1px solid #3d8ea8;
+        background-color: #544abd;
+*/
+        border: 1px solid #439151;
+        background-color: #439151;
+        color: #ffffff;
+        font-family: trebuchet ms, verdana, sans-serif;
+        font-size: 11px;
+        font-weight: bold;
+        text-align: left;
+        padding: 3px 0px 3px 10px;
+        margin-bottom: 0px;
+        margin-top: 0px;
+    }
+
+    hr.status-separator {
+        height: 1px;
+        padding:0;
+        
+        margin:0;
+        margin-right: 10px;
+        margin-top:2px;
+        margin-bottom:2px;
+        border:0;
+        border-bottom: 1px solid white;
+        }
+
+    p {
+        font:11px/20px verdana, arial, helvetica, sans-serif;
+        margin:0px 10px 10px 10px;
+    }
+
+
+    a {
+        color:#09c;
+        font-size:11px;
+        font-family:verdana, arial, helvetica, sans-serif;
+        font-weight:600;
+        text-decoration:none;
+    }
+
+    a:link {color:#09c;}
+    a:visited {color:#07a;}
+    a:hover {text-decoration:underline;}
+
+    a.alt{color:white; text-decoration:underline;font-weight:bold;}
+    a.alt:link{color:white;}
+    a.alt:visited{color:white;}
+    a.alt:hover{color:yellow;background-color:transparent;}
+
+    a.code {
+        text-decoration:underline;
+        font-family:courier, fixed;
+        font-weight:normal;}
+    a.code:link {color:#09c;}
+    a.code:visited {color:#07a;}
+    a.code:hover {text-decoration:underline;}
+
+
+    code { font-size:12px;}
+
+    .codeedit {    font-size:12px;}
+
+    .code-highlight {
+        background: #FF8;
+    }
+
+    #titlebar {
+        padding: 0px 0px 0px 5px;
+        height:16px;
+/*
+        border-top: solid 1px #73a5d3;
+        border-bottom: solid 1px #39526b;
+        background-color: #544abd;
+*/
+        border-top: solid 1px #439151;
+        border-bottom: solid 1px #439151;
+        background-color: #439151;
+        color: #ffffff;
+        /*width: 100%;*/
+        margin-bottom: 11px;
+    }
+
+    .nav { margin: 0px 5px 0px 5px; }
+
+    ul {
+        margin-left:15px;
+        margin-top:0px;
+        padding-left:0px;
+    }
+
+    #menu li.highlight{ background-color: #ccccff; }
+
+    #menu li {
+        list-style-type: square;
+        line-height: 11px;
+        padding-bottom: 3px;
+    }
+
+/*
+    code ul li {
+        list-style-type: decimal;
+    }
+*/
+
+    .para {
+        font:11px/20px verdana, arial, helvetica, sans-serif;
+        margin:0px 10px 10px 10px;
+    }
+
+    #container
+    {
+        width: 100%;
+        margin: 0 auto;
+    }
+
+    #menu {
+        margin-left:10px;
+        float:left;
+        width:162px;
+        padding:5px;
+        background-color: #fff;
+        border:1px solid black;
+        line-height:17px;
+        overflow: hidden;
+
+        /* IE5 Hack */
+        voice-family: "\"}\"";
+        voice-family:inherit;
+        width:140px;
+    }
+
+
+
+    #content {
+        margin-left: 192px;
+        padding:5px;
+        margin-right: 10px;
+        background-color: white;
+        border:1px solid black;
+        /* IE5 Hack */
+        voice-family: "\"}\"";
+        voice-family:inherit;
+        margin-left:170px;
+
+    }
+
+
+    /* be nice to Opera 5 */
+    body>#Menu {width:150px;}
+
+
+/* This is for compliance with jhighlight */
+.java_type {
+	color: rgb(0,44,221);
+}
+
+.java_comment {
+	color: rgb(147,147,147);
+	background-color: rgb(247,247,247);
+}
+
+.java_operator {
+	color: rgb(0,124,31);
+}
+
+.java_separator {
+	color: rgb(0,33,255);
+}
+
+.java_plain {
+	color: rgb(0,0,0);
+}
+
+.java_javadoc_comment {
+	color: rgb(147,147,147);
+	background-color: rgb(247,247,247);
+	font-style: italic;
+}
+
+.java_keyword {
+	color: rgb(0,0,0);
+	font-weight: bold;
+}
+
+.java_literal {
+	color: rgb(188,0,0);
+}
+
+.java_javadoc_tag {
+	color: rgb(147,147,147);
+	background-color: rgb(247,247,247);
+	font-style: italic;
+	font-weight: bold;
+}
+
+.xml_tag_symbols {
+	color: rgb(0,59,255);
+}
+
+.xml_rife_tag {
+	color: rgb(0,0,0);
+	background-color: rgb(228,230,160);
+}
+
+.xml_plain {
+	color: rgb(0,0,0);
+}
+
+.xml_comment {
+	color: rgb(147,147,147);
+	background-color: rgb(247,247,247);
+}
+
+.xml_attribute_name {
+	color: rgb(0,0,0);
+	font-weight: bold;
+}
+
+.xml_tag_name {
+	color: rgb(0,55,255);
+}
+
+.xml_char_data {
+	color: rgb(0,0,0);
+}
+
+.xml_processing_instruction {
+	color: rgb(0,0,0);
+	font-weight: bold;
+	font-style: italic;
+}
+
+.xml_attribute_value {
+	color: rgb(193,0,0);
+}
+
+.xml_rife_name {
+	color: rgb(0,0,196);
+	background-color: rgb(228,230,160);
+}
+
+
+.cpp_literal {
+color: rgb(188,0,0);
+}
+.cpp_doxygen_tag {
+color: rgb(147,147,147); background-color: rgb(247,247,247); font-style: italic; font-weight: bold;
+}
+.cpp_doxygen_comment {
+color: rgb(147,147,147); background-color: rgb(247,247,247); font-style: italic;
+}
+.cpp_preproc {
+color: purple;
+}
+.cpp_plain {
+color: rgb(0,0,0);
+}
+.cpp_keyword {
+color: rgb(0,0,0); font-weight: bold;
+}
+.cpp_operator {
+color: rgb(0,124,31);
+}
+.cpp_separator {
+color: rgb(0,33,255);
+}
+.cpp_comment {
+color: rgb(147,147,147); background-color: rgb(247,247,247);
+}
+.cpp_type {
+color: rgb(0,44,221);
+}
+
+
+table#diff {
+	padding: 3px;
+    margin: 0;
+}
+
+.diff_regular {
+	padding-right: 0.7em;
+}
+
+.diff_deleted {
+	background: #FFDCD2;
+	padding-right: 0.7em;
+}
+
+.diff_added {
+	background: #DCFFBE;
+	padding-right: 0.7em;
+}
+
+/*
+table#diff {
+margin: 3px;
+}
+*/
+
+#paste {
+	overflow: auto;
+	font-family: monospace;
+	font-size: 12px;
+}
+
+table#diff td {
+    font-family: monospace;
+    font-size: 12px;
+    white-space: nowrap;
+    padding-right: 5px;
+}

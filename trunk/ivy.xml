@@ -1,0 +1,100 @@
+<ivy-module version="1.0">
+    <info organisation="mystic" module="pastebin" />
+
+    <configurations>
+        <conf name="default" />
+        <conf name="quickstart" />
+    </configurations>
+
+    <dependencies>
+
+        <dependency org="junit" name="junit" rev="3.8.1" conf="default"/>
+
+        <dependency org="apache" name="commons-collections" rev="2.1.1" conf="default"/>
+        <dependency org="apache" name="commons-lang" rev="2.0" conf="default"/>
+        <dependency org="apache" name="commons-logging" rev="1.0.4" conf="default"/>
+
+        <dependency org="hibernate" name="hibernate" rev="3.0.5" conf="default"/>
+
+        <dependency org="antlr" name="hibernate" rev="2.7.5H3" conf="default" force="true">
+            <artifact name="antlr" type="jar" />
+        </dependency>
+
+        <dependency org="dom4j" name="dom4j" rev="1.6.1" conf="default"/>
+        <dependency org="ehcache" name="ehcache" rev="1.1" conf="default"/>
+        <dependency org="odmg" name="odmg" rev="3.0" conf="default"/>
+        <dependency org="cglib" name="cglib" rev="2.1_2" conf="default">
+            <artifact name="cglib-nodep" type="jar"/>
+        </dependency>
+        <dependency org="aopalliance" name="aopalliance" rev="1.0" conf="default"/>
+
+        <dependency org="jhighlight" name="jhighlight" rev="1.0rc" conf="default"/>
+
+        <dependency org="java-diff" name="java-diff" rev="1.0.3" conf="default"/>
+        
+<!--
+        <dependency org="springframework" name="springframework" rev="1.1.5" conf="default">
+            <artifact name="spring-aop" type="jar"/>
+            <artifact name="spring-context" type="jar"/>
+            <artifact name="spring-core" type="jar"/>
+            <artifact name="spring-dao" type="jar"/>
+            <artifact name="spring-orm" type="jar"/>
+            <artifact name="spring-web" type="jar"/>
+        </dependency>
+-->
+        <dependency org="springframework" name="springframework" rev="1.2.5" conf="default">
+            <artifact name="spring" type="jar"/>
+        </dependency>
+
+<!--
+        <dependency org="mystic" name="mystic" rev="1.0" conf="default">
+            <artifact name="mystic-base" type="jar"/>
+        </dependency>
+-->
+
+        <dependency org="urlrewrite" name="urlrewrite" rev="2.5.2" conf="default"/>
+
+        <dependency org="wicket" name="wicket" rev="1.2-SNAPSHOT" conf="default">
+            <artifact name="wicket" type="jar"/>
+            <artifact name="wicket-extensions" type="jar"/>
+        </dependency>
+
+<!--
+        <dependency org="velocity" name="velocity" rev="1.4" conf="default">
+            <artifact name="velocity-dep" type="jar"/>
+        </dependency>
+-->
+<!--
+        <dependency org="ognl" name="ognl" rev="2.6.7" conf="default"/>
+-->
+
+
+        <!-- Development Dependencies -->
+<!--
+        <dependency org="postgresql" name="postgresql" rev="7.4.1-jdbc3" conf="quickstart->default"/>
+        <dependency org="concurrent" name="concurrent" rev="1.3.4" conf="quickstart->default"/>
+-->
+        <dependency org="hsqldb" name="hsqldb" rev="1.7.3.3" conf="quickstart->default"/>
+
+        <dependency org="jetty" name="jetty" rev="4.2.22" conf="quickstart->default">
+            <artifact name="org.mortbay.jetty" type="jar"/>
+        </dependency>
+        <dependency org="jasper" name="jetty" rev="4.2.20RC0" conf="quickstart->default">
+            <artifact name="jasper-compiler" type="jar"/>
+            <artifact name="jasper-runtime" type="jar"/>
+        </dependency>
+
+        <dependency org="apache" name="commons-dbcp" rev="1.2.1" conf="quickstart->default"/>
+        <dependency org="apache" name="commons-pool" rev="1.2" conf="quickstart->default"/>
+
+        <dependency org="log4j" name="log4j" rev="1.2.11" conf="quickstart->default"/>
+<!--
+        <dependency org="javax.activation" name="activation" rev="1.0.2" conf="quickstart->default"/>
+        <dependency org="javax.mail" name="mail" rev="1.3.1" conf="quickstart->default"/>
+        <dependency org="javax.servlet" name="servletapi" rev="2.3" conf="quickstart->default"/>
+        <dependency org="javax.transaction" name="jta" rev="1.0.1b" conf="quickstart->default"/>
+-->
+
+    </dependencies>
+
+</ivy-module>

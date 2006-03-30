@@ -1,0 +1,200 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>mysticcoders</groupId>
+    <artifactId>pastebin</artifactId>
+    <packaging>war</packaging>
+    <version>1.0-SNAPSHOT</version>
+    <name>Wicket Paste Bin</name>
+    <!--
+    <url>http://maven.apache.org</url>
+    -->
+    
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>3.8.1</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>dom4j</groupId>
+            <artifactId>dom4j</artifactId>
+            <version>1.4</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-collections</groupId>
+            <artifactId>commons-collections</artifactId>
+            <version>2.1</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-logging</groupId>
+            <artifactId>commons-logging</artifactId>
+            <version>1.0.4</version>
+        </dependency>
+        <dependency>
+            <groupId>jhighlight</groupId>
+            <artifactId>jhighlight</artifactId>
+            <version>1.0rc</version>
+        </dependency>
+        <dependency>
+            <groupId>java-diff</groupId>
+            <artifactId>java-diff</artifactId>
+            <version>1.0.3</version>
+        </dependency>
+        <dependency>
+            <groupId>cglib</groupId>
+            <artifactId>cglib-nodep</artifactId>
+            <version>2.1_2</version>
+        </dependency>
+        <dependency>
+            <groupId>hibernate</groupId>
+            <artifactId>hibernate</artifactId>
+            <version>3.0.5</version>
+        </dependency>
+        <dependency>
+            <groupId>hibernate</groupId>
+            <artifactId>antlr</artifactId>
+            <version>2.7.5H3</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>springframework</groupId>
+            <artifactId>spring</artifactId>
+            <version>1.2.5</version>
+            <type>jar</type>
+        </dependency>
+        
+        <dependency>
+            <groupId>wicket</groupId>
+            <artifactId>wicket</artifactId>
+            <version>1.2-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>wicket</groupId>
+            <artifactId>wicket-extensions</artifactId>
+            <version>1.2-SNAPSHOT</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>hsqldb</groupId>
+            <artifactId>hsqldb</artifactId>
+            <version>1.7.3.3</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>ehcache</groupId>
+            <artifactId>ehcache</artifactId>
+            <version>1.1</version>
+            <type>jar</type>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-dbcp</groupId>
+            <artifactId>commons-dbcp</artifactId>
+            <version>1.2.1</version>
+            <type>jar</type>
+        </dependency>
+        
+        <dependency>
+            <groupId>commons-pool</groupId>
+            <artifactId>commons-pool</artifactId>
+            <version>1.2</version>
+            <type>jar</type>
+        </dependency>
+        
+        <dependency>
+            <groupId>aopalliance</groupId>
+            <artifactId>aopalliance</artifactId>
+            <version>1.0</version>
+            <type>jar</type>
+        </dependency>
+        
+        
+        <dependency>
+            <groupId>jetty</groupId>
+            <artifactId>org.mortbay.jetty</artifactId>
+            <version>4.2.22</version>
+            <scope>test</scope>
+        </dependency>
+        
+        <dependency>
+            <groupId>jetty</groupId>
+            <artifactId>jasper-runtime</artifactId>
+            <version>4.2.20RC0</version>
+            <type>jar</type>
+            <scope>test</scope>
+        </dependency>
+        
+        <dependency>
+            <groupId>jetty</groupId>
+            <artifactId>jasper-compiler</artifactId>
+            <version>4.2.20RC0</version>
+            <type>jar</type>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>servletapi</groupId>
+            <artifactId>servletapi</artifactId>
+            <version>2.3</version>
+            <type>jar</type>
+        </dependency>
+        
+    </dependencies>
+
+    <build>
+        <plugins>
+            
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <excludes>
+                        <exclude>quickstart/**</exclude>
+                    </excludes> 
+                    <source>1.5</source>
+                    <target>1.5</target>
+                </configuration>
+            </plugin>
+        
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                
+                <configuration>
+                    <warSourceDirectory>${basedir}/src/webapp</warSourceDirectory>
+                    
+                    <excludes>**/jta-*.jar</excludes>
+                    
+                </configuration>
+            </plugin>
+        
+        </plugins>
+
+    </build>
+
+    <repositories>
+        <repository>
+            <id>mysticcoders.com</id>
+            <name>mysticcoders.com</name>
+            <url>http://www.mysticcoders.com/ivyrep</url>
+            <layout>legacy</layout>
+        </repository>
+	    <repository>
+	        <id>Maven Snapshots</id>
+	        <url>http://snapshots.maven.codehaus.org/maven2/</url>
+	        <snapshots>
+	        	<enabled>true</enabled>
+	        </snapshots>
+	        <releases>
+	            <enabled>false</enabled>
+	        </releases>
+	    </repository>
+    </repositories>
+
+    
+</project>

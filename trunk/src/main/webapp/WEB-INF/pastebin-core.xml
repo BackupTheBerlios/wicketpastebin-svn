@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+
+    <bean id="pasteEntryDAO" class="com.mysticcoders.pastebin.dao.PasteEntryDAOHibernate">
+        <property name="sessionFactory">
+            <ref bean="sessionFactory" />
+        </property>
+    </bean>
+
+    <bean id="imageEntryDAO" class="com.mysticcoders.pastebin.dao.ImageEntryDAOHibernate">
+        <property name="sessionFactory">
+            <ref bean="sessionFactory" />
+        </property>
+    </bean>
+
+    <bean id="pasteService" class="com.mysticcoders.pastebin.core.PasteServiceImpl">
+        <property name="pasteEntryDAO">
+            <ref bean="pasteEntryDAO"/>
+        </property>
+    </bean>
+
+    <bean id="imageService" class="com.mysticcoders.pastebin.core.ImageServiceImpl">
+		<property name="imageDir" value="${imageDir}" />
+        <property name="imageEntryDAO">
+            <ref bean="imageEntryDAO"/>
+        </property>
+		<property name="thumbnailSize" value="128" />
+    </bean>
+
+    <bean id="botInterface" class="com.mysticcoders.pastebin.util.BotInterface">
+        <property name="url" value="${bot.boturl}" />
+        <property name="channels" value="${bot.channels}" />
+        <property name="user" value="${bot.user}" />
+        <property name="password" value="${bot.password}" />
+        <property name="botName" value="${bot.botname}" />
+        <property name="message" value="${bot.message}" />
+    </bean>
+
+
+    <bean id="codeHighlighter" class="com.mysticcoders.pastebin.web.util.CodeHighlighter">
+        <property name="highlightEngines">
+            <map>
+                <entry key="java"><ref bean="javaHighlighter" /></entry>
+                <entry key="xml"><ref bean="xmlHighlighter" /></entry>
+                <entry key="xhtml"><ref bean="xmlHighlighter" /></entry>
+                <entry key="html"><ref bean="xmlHighlighter" /></entry>
+                <entry key="c/c++"><ref bean="cppHighlighter" /></entry>
+                <entry key="groovy"><ref bean="groovyHighlighter" /></entry>
+            </map>
+        </property>
+
+    </bean>
+
+    <bean id="javaHighlighter" class="com.mysticcoders.pastebin.web.util.JavaHighlighterEngine" />
+    <bean id="xmlHighlighter" class="com.mysticcoders.pastebin.web.util.XmlHighlighterEngine" />
+    <bean id="cppHighlighter" class="com.mysticcoders.pastebin.web.util.CppHighlighterEngine" />
+    <bean id="groovyHighlighter" class="com.mysticcoders.pastebin.web.util.GroovyHighlighterEngine" />
+
+</beans>
+

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+	Hibernate mapping file for the ImageEntry class to the image_entry table.
+	
+	Revision History:
+	Dec 06, 2005	This file was created by Philip A. Chapman.
+  -->
+
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping >
+
+    <class
+		name="com.mysticcoders.pastebin.model.ImageEntry"
+		table="image_entry" lazy="true"
+        dynamic-update="false" dynamic-insert="false"
+        select-before-update="false" optimistic-lock="version"
+	>
+		
+        <cache usage="read-write"/>
+		
+        <id name="id" column="image_entry_id" unsaved-value="null">
+            <generator class="native" />
+        </id>
+
+        <many-to-one
+			name="parent"
+			class="com.mysticcoders.pastebin.model.PasteEntry"
+			column="pastebin_entry_id"
+		/>
+
+        <property name="name" type="string" column="name" />
+		
+		<property name="fileName" type="string" column="file_name" />
+		
+		<property name="thumbName" type="string" column="thumb_name" />
+
+        <property name="contentType" type="string" column="content_type" />
+
+        <property name="created" type="timestamp" column="created" />
+
+    </class>
+
+</hibernate-mapping>
