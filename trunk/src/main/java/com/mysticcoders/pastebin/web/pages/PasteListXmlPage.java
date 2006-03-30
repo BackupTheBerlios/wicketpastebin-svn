@@ -1,9 +1,4 @@
 /*
- * $Id: PasteListXmlPage.java,v 1.1 2005/10/03 20:58:46 eelco12 Exp $
- * $Revision: 1.1 $
- * $Date: 2005/10/03 20:58:46 $
- *
- * ====================================================================
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -19,39 +14,42 @@
 package com.mysticcoders.pastebin.web.pages;
 
 
-import com.mysticcoders.pastebin.dao.PasteEntryDAO;
+import com.mysticcoders.pastebin.model.PasteEntriesModel;
 import com.mysticcoders.pastebin.model.PasteEntry;
-import com.mysticcoders.pastebin.web.PastebinApplication;
 import wicket.AttributeModifier;
-import wicket.Component;
 import wicket.PageMap;
 import wicket.PageParameters;
 import wicket.markup.html.WebPage;
 import wicket.markup.html.basic.Label;
 import wicket.markup.html.list.ListItem;
 import wicket.markup.html.list.ListView;
-import wicket.model.AbstractReadOnlyDetachableModel;
-import wicket.model.IModel;
 import wicket.model.Model;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.List;
 
 /**
- * Look ma, you can use plain XML too with Wicket.
+ * A page that will create an XML document enumerating the latest 10 entries.
  *
- * @author Eelco Hillenius
+ * @author pchapman
  */
-public class PasteListXmlPage extends WebPage {
+public class PasteListXmlPage extends WebPage
+{
+	// CONSTANTS
+	
     private static final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss Z");
+	private static final long serialVersionUID = 1L;
 
+	// CONSTRUCTORS
+	
     /**
-     * Constructor
+     * Creates a new instance.  No parameters are necessary.
      */
-    public PasteListXmlPage() {
+    public PasteListXmlPage()
+    {
         add(
-                new ListView("pastes", new PasteEntriesModel()) {
+                new ListView("pastes", new PasteEntriesModel())
+                {
                     public void populateItem(ListItem item) {
                         // paste element
                         PasteEntry entry = (PasteEntry) item.getModelObject();
@@ -106,33 +104,8 @@ public class PasteListXmlPage extends WebPage {
     /**
      * @see wicket.MarkupContainer#getMarkupType()
      */
-    public String getMarkupType() {
+    public String getMarkupType()
+    {
         return "xml";
-    }
-
-    class PasteEntriesModel extends AbstractReadOnlyDetachableModel {
-        PasteEntriesModel() {
-            super();
-            onAttach();
-        }
-
-        public IModel getNestedModel() {
-            return null;
-        }
-
-        public void onAttach() {
-            PasteEntryDAO dao = (PasteEntryDAO) PastebinApplication.getInstance().getBean("pasteEntryDAO");
-            list = dao.getPreviousEntriesList(10);
-        }
-
-        private List<PasteEntry> list;
-
-        public void onDetach() {
-            list = null;
-        }
-
-        public Object onGetObject(Component comp) {
-            return list;
-        }
     }
 }
