@@ -32,11 +32,8 @@ public class LineNumberCodePanel extends Panel {
         super(id);
     }
 
-    public LineNumberCodePanel(String id, final PasteEntry pasteEntry, final CodeHighlighter codeHighlighter) {
+    public LineNumberCodePanel(String id, final String code, final String highlight, final CodeHighlighter codeHighlighter) {
         super(id);
-
-        final String highlight = pasteEntry.getHighlight();
-        String code = pasteEntry.getCode();
 
         String[] splitCode = null;
 
@@ -126,23 +123,4 @@ public class LineNumberCodePanel extends Panel {
         return list;
     }
 
-/*
-    private ListView createLabelListView(String listViewId, final String itemId, List list) {
-        ListView listView = new ListView(listViewId, list) {
-
-            public void populateItem(final ListItem item) {
-                final String labelItem = (String) item.getModelObject();
-
-                if(userHighlight.length > item.getIndex() && userHighlight[item.getIndex()]) {
-                    item.add(new AttributeModifier("class", true, new Model("code-highlight")));
-                }
-
-                item.add(new Label(itemId, labelItem).setRenderBodyOnly(true));
-            }
-        };
-
-        listView.setRenderBodyOnly( true );
-        return listView;
-    }
-*/
 }

@@ -43,6 +43,19 @@ public class PastebinPanel extends Panel {
         this(id, null);
     }
 
+    public List<String> getHighlightChoices() {
+        List<String> highlightChoices = new ArrayList<String>();
+                highlightChoices.add("No");
+                highlightChoices.add("Java");
+                highlightChoices.add("XML");
+                highlightChoices.add("XHTML");
+                highlightChoices.add("HTML");
+                highlightChoices.add("C/C++");
+                highlightChoices.add("Groovy");
+
+        return highlightChoices;
+    }
+
     public PastebinPanel(String id, PasteEntry existingEntry) {
         super(id);
 
@@ -71,14 +84,7 @@ public class PastebinPanel extends Panel {
         }
 
 
-        List<String> highlightChoices = new ArrayList<String>();
-        highlightChoices.add("No");
-        highlightChoices.add("Java");
-        highlightChoices.add("XML");
-        highlightChoices.add("XHTML");
-        highlightChoices.add("HTML");
-        highlightChoices.add("C/C++");
-        highlightChoices.add("Groovy");
+        List<String> highlightChoices = getHighlightChoices();
 
 
         if(existingEntry!=null) {

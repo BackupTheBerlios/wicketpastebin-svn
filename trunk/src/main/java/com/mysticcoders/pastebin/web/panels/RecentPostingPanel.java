@@ -6,6 +6,7 @@ import com.mysticcoders.pastebin.util.ModelIteratorAdapter;
 import com.mysticcoders.pastebin.web.pages.PastebinPage;
 import com.mysticcoders.pastebin.web.pages.ViewPastebinPage;
 import com.mysticcoders.pastebin.web.PastebinApplication;
+import com.mysticcoders.pastebin.web.model.PasteEntriesModel;
 import wicket.AttributeModifier;
 import wicket.extensions.markup.html.repeater.refreshing.Item;
 import wicket.extensions.markup.html.repeater.refreshing.RefreshingView;
@@ -18,6 +19,7 @@ import wicket.model.Model;
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * RecentPostingPanel
@@ -41,8 +43,9 @@ public class RecentPostingPanel extends Panel {
 
             @Override
             protected Iterator getItemModels() {
-                PasteEntryDAO dao = (PasteEntryDAO) PastebinApplication.getInstance().getBean("pasteEntryDAO");
-                return new ModelIteratorAdapter(dao.getPreviousEntries(10)) {
+                List<PasteEntry> pasteEntries = (List<PasteEntry>)new PasteEntriesModel().getObject(null);
+
+                return new ModelIteratorAdapter(pasteEntries.iterator()) {
 
                     @Override
                     protected IModel model(Object object) {

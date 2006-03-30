@@ -6,6 +6,7 @@ import com.mysticcoders.pastebin.dao.PasteEntryDAO;
 import com.mysticcoders.pastebin.model.ImageEntry;
 import com.mysticcoders.pastebin.model.PasteEntry;
 import com.mysticcoders.pastebin.web.PastebinApplication;
+import com.mysticcoders.pastebin.web.model.PasteEntryModel;
 import com.mysticcoders.pastebin.web.panels.DiffCodePanel;
 import com.mysticcoders.pastebin.web.panels.LineNumberCodePanel;
 import com.mysticcoders.pastebin.web.panels.PastebinPanel;
@@ -73,9 +74,10 @@ public class ViewPastebinPage extends BasePage {
         if (id == null) {
             throw new RuntimeException("Entry not found");
         }
-        PasteEntryDAO pasteEntryDAO = (PasteEntryDAO) PastebinApplication.getInstance().getBean("pasteEntryDAO");
 
-        final PasteEntry existingEntry = pasteEntryDAO.lookupPastebinEntry(id);
+        PasteEntryModel pasteEntryModel = new PasteEntryModel(id);
+
+        final PasteEntry existingEntry = (PasteEntry)pasteEntryModel.getObject( null );
 
         // Add a diff link in here, only if it includes a parent
         BookmarkablePageLink diffLink = new BookmarkablePageLink("diff", ViewPastebinPage.class, newPageParametersWithDiff(id)) {
@@ -104,10 +106,9 @@ public class ViewPastebinPage extends BasePage {
 
         };
         uploadedImages.setRenderBodyOnly(true);
-
         add(uploadedImages);
 
-        uploadedImages.add(new ListView("thumbnail", new ArrayList(existingEntry.getImages())) {
+        uploadedImages.add(new ListView("thumbnail", new ArrayList(existingEntry.getImages())) {        // TODO this is a Set grabbed from hibernate, using a detachable model, will this get GC'd?
 
 
             public void populateItem(final ListItem item) {
@@ -220,7 +221,15 @@ public class ViewPastebinPage extends BasePage {
         add(parentStatus);
 
         Panel codePanel = (diff && existingEntry.getParent() != null
-                ? new DiffCodePanel("codePanel", existingEntry, getCodeHighlighter()) : new LineNumberCodePanel("codePanel", existingEntry, getCodeHighlighter()));
+                ? new DiffCodePanel("codePanel",
+                existingEntry.getParent().getCode(),
+                existingEntry.getCode(),
+                existingEntry.getHighlight(),
+                getCodeHighlighter()) :
+                new LineNumberCodePanel("codePanel",
+                        existingEntry.getCode(),
+                        existingEntry.getHighlight(),
+                        getCodeHighlighter()));
 
         add(codePanel);
 

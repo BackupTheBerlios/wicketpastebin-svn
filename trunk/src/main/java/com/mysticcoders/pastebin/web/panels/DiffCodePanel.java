@@ -1,6 +1,5 @@
 package com.mysticcoders.pastebin.web.panels;
 
-import com.mysticcoders.pastebin.model.PasteEntry;
 import com.mysticcoders.pastebin.web.util.CodeHighlighter;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.logging.Log;
@@ -8,16 +7,11 @@ import org.apache.commons.logging.LogFactory;
 import org.incava.util.diff.Diff;
 import org.incava.util.diff.Difference;
 import wicket.AttributeModifier;
-import wicket.extensions.markup.html.repeater.refreshing.Item;
-import wicket.extensions.markup.html.repeater.data.table.AbstractColumn;
-import wicket.extensions.markup.html.repeater.data.table.IColumn;
-import wicket.extensions.markup.html.repeater.data.table.PropertyColumn;
 import wicket.markup.html.basic.Label;
 import wicket.markup.html.list.ListItem;
 import wicket.markup.html.list.ListView;
 import wicket.markup.html.panel.Panel;
 import wicket.model.Model;
-import wicket.model.IModel;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -33,9 +27,6 @@ public class DiffCodePanel extends Panel {
 
     static Log log = LogFactory.getLog(DiffCodePanel.class);
 
-
-    private boolean[] userHighlight;        // TODO i know ... i know ... this is such a hack, fix it later :-)
-
     public DiffCodePanel(String id) {
         super(id);
     }
@@ -44,12 +35,11 @@ public class DiffCodePanel extends Panel {
     List<String> newLineNumbers = new ArrayList<String>();
     List<String> modifiers = new ArrayList<String>();
 
-    public DiffCodePanel(String id, final PasteEntry pasteEntry, final CodeHighlighter codeHighlighter) {
+    public DiffCodePanel(String id, String oldCode, String newCode, final String highlight, final CodeHighlighter codeHighlighter) {
         super(id);
 
-
-        String[] parentEntry = pasteEntry.getParent().getCode().split("\n");
-        String[] currentEntry = pasteEntry.getCode().split("\n");
+        String[] parentEntry = oldCode.split("\n");
+        String[] currentEntry = newCode.split("\n");
 
         for (int i = 0; i < parentEntry.length; i++) {
             parentEntry[i] = parentEntry[i].substring(0, (parentEntry[i].lastIndexOf('\r') != -1 ? parentEntry[i].lastIndexOf('\r') : parentEntry[i].length()));
@@ -113,16 +103,14 @@ public class DiffCodePanel extends Panel {
 */
 
 
-        final String highlight = pasteEntry.getHighlight();
-
-        String[] splitCode = getSplitHighlightCode(pasteEntry.getCode(), highlight, codeHighlighter);
-        String[] parentSplitCode = getSplitHighlightCode(pasteEntry.getParent().getCode(), highlight, codeHighlighter);
+        String[] splitCode = getSplitHighlightCode(newCode, highlight, codeHighlighter);
+        String[] parentSplitCode = getSplitHighlightCode(oldCode, highlight, codeHighlighter);
 
         // this is bad, figure out a better way to dump the last line.
         List tempList = Arrays.asList(splitCode);
         List list = new ArrayList(tempList);
-        
-        if(highlight!=null && !highlight.equalsIgnoreCase("no")) {      // dont remove this if not highlight
+
+        if (highlight != null && !highlight.equalsIgnoreCase("no")) {      // dont remove this if not highlight
             list.remove(list.size() - 1);             // the highlighter adds an extra line to the file
         }
 
@@ -174,19 +162,25 @@ public class DiffCodePanel extends Panel {
                 codeLineLabel.setRenderBodyOnly(true);
                 item.add(codeLineLabel);
 
-                if(oldLineNumbers.size()> item.getIndex()) {
-                    String oldLineNumber = oldLineNumbers.get( item.getIndex() );
+                if (oldLineNumbers.size() > item.getIndex()) {
+                    String oldLineNumber = oldLineNumbers.get(item.getIndex());
                     item.add(new Label("oldLineNumber", oldLineNumber));
-                } else { item.add(new Label("oldLineNumber", "")); }
+                } else {
+                    item.add(new Label("oldLineNumber", ""));
+                }
 
-                if(newLineNumbers.size()> item.getIndex()) {
-                    String newLineNumber = newLineNumbers.get( item.getIndex() );
+                if (newLineNumbers.size() > item.getIndex()) {
+                    String newLineNumber = newLineNumbers.get(item.getIndex());
                     item.add(new Label("newLineNumber", newLineNumber));
-                } else { item.add(new Label("newLineNumber", "")); }
-                if(modifiers.size()> item.getIndex()) {
-                    String modifier = modifiers.get( item.getIndex() );
+                } else {
+                    item.add(new Label("newLineNumber", ""));
+                }
+                if (modifiers.size() > item.getIndex()) {
+                    String modifier = modifiers.get(item.getIndex());
                     item.add(new Label("modifierItem", modifier));
-                } else { item.add(new Label("modifierItem", "")); }
+                } else {
+                    item.add(new Label("modifierItem", ""));
+                }
 
             }
 
