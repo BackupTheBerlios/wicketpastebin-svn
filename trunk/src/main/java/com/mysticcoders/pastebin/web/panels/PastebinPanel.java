@@ -157,7 +157,7 @@ public class PastebinPanel extends Panel {
                     imageEntry = new ImageEntry();
 
                     imageEntry.setContentType(fupload.getContentType());
-                    imageEntry.setName(fupload.getFile().getName());
+                    imageEntry.setName(fupload.getClientFileName());
                     imageEntry.setParent(pasteEntry);
                 }
 
@@ -173,7 +173,6 @@ public class PastebinPanel extends Panel {
                         getForm().error("Sorry, there was an error uploading the image.");
                     }
                 }
-
 
                 BotInterface botInterface = (BotInterface) PastebinApplication.getInstance().getBean("botInterface");
                 botInterface.send(pasteEntry.getName(), pasteEntry.getChannel(), getPageUrl() + getPage().urlFor(PageMap.forName(PageMap.DEFAULT_NAME), ViewPastebinPage.class, ViewPastebinPage.newPageParameters(pasteEntry.getId())));

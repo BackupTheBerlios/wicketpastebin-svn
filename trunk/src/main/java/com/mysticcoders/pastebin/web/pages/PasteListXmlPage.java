@@ -83,7 +83,7 @@ public class PasteListXmlPage extends WebPage
                                 getPage().urlFor(
                                         PageMap.forName(PageMap.DEFAULT_NAME),
                                         ViewPastebinPage.class, parms
-                                );
+                                ).toString();
                         label = new Label("url", url);
                         label.setEscapeModelStrings(false);
                         label.setRenderBodyOnly(true);

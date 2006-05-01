@@ -205,7 +205,7 @@ public class ImageServiceImpl implements ImageService
     public void save(ImageEntry imageEntry, InputStream imageStream)
     	throws IOException
     {
-    	// Rad in the image data.
+    	// Read in the image data.
     	ByteArrayOutputStream baos = new ByteArrayOutputStream();
     	copy(imageStream, baos);
     	baos.close();

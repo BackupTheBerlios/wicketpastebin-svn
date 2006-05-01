@@ -11,7 +11,7 @@ import com.mysticcoders.pastebin.dao.ImageEntryDAO;
 import com.mysticcoders.pastebin.model.ImageEntry;
 import com.mysticcoders.pastebin.web.PastebinApplication;
 
-import wicket.resource.DynamicByteArrayResource;
+import wicket.markup.html.DynamicWebResource;
 
 import wicket.util.time.Time;
 import wicket.util.value.ValueMap;
@@ -30,7 +30,7 @@ import wicket.util.value.ValueMap;
  *
  * @author pchapman
  */
-public class ImageResource extends DynamicByteArrayResource
+public class ImageResource extends DynamicWebResource
 {
 	// CONSTANTS
 
