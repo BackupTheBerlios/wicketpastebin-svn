@@ -18,6 +18,7 @@ import wicket.model.IModel;
 
 import wicket.protocol.http.WebRequestCycle;
 import wicket.PageMap;
+import wicket.MarkupContainer;
 
 import com.mysticcoders.pastebin.model.ImageEntry;
 import com.mysticcoders.pastebin.model.PasteEntry;
@@ -39,8 +40,8 @@ public class PastebinPanel extends Panel {
     public static final String REMEMBER_ME_COOKIE = "pastebin.rememberMe";
     public static final String REMEMBER_ME_SEP = "!||!||!";
 
-    public PastebinPanel(String id) {
-        this(id, null);
+    public PastebinPanel(MarkupContainer parent, String id) {
+        this(parent, id, null);
     }
 
     public List<String> getHighlightChoices() {
@@ -56,8 +57,8 @@ public class PastebinPanel extends Panel {
         return highlightChoices;
     }
 
-    public PastebinPanel(String id, PasteEntry existingEntry) {
-        super(id);
+    public PastebinPanel(MarkupContainer parent, String id, PasteEntry existingEntry) {
+        super(parent, id);
 
         PasteEntry pasteEntry = new PasteEntry();
 
@@ -99,16 +100,14 @@ public class PastebinPanel extends Panel {
 
 
 
-        Form form = new PastebinForm("pastebinForm", new CompoundPropertyModel(pasteEntry));
-        add(form);
+        Form form = new PastebinForm(this, "pastebinForm", new CompoundPropertyModel(pasteEntry));
 
-        form.add(new DropDownChoice("highlight", highlightChoices));
+        new DropDownChoice<String>(form, "highlight", highlightChoices);
 
-        FileUploadField fuf = new FileUploadField("imageFile");
+        FileUploadField fuf = new FileUploadField(form, "imageFile");
 //        fuf.setVisible(false); //TODO enable
-        form.add(fuf);
 
-        form.add(new Button("submit") {
+        new Button(form, "submit") {
 
             protected void onSubmit() {
                 PasteEntry pasteEntry = (PasteEntry) getForm().getModelObject();
@@ -180,23 +179,23 @@ public class PastebinPanel extends Panel {
                 //setResponsePage(new RedirectPage("/pastebin/"+pasteEntry.getId()));
                 setResponsePage(ViewPastebinPage.class, ViewPastebinPage.newPageParameters(pasteEntry.getId()));
             }
-        });
+        };
     }
 
     private static class PastebinForm extends Form {
 
-        public PastebinForm(String id, IModel model) {
-            super(id, model);
+        public PastebinForm(MarkupContainer parent, String id, IModel model) {
+            super(parent, id, model);
 
             setMultiPart(true);
 
-            add(new FeedbackPanel("feedback"));
-            add(new TextField("name"));
-            add(new TextField("channel"));
+            new FeedbackPanel(this, "feedback");
+            new TextField(this, "name");
+            new TextField(this, "channel");
 
-            add(new CheckBox("rememberMe", new Model(Boolean.FALSE)));
+            new CheckBox(this, "rememberMe", new Model<Boolean>(Boolean.FALSE));
 
-            add(new TextArea("code"));
+            new TextArea(this, "code");
 
         }
     }

@@ -16,7 +16,6 @@ package com.mysticcoders.pastebin.web.pages;
 
 import com.mysticcoders.pastebin.model.PasteEntry;
 import com.mysticcoders.pastebin.web.model.PasteEntriesModel;
-
 import wicket.AttributeModifier;
 import wicket.PageMap;
 import wicket.PageParameters;
@@ -34,47 +33,35 @@ import java.text.SimpleDateFormat;
  *
  * @author pchapman
  */
-public class PasteListXmlPage extends WebPage
-{
-	// CONSTANTS
-	
-    private static final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss Z");
-	private static final long serialVersionUID = 1L;
+public class PasteListXmlPage extends WebPage {
+    // CONSTANTS
 
-	// CONSTRUCTORS
-	
+    private static final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss Z");
+    private static final long serialVersionUID = 1L;
+
+    // CONSTRUCTORS
+
     /**
      * Creates a new instance.  No parameters are necessary.
      */
-    public PasteListXmlPage()
-    {
-        add(
-                new ListView("pastes", new PasteEntriesModel())
-                {
-                    public void populateItem(ListItem item) {
-                        // paste element
-                        PasteEntry entry = (PasteEntry) item.getModelObject();
-                        item.add(new AttributeModifier("creationtime", new Model(DATE_FORMAT.format(entry.getCreated()))));
-                        item.add(new AttributeModifier("imagecount", new Model(entry.getImages().size())));
-                        item.add(new AttributeModifier("pasteid", new Model(entry.getId())));
+    public PasteListXmlPage() {
+        new ListView<PasteEntry>(this, "pastes", new PasteEntriesModel()) {
+            private static final long serialVersionUID = 1L;
 
-                        // channel element
-                        StringBuilder sb = new StringBuilder("<![CDATA[");
-                        sb.append(entry.getChannel() == null ? "" : entry.getChannel());
-                        sb.append("]]>");
-                        Label label = new Label("channel", new Model(sb.toString()));
-                        label.setEscapeModelStrings(false);
-                        label.setRenderBodyOnly(true);
-                        item.add(label);
+            public void populateItem(ListItem<PasteEntry> item) {
+                // paste element
+                PasteEntry entry = (PasteEntry) item.getModelObject();
+                item.add(new AttributeModifier("creationtime", new Model(DATE_FORMAT.format(entry.getCreated()))));
+                item.add(new AttributeModifier("imagecount", new Model(entry.getImages().size())));
+                item.add(new AttributeModifier("pasteid", new Model(entry.getId())));
 
-                        // line1 element
-                        sb = new StringBuilder("<![CDATA[");
-                        sb.append(entry.getCode().split("\\n")[0]);
-                        sb.append("]]>");
-                        label = new Label("line1", new Model(sb.toString()));
-                        label.setEscapeModelStrings(false);
-                        label.setRenderBodyOnly(true);
-                        item.add(label);
+                // channel element
+                StringBuilder sb = new StringBuilder("<![CDATA[");
+                sb.append(entry.getChannel() == null ? "" : entry.getChannel());
+                sb.append("]]>");
+                Label label = new Label(item, "channel", new Model(sb.toString()));
+                label.setEscapeModelStrings(false);
+                label.setRenderBodyOnly(true);
 
                         // url element
                         PageParameters parms = new PageParameters();
@@ -84,29 +71,25 @@ public class PasteListXmlPage extends WebPage
                                         PageMap.forName(PageMap.DEFAULT_NAME),
                                         ViewPastebinPage.class, parms
                                 ).toString();
-                        label = new Label("url", url);
+                        label = new Label(item, "url", url);
                         label.setEscapeModelStrings(false);
                         label.setRenderBodyOnly(true);
-                        item.add(label);
 
-                        // user element
-                        sb = new StringBuilder("<![CDATA[");
-                        sb.append(entry.getName());
-                        sb.append("]]>");
-                        label = new Label("user", sb.toString());
-                        label.setEscapeModelStrings(false);
-                        label.setRenderBodyOnly(true);
-                        item.add(label);
-                    }
-                }
-        );
+                // user element
+                sb = new StringBuilder("<![CDATA[");
+                sb.append(entry.getName());
+                sb.append("]]>");
+                label = new Label(item, "user", sb.toString());
+                label.setEscapeModelStrings(false);
+                label.setRenderBodyOnly(true);
+            }
+        };
     }
-
-    /**
-     * @see wicket.MarkupContainer#getMarkupType()
-     */
-    public String getMarkupType()
-    {
-        return "xml";
-    }
+        /**
+         * @see wicket.MarkupContainer#getMarkupType()
+         */
+        public String getMarkupType()
+        {
+            return "xml";
+        }
 }

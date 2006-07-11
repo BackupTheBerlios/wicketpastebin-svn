@@ -44,7 +44,7 @@
   <!-- + Set Virtual Hosts. A Null host or empty array means all hosts -->
   <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
   <Call name="addWebApplication">
-    <Arg>/pastebin</Arg>
+    <Arg>/</Arg>
     <Arg>src/main/webapp</Arg>
   </Call>
 

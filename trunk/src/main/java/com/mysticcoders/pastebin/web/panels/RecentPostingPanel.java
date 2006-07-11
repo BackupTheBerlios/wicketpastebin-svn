@@ -1,13 +1,12 @@
 package com.mysticcoders.pastebin.web.panels;
 
-import com.mysticcoders.pastebin.dao.PasteEntryDAO;
 import com.mysticcoders.pastebin.model.PasteEntry;
 import com.mysticcoders.pastebin.util.ModelIteratorAdapter;
+import com.mysticcoders.pastebin.web.model.PasteEntriesModel;
 import com.mysticcoders.pastebin.web.pages.PastebinPage;
 import com.mysticcoders.pastebin.web.pages.ViewPastebinPage;
-import com.mysticcoders.pastebin.web.PastebinApplication;
-import com.mysticcoders.pastebin.web.model.PasteEntriesModel;
 import wicket.AttributeModifier;
+import wicket.MarkupContainer;
 import wicket.extensions.markup.html.repeater.refreshing.Item;
 import wicket.extensions.markup.html.repeater.refreshing.RefreshingView;
 import wicket.markup.html.basic.Label;
@@ -30,20 +29,20 @@ import java.util.List;
  */
 public class RecentPostingPanel extends Panel {
 
-    public RecentPostingPanel(String id) {
-        this(id, null);
+    public RecentPostingPanel(MarkupContainer parent, String id) {
+        this(parent, id, null);
     }
 
-    public RecentPostingPanel(String id, final Long pasteEntryId) {
-        super(id);
+    public RecentPostingPanel(MarkupContainer parent, String id, final Long pasteEntryId) {
+        super(parent, id);
 
-        add(new BookmarkablePageLink("newPost", PastebinPage.class));
+        new BookmarkablePageLink(this, "newPost", PastebinPage.class);
 
-        add(new RefreshingView("recentPosts") {
+        new RefreshingView(this, "recentPosts") {
 
             @Override
             protected Iterator getItemModels() {
-                List<PasteEntry> pasteEntries = (List<PasteEntry>)new PasteEntriesModel().getObject(null);
+                List<PasteEntry> pasteEntries = (List<PasteEntry>) new PasteEntriesModel().getObject();
 
                 return new ModelIteratorAdapter(pasteEntries.iterator()) {
 
@@ -66,14 +65,12 @@ public class RecentPostingPanel extends Panel {
 
                 String elapsedTime = calcElapsedTime((int) timeInMillis);
 
-                BookmarkablePageLink link = ViewPastebinPage.newLink("pastebin", pasteEntry.getId());
-                link.add(new Label("name", pasteEntry.getName()));
-                item.add(link);
-
-                item.add(new Label("elapsedTime", elapsedTime).setRenderBodyOnly(true));
+                BookmarkablePageLink link = ViewPastebinPage.newLink(item, "pastebin", pasteEntry.getId());
+                new Label(link, "name", pasteEntry.getName());
+                new Label(item, "elapsedTime", elapsedTime).setRenderBodyOnly(true);
             }
 
-        });
+        };
     }
 
 
@@ -90,7 +87,7 @@ public class RecentPostingPanel extends Panel {
         timeInSeconds = timeInSeconds - (minutes * 60);
         seconds = timeInSeconds;
 
-        if(days > 0) {
+        if (days > 0) {
             return days + " day" + (days > 1 ? "s" : "") + " ago";
         } else if (hours > 0) {
             return hours + " hr" + (hours > 1 ? "s" : "") + " ago";

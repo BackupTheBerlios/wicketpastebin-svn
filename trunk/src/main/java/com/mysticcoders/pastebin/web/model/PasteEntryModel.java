@@ -69,8 +69,15 @@ public class PasteEntryModel
         pasteEntry = null;
     }
 
-    public Object onGetObject(Component comp)
-    {
+    /**
+     * Called when getObject is called in order to retrieve the detachable
+     * object. Before this method is called, getObject() always calls attach()
+     * to ensure that the object is attached.
+     *
+     * @return The object
+     */
+    protected Object onGetObject() {
         return pasteEntry;
     }
+
 }

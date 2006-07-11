@@ -7,6 +7,7 @@ import org.apache.commons.logging.LogFactory;
 import org.incava.util.diff.Diff;
 import org.incava.util.diff.Difference;
 import wicket.AttributeModifier;
+import wicket.MarkupContainer;
 import wicket.markup.html.basic.Label;
 import wicket.markup.html.list.ListItem;
 import wicket.markup.html.list.ListView;
@@ -27,16 +28,16 @@ public class DiffCodePanel extends Panel {
 
     static Log log = LogFactory.getLog(DiffCodePanel.class);
 
-    public DiffCodePanel(String id) {
-        super(id);
+    public DiffCodePanel(MarkupContainer parent, String id) {
+        super(parent, id);
     }
 
     List<String> oldLineNumbers = new ArrayList<String>();
     List<String> newLineNumbers = new ArrayList<String>();
     List<String> modifiers = new ArrayList<String>();
 
-    public DiffCodePanel(String id, String oldCode, String newCode, final String highlight, final CodeHighlighter codeHighlighter) {
-        super(id);
+    public DiffCodePanel(MarkupContainer parent, String id, String oldCode, String newCode, final String highlight, final CodeHighlighter codeHighlighter) {
+        super(parent, id);
 
         String[] parentEntry = oldCode.split("\n");
         String[] currentEntry = newCode.split("\n");
@@ -128,7 +129,7 @@ public class DiffCodePanel extends Panel {
         }
 
 
-        add(new ListView("codeView", list) {
+        new ListView<String>(this, "codeView", list) {
 
             public void populateItem(final ListItem item) {
                 final String codeLine = (String) item.getModelObject();
@@ -154,37 +155,36 @@ public class DiffCodePanel extends Panel {
                     item.add(new AttributeModifier("class", true, new Model("diff_regular")));
                 }
 
-                Label codeLineLabel = new Label("codeLine", formattedCodeLine);
+                Label codeLineLabel = new Label(item, "codeLine", formattedCodeLine);
 
                 if (highlight != null && !highlight.equalsIgnoreCase("no")) {
                     codeLineLabel.setEscapeModelStrings(false);
                 }
                 codeLineLabel.setRenderBodyOnly(true);
-                item.add(codeLineLabel);
 
                 if (oldLineNumbers.size() > item.getIndex()) {
                     String oldLineNumber = oldLineNumbers.get(item.getIndex());
-                    item.add(new Label("oldLineNumber", oldLineNumber));
+                    new Label(item, "oldLineNumber", oldLineNumber);
                 } else {
-                    item.add(new Label("oldLineNumber", ""));
+                    new Label(item, "oldLineNumber", "");
                 }
 
                 if (newLineNumbers.size() > item.getIndex()) {
                     String newLineNumber = newLineNumbers.get(item.getIndex());
-                    item.add(new Label("newLineNumber", newLineNumber));
+                    new Label(item, "newLineNumber", newLineNumber);
                 } else {
-                    item.add(new Label("newLineNumber", ""));
+                    new Label(item, "newLineNumber", "");
                 }
                 if (modifiers.size() > item.getIndex()) {
                     String modifier = modifiers.get(item.getIndex());
-                    item.add(new Label("modifierItem", modifier));
+                    new Label(item, "modifierItem", modifier);
                 } else {
-                    item.add(new Label("modifierItem", ""));
+                    new Label(item, "modifierItem", "");
                 }
 
             }
 
-        });
+        };
 
     }
 

@@ -3,6 +3,7 @@ package com.mysticcoders.pastebin.util;
 import javax.servlet.http.HttpServletRequest;
 
 import wicket.RequestCycle;
+import wicket.MarkupContainer;
 import wicket.markup.ComponentTag;
 import wicket.markup.html.WebComponent;
 import wicket.protocol.http.servlet.ServletWebRequest;
@@ -14,8 +15,8 @@ import wicket.protocol.http.servlet.ServletWebRequest;
  */
 public class BaseTag extends WebComponent {
 
-	public BaseTag(String id) {
-		super(id);
+	public BaseTag(MarkupContainer parent,String id) {
+		super(parent, id);
 	}
 	
 	@Override

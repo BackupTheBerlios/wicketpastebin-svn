@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 public class BasePage extends WebPage {
 
     public BasePage() {
-    	add(new BaseTag("base"));
+        super();
     }
 
     protected Object getBean(String beanName) {

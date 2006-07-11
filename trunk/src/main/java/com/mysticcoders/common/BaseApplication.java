@@ -17,8 +17,8 @@ public abstract class BaseApplication extends WebApplication {
     /**
      * Determine operations mode: deployment or development
      */
-    protected void init() {
-        ServletContext servletContext = this.getWicketServlet().getServletContext();
+    protected void init() {        
+        ServletContext servletContext = getServletContext();
         applicationContext = WebApplicationContextUtils.getWebApplicationContext(servletContext);
 
         String names[] = applicationContext.getBeanDefinitionNames();

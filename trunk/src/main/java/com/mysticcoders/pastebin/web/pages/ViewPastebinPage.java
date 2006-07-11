@@ -2,7 +2,6 @@ package com.mysticcoders.pastebin.web.pages;
 
 import com.mysticcoders.pastebin.core.ImageService;
 import com.mysticcoders.pastebin.core.PasteService;
-import com.mysticcoders.pastebin.dao.PasteEntryDAO;
 import com.mysticcoders.pastebin.model.ImageEntry;
 import com.mysticcoders.pastebin.model.PasteEntry;
 import com.mysticcoders.pastebin.web.PastebinApplication;
@@ -12,6 +11,7 @@ import com.mysticcoders.pastebin.web.panels.LineNumberCodePanel;
 import com.mysticcoders.pastebin.web.panels.PastebinPanel;
 import com.mysticcoders.pastebin.web.panels.RecentPostingPanel;
 import wicket.AttributeModifier;
+import wicket.MarkupContainer;
 import wicket.PageParameters;
 import wicket.ResourceReference;
 import wicket.markup.html.WebMarkupContainer;
@@ -39,19 +39,19 @@ public class ViewPastebinPage extends BasePage {
 
     public static PageParameters newPageParameters(long entryId) {
         PageParameters params = new PageParameters();
-        params.put("0", entryId);
+        params.put("0", String.valueOf(entryId));
         return params;
     }
 
     public static PageParameters newPageParametersWithDiff(long entryId) {
         PageParameters params = new PageParameters();
-        params.put("0", entryId);
+        params.put("0", String.valueOf(entryId));
         params.put("1", "diff");
         return params;
     }
 
-    public static BookmarkablePageLink newLink(String id, long entryId) {
-        return new BookmarkablePageLink(id, ViewPastebinPage.class, newPageParameters(entryId));
+    public static BookmarkablePageLink newLink(MarkupContainer parent, String id, long entryId) {
+        return new BookmarkablePageLink(parent, id, ViewPastebinPage.class, newPageParameters(entryId));
 
     }
 
@@ -77,17 +77,15 @@ public class ViewPastebinPage extends BasePage {
 
         PasteEntryModel pasteEntryModel = new PasteEntryModel(id);
 
-        final PasteEntry existingEntry = (PasteEntry)pasteEntryModel.getObject( null );
+        final PasteEntry existingEntry = (PasteEntry) pasteEntryModel.getObject();
 
         // Add a diff link in here, only if it includes a parent
-        BookmarkablePageLink diffLink = new BookmarkablePageLink("diff", ViewPastebinPage.class, newPageParametersWithDiff(id)) {
+        new BookmarkablePageLink(this, "diff", ViewPastebinPage.class, newPageParametersWithDiff(id)) {
             public boolean isVisible() {
 //                return false;
                 return existingEntry.getParent() != null;
             }
         };
-
-        add(diffLink);
 
         // you be viewing it
         existingEntry.touch();
@@ -98,17 +96,13 @@ public class ViewPastebinPage extends BasePage {
 
         // Images
 
-        WebMarkupContainer uploadedImages = new WebMarkupContainer("thumbnails") {
-
+        MarkupContainer uploadedImages = new WebMarkupContainer(this, "thumbnails") {
             public boolean isVisible() {
                 return existingEntry.getImages().size() > 0;
             }
-
         };
-        uploadedImages.setRenderBodyOnly(true);
-        add(uploadedImages);
 
-        uploadedImages.add(new ListView("thumbnail", new ArrayList(existingEntry.getImages())) {        // TODO this is a Set grabbed from hibernate, using a detachable model, will this get GC'd?
+        new ListView<ImageEntry>(uploadedImages, "thumbnail", new ArrayList(existingEntry.getImages())) {        // TODO this is a Set grabbed from hibernate, using a detachable model, will this get GC'd?
 
 
             public void populateItem(final ListItem item) {
@@ -124,28 +118,26 @@ public class ViewPastebinPage extends BasePage {
 
                 ResourceReference ref = new ResourceReference("imageResource");
 
-                String url = getRequestCycle().urlFor(ref)  + "?imageEntryId=" + image.getId();
-                ExternalLink eLink = new ExternalLink("imageLink", url);
+                String url = getRequestCycle().urlFor(ref) + "?imageEntryId=" + image.getId();
+                ExternalLink eLink = new ExternalLink(item, "imageLink", url);
                 url = url + "&amp;thumbnail=true";
                 AttributeModifier modifier = new AttributeModifier(
                         "src",
                         new Model(url)
                 );
-                Label label = new Label("thumbnailImage", "");
+                Label label = new Label(eLink, "thumbnailImage", "");
                 label.add(modifier);
-                eLink.add(label);
                 eLink.setVisible(available);
-                item.add(eLink);
-                label = new Label("thumbnailImageNA", "");
+
+                label = new Label(item, "thumbnailImageNA", "");
                 label.add(modifier);
                 label.setVisible(!available);
-                item.add(label);
             }
-        });
+        };
 
         // Amendments
 
-        WebMarkupContainer postedAmendments = new WebMarkupContainer("postedAmendments") {
+        WebMarkupContainer postedAmendments = new WebMarkupContainer(this, "postedAmendments") {
 
             public boolean isVisible() {
                 return existingEntry.getChildren().size() > 0;
@@ -153,25 +145,22 @@ public class ViewPastebinPage extends BasePage {
 
         };
 
-        add(postedAmendments);
-
-        postedAmendments.add(new ListView("postedAmendment", new ArrayList(existingEntry.getChildren())) {
-
+        new ListView<PasteEntry>(postedAmendments, "postedAmendment", new ArrayList(existingEntry.getChildren())) {
 
             public void populateItem(final ListItem item) {
                 final PasteEntry pasteEntry = (PasteEntry) item.getModelObject();
 
-                BookmarkablePageLink link = ViewPastebinPage.newLink("amendmentLink", pasteEntry.getId());
-                link.add(new Label("name", pasteEntry.getName()));
-                item.add(link);
+                BookmarkablePageLink link = ViewPastebinPage.newLink(item, "amendmentLink", pasteEntry.getId());
+
+                new Label(link, "name", pasteEntry.getName());
 
                 SimpleDateFormat formatter = new SimpleDateFormat("EEE d'th' MMM HH:mm");
                 String formattedDate = formatter.format(pasteEntry.getCreated());
 
-                item.add(new Label("amendmentCreated", formattedDate));
+                new Label(item, "amendmentCreated", formattedDate);
 
             }
-        });
+        };
 
         SimpleDateFormat formatter = new SimpleDateFormat("EEE d'th' MMM HH:mm");
         // TODO should conver the 'th' to an appropriate modifier, 1st, 2nd, 3rd, 4th
@@ -189,20 +178,20 @@ public class ViewPastebinPage extends BasePage {
         labelText.append(" on ");
         labelText.append(formattedDate);
 
-        add(new Label("status", labelText.toString()).setRenderBodyOnly(true));
+        new Label(this, "status", labelText.toString()).setRenderBodyOnly(true);
 
         String postStatus = "Viewed: " + existingEntry.getViewCount() + " time" + (existingEntry.getViewCount() > 1 ? "s" : "") + " | Last viewed: " + formatter.format(existingEntry.getLastViewed());
 
-        add(new Label("postStatus", postStatus).setRenderBodyOnly(true));
+        new Label(this, "postStatus", postStatus).setRenderBodyOnly(true);
 
 
         ResourceReference ref = new ResourceReference("exportResource");
 
         String url = getRequestCycle().urlFor(ref) + "?pasteEntryId=" + existingEntry.getId();
 
-        add(new ExternalLink("downloadPost", url));
+        new ExternalLink(this, "downloadPost", url);
 
-        WebMarkupContainer parentStatus = new WebMarkupContainer("parentStatus") {
+        WebMarkupContainer parentStatus = new WebMarkupContainer(this, "parentStatus") {
 
             public boolean isVisible() {
                 return existingEntry.getParent() != null;
@@ -211,38 +200,34 @@ public class ViewPastebinPage extends BasePage {
         parentStatus.setRenderBodyOnly(true);
 
         if (existingEntry.getParent() != null) {
-            BookmarkablePageLink parentPageLink = ViewPastebinPage.newLink("parentPost", existingEntry.getParent().getId());
+            BookmarkablePageLink parentPageLink = ViewPastebinPage.newLink(parentStatus, "parentPost", existingEntry.getParent().getId());
             parentPageLink.setRenderBodyOnly(true);
 
-            Label parentNameLabel = new Label("parentName", existingEntry.getParent().getName());
-            parentStatus.add(parentPageLink.add(parentNameLabel));
+            Label parentNameLabel = new Label(parentPageLink, "parentName", existingEntry.getParent().getName());
         }
 
-        add(parentStatus);
-
         Panel codePanel = (diff && existingEntry.getParent() != null
-                ? new DiffCodePanel("codePanel",
+                ? new DiffCodePanel(this, "codePanel",
                 existingEntry.getParent().getCode(),
                 existingEntry.getCode(),
                 existingEntry.getHighlight(),
                 getCodeHighlighter()) :
-                new LineNumberCodePanel("codePanel",
+                new LineNumberCodePanel(this, "codePanel",
                         existingEntry.getCode(),
                         existingEntry.getHighlight(),
                         getCodeHighlighter()));
 
-        add(codePanel);
 
-        add(new RecentPostingPanel("recentPosts", (existingEntry != null ? existingEntry.getId() : null))
-                .setRenderBodyOnly(true));
+        new RecentPostingPanel(this, "recentPosts", (existingEntry != null ? existingEntry.getId() : null))
+                .setRenderBodyOnly(true);
 
-        add(new PastebinPanel("pastebinPanel", existingEntry) {
+        new PastebinPanel(this, "pastebinPanel", existingEntry) {
             protected String getPageUrl() {
                 StringBuffer url = humanReadableUrl((WebRequestCycle) super.getRequestCycle(), true);
                 if (url != null) return url.toString();
                 return "";
             }
-        }.setRenderBodyOnly(true));
+        }.setRenderBodyOnly(true);
 
 
     }

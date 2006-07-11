@@ -1,11 +1,11 @@
 package com.mysticcoders.pastebin.web.panels;
 
-import com.mysticcoders.pastebin.model.PasteEntry;
 import com.mysticcoders.pastebin.web.util.CodeHighlighter;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import wicket.AttributeModifier;
+import wicket.MarkupContainer;
 import wicket.markup.html.basic.Label;
 import wicket.markup.html.list.ListItem;
 import wicket.markup.html.list.ListView;
@@ -28,12 +28,12 @@ public class LineNumberCodePanel extends Panel {
 
     private boolean[] userHighlight;        // TODO i know ... i know ... this is such a hack, fix it later :-)
 
-    public LineNumberCodePanel(String id) {
-        super(id);
+    public LineNumberCodePanel(MarkupContainer parent, String id) {
+        super(parent, id);
     }
 
-    public LineNumberCodePanel(String id, final String code, final String highlight, final CodeHighlighter codeHighlighter) {
-        super(id);
+    public LineNumberCodePanel(MarkupContainer parent, String id, final String code, final String highlight, final CodeHighlighter codeHighlighter) {
+        super(parent, id);
 
         String[] splitCode = null;
 
@@ -60,7 +60,7 @@ public class LineNumberCodePanel extends Panel {
         add(createLabelListView("lineNumbers", "lineNumber", lineNumbers));
 */
 
-        add(new ListView("codeView", list) {
+        new ListView<String>(this, "codeView", list) {
 
             public void populateItem(final ListItem item) {
                 final String codeLine = (String) item.getModelObject();
@@ -79,16 +79,15 @@ public class LineNumberCodePanel extends Panel {
                     formattedCodeLine = formattedCodeLine.substring(2, formattedCodeLine.length());
                 }
 
-                Label codeLineLabel = new Label("codeLine", formattedCodeLine);
+                Label codeLineLabel = new Label(item, "codeLine", formattedCodeLine);
 
                 if (highlight != null && !highlight.equalsIgnoreCase("no")) {
                     codeLineLabel.setEscapeModelStrings(false);
                 }
 //                codeLineLabel.setRenderBodyOnly(true);
-                item.add(codeLineLabel);
 
             }
-        });
+        };
 
 
     }
