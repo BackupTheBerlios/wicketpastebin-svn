@@ -1,6 +1,7 @@
 package com.mysticcoders.pastebin.core;
 
 import com.mysticcoders.pastebin.model.ImageEntry;
+import com.mysticcoders.pastebin.util.IOUtils;
 
 import com.mysticcoders.pastebin.dao.ImageEntryDAO;
 
@@ -74,7 +75,7 @@ public class ImageServiceImpl implements ImageService
 			ByteArrayOutputStream outStream = new ByteArrayOutputStream();
 			InputStream inStream =
 				new FileInputStream(new File(imageEntry.getFileName()));
-			copy(inStream, outStream);
+			IOUtils.copy(inStream, outStream);
 			inStream.close();
 			outStream.close();
 			return outStream.toByteArray();
@@ -120,7 +121,7 @@ public class ImageServiceImpl implements ImageService
 			ByteArrayOutputStream outStream = new ByteArrayOutputStream();
 			InputStream inStream =
 				new FileInputStream(new File(imageEntry.getThumbName()));
-			copy(inStream, outStream);
+			IOUtils.copy(inStream, outStream);
 			inStream.close();
 			outStream.close();
 			return outStream.toByteArray();
@@ -142,30 +143,6 @@ public class ImageServiceImpl implements ImageService
     }
     
     // METHODS
-
-    /**
-     * Copies data from src into dst.
-     */
-    private void copy(InputStream source, OutputStream destination)
-    	throws IOException
-    {
-    	try {
-	        // Transfer bytes from source to destination
-	        byte[] buf = new byte[1024];
-	        int len;
-	        while ((len = source.read(buf)) > 0) {
-	            destination.write(buf, 0, len);
-	        }
-	        source.close();
-	        destination.close();
-	    	if (logger.isDebugEnabled()) {
-	    		logger.debug("Copying image...");
-	    	}
-    	} catch (IOException ioe) {
-    		logger.error(ioe);
-    		throw ioe;
-    	}
-    }
     
     private File createImageFile(String suffix)
     {
@@ -195,7 +172,7 @@ public class ImageServiceImpl implements ImageService
 			);
         InputStream in = url.openStream();
         ByteArrayOutputStream out = new ByteArrayOutputStream();
-        copy(in, out);
+        IOUtils.copy(in, out);
         in.close();
         out.close();
         return out.toByteArray();
@@ -207,7 +184,7 @@ public class ImageServiceImpl implements ImageService
     {
     	// Read in the image data.
     	ByteArrayOutputStream baos = new ByteArrayOutputStream();
-    	copy(imageStream, baos);
+    	IOUtils.copy(imageStream, baos);
     	baos.close();
     	byte[] imageData = baos.toByteArray();
     	baos = null;

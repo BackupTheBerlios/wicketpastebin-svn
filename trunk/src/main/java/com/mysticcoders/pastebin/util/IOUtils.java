@@ -2,14 +2,45 @@ package com.mysticcoders.pastebin.util;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * @author Hani Suleiman (hani@formicary.net)
  * Date: Oct 23 2003
  * Time: 9:02:22 PM
+ * @author Philip Chapman (pchapman@pcsw.us)
+ * Date: Aug 4, 2006
+ * Time: 9:48:00 PM
  */
 public class IOUtils
 {
+	private static final Log logger = LogFactory.getLog(IOUtils.class);
+	
+    /**
+     * Copies data from src into dst.  Neither of the streams are opened or
+     * closed.  The calling method should tend to that.
+     */
+    public static void copy(InputStream source, OutputStream destination)
+    	throws IOException
+    {
+    	try {
+	        // Transfer bytes from source to destination
+	        byte[] buf = new byte[1024];
+	        int len;
+	        while ((len = source.read(buf)) > 0) {
+	            destination.write(buf, 0, len);
+	        }
+	        source.close();
+	        destination.close();
+    	} catch (IOException ioe) {
+    		logger.error(ioe);
+    		throw ioe;
+    	}
+    }
+
   public static byte[] readStream(InputStream in) throws IOException
   {
     byte[] buffer = new byte[1024];

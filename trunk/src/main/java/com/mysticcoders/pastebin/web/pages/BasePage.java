@@ -1,11 +1,13 @@
 package com.mysticcoders.pastebin.web.pages;
 
 import wicket.markup.html.WebPage;
+import wicket.markup.html.basic.Label;
 import wicket.protocol.http.WebRequestCycle;
 import wicket.protocol.http.WebRequest;
 import wicket.protocol.http.servlet.ServletWebRequest;
 import com.mysticcoders.common.BaseApplication;
-import com.mysticcoders.pastebin.util.BaseTag;
+import com.mysticcoders.pastebin.core.IncludedContentService;
+import com.mysticcoders.pastebin.web.PastebinApplication;
 import com.mysticcoders.pastebin.web.util.CodeHighlighter;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,11 +17,21 @@ import javax.servlet.http.HttpServletRequest;
  * <p/>
  * Created by: Andrew Lombardi
  * Copyright 2004 Mystic Coders, LLC
+ * Edited by: Philip Chapman
  */
 public class BasePage extends WebPage {
-
+	private static final long serialVersionUID = 1L;
+	
     public BasePage() {
         super();
+    
+        IncludedContentService contentService =
+        	(IncludedContentService)PastebinApplication.getInstance()
+        		.getBean("includedContentService");
+        String s = contentService.getHeaderContent();
+        new Label(
+        		this, "headerIncludedContent", s
+        	).setEscapeModelStrings(false).setVisible(s.length() > 0);
     }
 
     protected Object getBean(String beanName) {

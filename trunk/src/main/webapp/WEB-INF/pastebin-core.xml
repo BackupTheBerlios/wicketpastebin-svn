@@ -29,6 +29,10 @@
 		<property name="thumbnailSize" value="128" />
     </bean>
 
+    <bean id="includedContentService" class="com.mysticcoders.pastebin.core.IncludedContentServiceImpl">
+		<property name="headerContentUrl" value="${header.content.url}" />
+    </bean>
+
     <bean id="botInterface" class="com.mysticcoders.pastebin.util.BotInterface">
         <property name="url" value="${bot.boturl}" />
         <property name="channels" value="${bot.channels}" />

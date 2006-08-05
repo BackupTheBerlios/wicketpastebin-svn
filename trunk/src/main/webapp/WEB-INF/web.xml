@@ -47,7 +47,7 @@
         </init-param>
 		<init-param>
 		  <param-name>filterPath</param-name>
-		  <param-value>pastebin</param-value>
+		  <param-value></param-value>
 		</init-param>
     </filter>
 
@@ -60,7 +60,7 @@
 
     <filter-mapping>
         <filter-name>PastebinApplication</filter-name>
-        <url-pattern>/pastebin/*</url-pattern>
+        <url-pattern>/*</url-pattern>
     </filter-mapping>
 
 
