@@ -46,21 +46,31 @@
     <bean id="codeHighlighter" class="com.mysticcoders.pastebin.web.util.CodeHighlighter">
         <property name="highlightEngines">
             <map>
-                <entry key="java"><ref bean="javaHighlighter" /></entry>
-                <entry key="xml"><ref bean="xmlHighlighter" /></entry>
-                <entry key="xhtml"><ref bean="xmlHighlighter" /></entry>
-                <entry key="html"><ref bean="xmlHighlighter" /></entry>
-                <entry key="c/c++"><ref bean="cppHighlighter" /></entry>
-                <entry key="groovy"><ref bean="groovyHighlighter" /></entry>
+                <entry key="java"><bean class="com.mysticcoders.pastebin.web.util.JavaHighlighterEngine" /></entry>
+                <entry key="xml"><bean class="com.mysticcoders.pastebin.web.util.XmlHighlighterEngine" /></entry>
+                <entry key="xhtml"><bean class="com.mysticcoders.pastebin.web.util.XmlHighlighterEngine" /></entry>
+                <entry key="html"><bean class="com.mysticcoders.pastebin.web.util.XmlHighlighterEngine" /></entry>
+                <entry key="c/c++"><bean class="com.mysticcoders.pastebin.web.util.CppHighlighterEngine" /></entry>
+                <entry key="groovy"><bean class="com.mysticcoders.pastebin.web.util.GroovyHighlighterEngine" /></entry>
             </map>
         </property>
 
     </bean>
 
-    <bean id="javaHighlighter" class="com.mysticcoders.pastebin.web.util.JavaHighlighterEngine" />
-    <bean id="xmlHighlighter" class="com.mysticcoders.pastebin.web.util.XmlHighlighterEngine" />
-    <bean id="cppHighlighter" class="com.mysticcoders.pastebin.web.util.CppHighlighterEngine" />
-    <bean id="groovyHighlighter" class="com.mysticcoders.pastebin.web.util.GroovyHighlighterEngine" />
+
+    <!-- Search Foo -->
+    <bean id="indexService" class="com.mysticcoders.pastebin.search.IndexServiceImpl">
+        <constructor-arg value="${index.path}" />
+        <constructor-arg><bean class="org.apache.lucene.analysis.standard.StandardAnalyzer" /></constructor-arg>
+
+        <property name="pasteService" ref="pasteService" />
+    </bean>
+
+    <bean id="searchService" class="com.mysticcoders.pastebin.search.SearchServiceImpl">
+        <constructor-arg value="${index.path}" />
+        <constructor-arg><bean class="org.apache.lucene.analysis.standard.StandardAnalyzer" /></constructor-arg>
+    </bean>
+
 
 </beans>
 

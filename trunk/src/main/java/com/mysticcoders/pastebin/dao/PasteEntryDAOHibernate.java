@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Query;
 
 import com.mysticcoders.pastebin.model.PasteEntry;
 
@@ -47,6 +48,14 @@ public class PasteEntryDAOHibernate implements PasteEntryDAO {
     public List<PasteEntry> getPreviousEntriesList(int limit)
     {
     	String query = "from PasteEntry as pasteEntry order by pasteEntry.created desc";
-    	return getSession().createQuery(query).setMaxResults(limit).list();
+        Query q = getSession().createQuery( query );
+        if(limit>0)
+            q.setMaxResults( limit );
+
+        return q.list();
+    }
+
+    public List<PasteEntry> getPreviousEntriesList() {
+        return getPreviousEntriesList(0);
     }
 }

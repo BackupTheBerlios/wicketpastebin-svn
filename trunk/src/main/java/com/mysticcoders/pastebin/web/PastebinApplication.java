@@ -1,9 +1,7 @@
 package com.mysticcoders.pastebin.web;
 
 import com.mysticcoders.common.BaseApplication;
-import com.mysticcoders.pastebin.web.pages.PasteListXmlPage;
-import com.mysticcoders.pastebin.web.pages.PastebinPage;
-import com.mysticcoders.pastebin.web.pages.ViewPastebinPage;
+import com.mysticcoders.pastebin.web.pages.*;
 import com.mysticcoders.pastebin.web.resource.ExportResource;
 import com.mysticcoders.pastebin.web.resource.ImageResource;
 import wicket.Application;
@@ -29,7 +27,13 @@ public class PastebinApplication extends BaseApplication {
         )
         );
 
+        mount(new IndexedParamUrlCodingStrategy(
+                "/search", SearchResultsPage.class, null
+        ));
+
         mountBookmarkablePage("/pastelist", PasteListXmlPage.class);
+
+        mountBookmarkablePage("/rebuild", RebuildSearchIndexPage.class);
 
         Application.get().getSharedResources().add("exportResource",
                 new ExportResource());

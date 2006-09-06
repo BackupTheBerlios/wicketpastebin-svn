@@ -22,4 +22,6 @@ public interface PasteEntryDAO {
     public Iterator<PasteEntry> getPreviousEntries(int limit);
 
     public List<PasteEntry> getPreviousEntriesList(int limit);
+
+    public List<PasteEntry> getPreviousEntriesList();
 }

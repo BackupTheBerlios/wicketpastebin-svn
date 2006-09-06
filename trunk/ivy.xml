@@ -32,16 +32,6 @@
 
         <dependency org="java-diff" name="java-diff" rev="1.0.3" conf="default"/>
         
-<!--
-        <dependency org="springframework" name="springframework" rev="1.1.5" conf="default">
-            <artifact name="spring-aop" type="jar"/>
-            <artifact name="spring-context" type="jar"/>
-            <artifact name="spring-core" type="jar"/>
-            <artifact name="spring-dao" type="jar"/>
-            <artifact name="spring-orm" type="jar"/>
-            <artifact name="spring-web" type="jar"/>
-        </dependency>
--->
         <dependency org="springframework" name="springframework" rev="1.2.5" conf="default">
             <artifact name="spring" type="jar"/>
         </dependency>
@@ -58,6 +48,8 @@
             <artifact name="wicket" type="jar"/>
             <artifact name="wicket-extensions" type="jar"/>
         </dependency>
+
+	<dependency org="org.apache.lucene" name="lucene-core" rev="2.0.0" conf="default" />
 
 <!--
         <dependency org="velocity" name="velocity" rev="1.4" conf="default">

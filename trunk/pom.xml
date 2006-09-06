@@ -113,7 +113,14 @@
             <type>jar</type>
         </dependency>
         
-        
+        <dependency>
+            <groupId>lucene</groupId>
+            <artifactId>lucene</artifactId>
+            <version>1.4.3</version>
+            <type>jar</type>
+        </dependency>
+
+
         <dependency>
             <groupId>jetty</groupId>
             <artifactId>org.mortbay.jetty</artifactId>

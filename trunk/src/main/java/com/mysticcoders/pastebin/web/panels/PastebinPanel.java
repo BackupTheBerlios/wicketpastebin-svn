@@ -1,33 +1,31 @@
 package com.mysticcoders.pastebin.web.panels;
 
+import com.mysticcoders.pastebin.core.ImageService;
+import com.mysticcoders.pastebin.core.PasteService;
+import com.mysticcoders.pastebin.model.ImageEntry;
+import com.mysticcoders.pastebin.model.PasteEntry;
+import com.mysticcoders.pastebin.search.IndexService;
+import com.mysticcoders.pastebin.util.BotInterface;
+import com.mysticcoders.pastebin.util.CookieUtils;
+import com.mysticcoders.pastebin.web.PastebinApplication;
+import com.mysticcoders.pastebin.web.pages.ViewPastebinPage;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import wicket.MarkupContainer;
+import wicket.PageMap;
+import wicket.markup.html.form.*;
+import wicket.markup.html.form.upload.FileUpload;
+import wicket.markup.html.form.upload.FileUploadField;
+import wicket.markup.html.panel.FeedbackPanel;
+import wicket.markup.html.panel.Panel;
+import wicket.model.CompoundPropertyModel;
+import wicket.model.IModel;
+import wicket.model.Model;
+import wicket.protocol.http.WebRequestCycle;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import wicket.markup.html.panel.Panel;
-import wicket.markup.html.panel.FeedbackPanel;
-
-import wicket.markup.html.form.*;
-
-import wicket.markup.html.form.upload.FileUpload;
-import wicket.markup.html.form.upload.FileUploadField;
-
-import wicket.model.CompoundPropertyModel;
-import wicket.model.Model;
-import wicket.model.IModel;
-
-import wicket.protocol.http.WebRequestCycle;
-import wicket.PageMap;
-import wicket.MarkupContainer;
-
-import com.mysticcoders.pastebin.model.ImageEntry;
-import com.mysticcoders.pastebin.model.PasteEntry;
-import com.mysticcoders.pastebin.util.CookieUtils;
-import com.mysticcoders.pastebin.util.BotInterface;
-import com.mysticcoders.pastebin.core.ImageService;
-import com.mysticcoders.pastebin.core.PasteService;
-import com.mysticcoders.pastebin.web.pages.ViewPastebinPage;
-import com.mysticcoders.pastebin.web.PastebinApplication;
 
 /**
  * PastebinPanel
@@ -36,6 +34,8 @@ import com.mysticcoders.pastebin.web.PastebinApplication;
  * Copyright 2004 Mystic Coders, LLC
  */
 public class PastebinPanel extends Panel {
+
+    static Log log = LogFactory.getLog(PastebinPanel.class);
 
     public static final String REMEMBER_ME_COOKIE = "pastebin.rememberMe";
     public static final String REMEMBER_ME_SEP = "!||!||!";
@@ -46,13 +46,18 @@ public class PastebinPanel extends Panel {
 
     public List<String> getHighlightChoices() {
         List<String> highlightChoices = new ArrayList<String>();
-                highlightChoices.add("No");
-                highlightChoices.add("Java");
-                highlightChoices.add("XML");
-                highlightChoices.add("XHTML");
-                highlightChoices.add("HTML");
-                highlightChoices.add("C/C++");
-                highlightChoices.add("Groovy");
+        highlightChoices.add("No");
+        highlightChoices.add("C#");
+        highlightChoices.add("CSS");
+        highlightChoices.add("Delphi/Pascal");
+        highlightChoices.add("Java");
+        highlightChoices.add("Javascript");
+        highlightChoices.add("PHP");
+        highlightChoices.add("Python");
+        highlightChoices.add("Ruby");
+        highlightChoices.add("SQL");
+        highlightChoices.add("Visual Basic");
+        highlightChoices.add("XML/XHTML");
 
         return highlightChoices;
     }
@@ -62,20 +67,31 @@ public class PastebinPanel extends Panel {
 
         PasteEntry pasteEntry = new PasteEntry();
 
-        if(existingEntry!=null) {
-            pasteEntry.setCode( existingEntry.getCode() );
-            pasteEntry.setParent( existingEntry );
+        if (existingEntry != null) {
+            // TODO here we'll find the @@ and remove it
+
+            String code = existingEntry.getCode();
+            String[] splitCode = code.split("\n");
+            StringBuilder codeBuffer = new StringBuilder();
+            for(String codeLine : splitCode) {
+                if(codeLine.startsWith("@@")) {
+                    codeLine = codeLine.substring(2, codeLine.length());
+                }
+                codeBuffer.append(codeLine).append("\n");
+            }
+            pasteEntry.setCode(codeBuffer.toString());
+            pasteEntry.setParent(existingEntry);
         }
 
-        String rememberMe = CookieUtils.getDecodedCookie(REMEMBER_ME_COOKIE, (WebRequestCycle)getRequestCycle());
+        String rememberMe = CookieUtils.getDecodedCookie(REMEMBER_ME_COOKIE, (WebRequestCycle) getRequestCycle());
 
-        if(rememberMe!=null) {
+        if (rememberMe != null) {
             int index = rememberMe.indexOf(REMEMBER_ME_SEP);
             int start = index + REMEMBER_ME_SEP.length();
             if (index > -1) {
-            	if (rememberMe.length() > start) {
-            		pasteEntry.setChannel(rememberMe.substring(start, rememberMe.length()));
-            	}
+                if (rememberMe.length() > start) {
+                    pasteEntry.setChannel(rememberMe.substring(start, rememberMe.length()));
+                }
                 pasteEntry.setName(rememberMe.substring(0, index));
             } else {
                 if (rememberMe.length() > 0) {
@@ -88,8 +104,8 @@ public class PastebinPanel extends Panel {
         List<String> highlightChoices = getHighlightChoices();
 
 
-        if(existingEntry!=null) {
-            if(existingEntry.getHighlight()==null) {
+        if (existingEntry != null) {
+            if (existingEntry.getHighlight() == null) {
                 pasteEntry.setHighlight("No");
             } else {
                 pasteEntry.setHighlight(existingEntry.getHighlight());
@@ -97,7 +113,6 @@ public class PastebinPanel extends Panel {
         } else {
             pasteEntry.setHighlight("No");
         }
-
 
 
         Form form = new PastebinForm(this, "pastebinForm", new CompoundPropertyModel(pasteEntry));
@@ -115,20 +130,20 @@ public class PastebinPanel extends Panel {
                 if (pasteEntry.getName() == null || pasteEntry.getName().length() == 0) {
                     pasteEntry.setName(getLocalizer().getString("label.AnonymousCoward", this));
                 } else {
-                    CheckBox cb = (CheckBox)getForm().get("rememberMe");
+                    CheckBox cb = (CheckBox) getForm().get("rememberMe");
 
-                    Boolean rememberMe = (Boolean)cb.getModelObject();
+                    Boolean rememberMe = (Boolean) cb.getModelObject();
 
-                    if(rememberMe!=null && rememberMe.booleanValue() ) {
-                    	String channel = pasteEntry.getChannel();
-                    	if (channel == null) {
-                    		channel = "";
-                    	}
+                    if (rememberMe != null && rememberMe.booleanValue()) {
+                        String channel = pasteEntry.getChannel();
+                        if (channel == null) {
+                            channel = "";
+                        }
                         CookieUtils.setEncodedCookie(
                                 REMEMBER_ME_COOKIE,
                                 pasteEntry.getName() + REMEMBER_ME_SEP + channel,
-                                (WebRequestCycle)getRequestCycle()
-                                );
+                                (WebRequestCycle) getRequestCycle()
+                        );
                     }
                 }
 
@@ -138,7 +153,7 @@ public class PastebinPanel extends Panel {
 
                 ImageEntry imageEntry = null;
                 FileUpload fupload = null;
-                FileUploadField imageFile = (FileUploadField)getForm().get("imageFile");
+                FileUploadField imageFile = (FileUploadField) getForm().get("imageFile");
                 fupload = imageFile.getFileUpload();
                 if (fupload == null) {
                     // The FileUpload is null.
@@ -176,6 +191,15 @@ public class PastebinPanel extends Panel {
                 BotInterface botInterface = (BotInterface) PastebinApplication.getInstance().getBean("botInterface");
                 botInterface.send(pasteEntry.getName(), pasteEntry.getChannel(), getPageUrl() + getPage().urlFor(PageMap.forName(PageMap.DEFAULT_NAME), ViewPastebinPage.class, ViewPastebinPage.newPageParameters(pasteEntry.getId())));
 
+/*
+TODO add this back in when there is time.
+                IndexService indexService = (IndexService) PastebinApplication.getInstance().getBean("indexService");
+                try {
+                    indexService.addToIndex(pasteEntry);
+                } catch (Exception e) {
+                    log.error("Unable to add paste entry to index", e);
+                }
+*/
                 //setResponsePage(new RedirectPage("/pastebin/"+pasteEntry.getId()));
                 setResponsePage(ViewPastebinPage.class, ViewPastebinPage.newPageParameters(pasteEntry.getId()));
             }
@@ -205,11 +229,10 @@ public class PastebinPanel extends Panel {
     }
 
     private static final String[] VALID_CONTENT_TYPES = {
-        "image/gif", "image/jpeg", "image/png"
+            "image/gif", "image/jpeg", "image/png"
     };
 
-    private boolean checkContentType(String contentType)
-    {
+    private boolean checkContentType(String contentType) {
         for (int i = 0; i < VALID_CONTENT_TYPES.length; i++) {
             if (VALID_CONTENT_TYPES[i].equalsIgnoreCase(contentType)) {
                 return true;

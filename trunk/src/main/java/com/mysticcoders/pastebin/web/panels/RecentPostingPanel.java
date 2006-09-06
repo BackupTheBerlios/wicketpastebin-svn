@@ -5,15 +5,23 @@ import com.mysticcoders.pastebin.util.ModelIteratorAdapter;
 import com.mysticcoders.pastebin.web.model.PasteEntriesModel;
 import com.mysticcoders.pastebin.web.pages.PastebinPage;
 import com.mysticcoders.pastebin.web.pages.ViewPastebinPage;
+import com.mysticcoders.pastebin.web.pages.SearchResultsPage;
 import wicket.AttributeModifier;
 import wicket.MarkupContainer;
+import wicket.PageParameters;
 import wicket.extensions.markup.html.repeater.refreshing.Item;
 import wicket.extensions.markup.html.repeater.refreshing.RefreshingView;
 import wicket.markup.html.basic.Label;
 import wicket.markup.html.link.BookmarkablePageLink;
 import wicket.markup.html.panel.Panel;
+import wicket.markup.html.form.Form;
+import wicket.markup.html.form.TextField;
+import wicket.markup.html.form.Button;
+import wicket.markup.html.list.ListView;
 import wicket.model.IModel;
 import wicket.model.Model;
+import wicket.model.PropertyModel;
+import wicket.model.CompoundPropertyModel;
 
 import java.io.Serializable;
 import java.util.Calendar;
@@ -37,7 +45,7 @@ public class RecentPostingPanel extends Panel {
         super(parent, id);
 
         new BookmarkablePageLink(this, "newPost", PastebinPage.class);
-
+        
         new RefreshingView(this, "recentPosts") {
 
             @Override
@@ -71,8 +79,35 @@ public class RecentPostingPanel extends Panel {
             }
 
         };
+
+
+
+/*
+        Form form = new Form(this, "search", new CompoundPropertyModel(new QueryModel()));
+        new TextField(form, "query");
+        new Button(form, "submit") {
+
+            public void onSubmit() {
+                QueryModel query = (QueryModel) getForm().getModelObject();
+
+                setResponsePage(SearchResultsPage.class, new PageParameters("0="+query.getQuery()));
+            }
+        };
+*/
     }
 
+
+    private class QueryModel implements Serializable {
+        private String query;
+
+        public String getQuery() {
+            return query;
+        }
+
+        public void setQuery(String query) {
+            this.query = query;
+        }
+    }
 
     private String calcElapsedTime(int timeInMillis) {
         int days, hours, minutes, seconds;

@@ -4,6 +4,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.mysticcoders.pastebin.model.PasteEntry;
 
+import java.util.List;
+
 /**
  * PasteService
  * <p/>
@@ -13,6 +15,7 @@ import com.mysticcoders.pastebin.model.PasteEntry;
 public interface PasteService {
 
     @Transactional
-	public void save(PasteEntry pasteEntry);
+    public void save(PasteEntry pasteEntry);
 
+    public List<PasteEntry> listAll();
 }

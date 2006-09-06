@@ -4,49 +4,54 @@
 
     <div id="content">
 
-    <h1><span wicket:id="status">Posting by...</span> <span wicket:id="parentStatus">(modification of posting from <a class="alt" href="#" wicket:id="parentPost"><span wicket:id="parentName">[parent-name]</span></a> )</span>
-        <span wicket:id="postStatus">[viewCount and lastViewed]</span>
-        (<a class="alt" href="#" wicket:id="downloadPost">download</a> <a class="alt" wicket:id="diff">diff</a>)
-    </h1>
+        <h1><span wicket:id="status">Posting by...</span> <span
+                wicket:id="parentStatus">(modification of posting from <a class="alt" href="#"
+                                                                          wicket:id="parentPost"><span
+                wicket:id="parentName">[parent-name]</span></a> )</span>
+            <span wicket:id="postStatus">[viewCount and lastViewed]</span>
+            (<a class="alt" href="#" wicket:id="downloadPost">download</a> <a class="alt" wicket:id="diff">diff</a>)
+        </h1>
 
-    <div wicket:id="codePanel" class="code">[code panel]</div>
 
-    <br /><br />
+        <span wicket:id="codePanel"></span>
+
+        <br/><br/>
 
 	<span wicket:id="thumbnails">
 		<strong>The following images were provided with this posting (click for a larger image):</strong>
 		<table border="0">
-			<tr>
-				<td wicket:id="thumbnail">
-					<wicket:remove>
-						<!--
-							Either imageLink and it's contained img element or the
-							thumbnnailImageNA img will be shown.  Which one depends
-							on whether the image is available.
-						-->
-					</wicket:remove>
-					<a href="" wicket:id="imageLink" target="_blank">
-						<img border="0" src="" wicket:id="thumbnailImage" alt="Thumbnail" />
-					</a>
-					<img border="0" src="" wicket:id="thumbnailImageNA" alt="Thumbnail" />
-				</td>
-			</tr>
-		</table>
+            <tr>
+                <td wicket:id="thumbnail">
+                    <wicket:remove>
+                        <!--
+                                  Either imageLink and it's contained img element or the
+                                  thumbnnailImageNA img will be shown.  Which one depends
+                                  on whether the image is available.
+                              -->
+                    </wicket:remove>
+                    <a href="" wicket:id="imageLink" target="_blank">
+                        <img border="0" src="" wicket:id="thumbnailImage" alt="Thumbnail"/>
+                    </a>
+                    <img border="0" src="" wicket:id="thumbnailImageNA" alt="Thumbnail"/>
+                </td>
+            </tr>
+        </table>
 	</span>
 
-    <br /><br />
+        <br/><br/>
 		
     <span wicket:id="postedAmendments">
     <strong>The following amendments have been posted:</strong>
     <ul>
-        <li wicket:id="postedAmendment"><a href="#" wicket:id="amendmentLink"><span wicket:id="name">[Name]</span></a> (<span wicket:id="amendmentCreated">[amendment-created]</span>)</li>
+        <li wicket:id="postedAmendment"><a href="#" wicket:id="amendmentLink"><span wicket:id="name">[Name]</span></a> (<span
+                wicket:id="amendmentCreated">[amendment-created]</span>)</li>
 
     </ul>
     </span>
 
-    <br /><br /><strong>Submit a correction or amendment below.</strong>
+        <br/><br/><strong>Submit a correction or amendment below.</strong>
 
-    <span wicket:id="pastebinPanel">Pastebin Panel and Form</span>
+        <span wicket:id="pastebinPanel">Pastebin Panel and Form</span>
 
     </div>
 

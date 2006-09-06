@@ -1,0 +1,10 @@
+<wicket:panel>
+    <textarea wicket:id="code" class="java" rows="15" cols="100"></textarea>
+
+    <script wicket:id="highlighterCore">[highlighter core]</script>
+    <script wicket:id="highlighterLanguage">[highlighter language]</script>
+    <script language="javascript">
+        dp.SyntaxHighlighter.HighlightAll('codePanel:code');
+    </script>
+
+</wicket:panel>

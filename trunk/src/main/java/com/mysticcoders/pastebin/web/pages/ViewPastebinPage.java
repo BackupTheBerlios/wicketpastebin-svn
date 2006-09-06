@@ -5,22 +5,25 @@ import com.mysticcoders.pastebin.core.PasteService;
 import com.mysticcoders.pastebin.model.ImageEntry;
 import com.mysticcoders.pastebin.model.PasteEntry;
 import com.mysticcoders.pastebin.web.PastebinApplication;
+import com.mysticcoders.pastebin.web.pages.highlighter.HighlighterTextAreaPanel;
 import com.mysticcoders.pastebin.web.model.PasteEntryModel;
-import com.mysticcoders.pastebin.web.panels.DiffCodePanel;
-import com.mysticcoders.pastebin.web.panels.LineNumberCodePanel;
 import com.mysticcoders.pastebin.web.panels.PastebinPanel;
 import com.mysticcoders.pastebin.web.panels.RecentPostingPanel;
 import wicket.AttributeModifier;
 import wicket.MarkupContainer;
 import wicket.PageParameters;
 import wicket.ResourceReference;
+import wicket.behavior.HeaderContributor;
 import wicket.markup.html.WebMarkupContainer;
+import wicket.markup.html.PackageResourceReference;
+import wicket.markup.html.resources.CompressedPackageResourceReference;
+import wicket.markup.html.resources.JavaScriptReference;
+import wicket.markup.html.form.TextArea;
 import wicket.markup.html.basic.Label;
 import wicket.markup.html.link.BookmarkablePageLink;
 import wicket.markup.html.link.ExternalLink;
 import wicket.markup.html.list.ListItem;
 import wicket.markup.html.list.ListView;
-import wicket.markup.html.panel.Panel;
 import wicket.model.Model;
 import wicket.protocol.http.WebRequestCycle;
 import wicket.util.string.StringValueConversionException;
@@ -36,6 +39,8 @@ import java.util.ArrayList;
  * Copyright 2004 Mystic Coders, LLC
  */
 public class ViewPastebinPage extends BasePage {
+
+    private static final long serialVersionUID = 1L;
 
     public static PageParameters newPageParameters(long entryId) {
         PageParameters params = new PageParameters();
@@ -75,8 +80,8 @@ public class ViewPastebinPage extends BasePage {
             throw new RuntimeException("Entry not found");
         }
 
-        PasteEntryModel pasteEntryModel = new PasteEntryModel(id);
 
+        PasteEntryModel pasteEntryModel = new PasteEntryModel(id);
         final PasteEntry existingEntry = (PasteEntry) pasteEntryModel.getObject();
 
         // Add a diff link in here, only if it includes a parent
@@ -203,20 +208,12 @@ public class ViewPastebinPage extends BasePage {
             BookmarkablePageLink parentPageLink = ViewPastebinPage.newLink(parentStatus, "parentPost", existingEntry.getParent().getId());
             parentPageLink.setRenderBodyOnly(true);
 
-            Label parentNameLabel = new Label(parentPageLink, "parentName", existingEntry.getParent().getName());
+            new Label(parentPageLink, "parentName", existingEntry.getParent().getName());
         }
 
-        Panel codePanel = (diff && existingEntry.getParent() != null
-                ? new DiffCodePanel(this, "codePanel",
-                existingEntry.getParent().getCode(),
-                existingEntry.getCode(),
-                existingEntry.getHighlight(),
-                getCodeHighlighter()) :
-                new LineNumberCodePanel(this, "codePanel",
-                        existingEntry.getCode(),
-                        existingEntry.getHighlight(),
-                        getCodeHighlighter()));
-
+        new HighlighterTextAreaPanel(this, "codePanel", new Model(existingEntry.getCode()),
+                (existingEntry.getHighlight()!=null?existingEntry.getHighlight():"None"))
+                .setRenderBodyOnly( true );
 
         new RecentPostingPanel(this, "recentPosts", (existingEntry != null ? existingEntry.getId() : null))
                 .setRenderBodyOnly(true);
@@ -231,33 +228,5 @@ public class ViewPastebinPage extends BasePage {
 
 
     }
-
-    /*
-               Set images = pasteEntry.getImages();
-               if (images == null || images.size() == 0) {
-                   // bugus adds  They are set invisible at the end.
-                   ResourceLink rLink = new ResourceLink("imageLink", (Resource)null);
-                   rLink.add(new Image("thumbnailImage"));
-                   rLink.setVisible(false);
-                   item.add(rLink);
-               } else {
-                   // For now, we assume only one image.
-                   final ImageEntry image = (ImageEntry)images.iterator().next();
-                   ResourceReference ref = new ResourceReference( "imageResource");
-
-                   String url = getPage().urlFor(ref.getPath() + "?imageEntryId="+ image.getId());
-                   ExternalLink eLink = new ExternalLink("imageLink", url);
-                   url = getPage().urlFor(ref.getPath() + "?imageEntryId="+ image.getId() + "&thumbnail");
-                   AttributeModifier modifier = new AttributeModifier(
-                           "src",
-                           new Model(url)
-                       );
-                   Label label = new Label("thumbnailImage", "Thumbnail");
-                   label.add(modifier);
-                   eLink.add(label);
-                   item.add(eLink);
-               }
-
-    */
 
 }
