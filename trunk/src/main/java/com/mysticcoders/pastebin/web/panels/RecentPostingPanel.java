@@ -48,8 +48,10 @@ public class RecentPostingPanel extends Panel {
             @Override
             protected Iterator getItemModels() {
                 String privatePastebinName = ((PastebinApplication) Application.get()).getPrivatePastebinName();
+                System.out.println("privatePastebinName:"+privatePastebinName);
                 List<PasteEntry> pasteEntries = (List<PasteEntry>) new PasteEntriesModel(privatePastebinName).getObject();
 
+                System.out.println("pasteEntries:"+pasteEntries);
                 return new ModelIteratorAdapter(pasteEntries.iterator()) {
 
                     @Override

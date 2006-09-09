@@ -36,7 +36,7 @@ public class PasteEntryDAOHibernate implements PasteEntryDAO {
         String query = null;
 
         if(privatePastebin==null) {
-            query = "from PasteEntry as pasteEntry where pasteEntry.id = :pasteEntryId";
+            query = "from PasteEntry as pasteEntry where pasteEntry.id = :pasteEntryId AND pasteEntry.privatePastebin IS NULL";
         } else {
             query = "from PasteEntry as pasteEntry where pasteEntry.id = :pasteEntryId AND pasteEntry.privatePastebin.name = :privatePastebinName";
         }
@@ -77,7 +77,7 @@ public class PasteEntryDAOHibernate implements PasteEntryDAO {
     private Query getPreviousEntriesQuery(int limit, String privatePastebin) {
         String query = null;
         if(privatePastebin==null) {
-            query = "from PasteEntry as pasteEntry order by pasteEntry.created desc";
+            query = "from PasteEntry as pasteEntry WHERE pasteEntry.privatePastebin IS NULL order by pasteEntry.created desc";
         } else {
             query = "from PasteEntry as pasteEntry where pasteEntry.privatePastebin.name = :privatePastebinName";
         }

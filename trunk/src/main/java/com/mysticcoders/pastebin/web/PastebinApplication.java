@@ -96,7 +96,6 @@ public class PastebinApplication extends BaseApplication implements ISessionFact
         HttpServletRequest httpRequest = servletWebRequest.getHttpServletRequest();
         String serverName = httpRequest.getServerName();
 
-        System.out.println("serverName:"+serverName);
         String[] splitServerName = serverName.split("\\.");
         int count = splitServerName.length;
 
@@ -158,12 +157,8 @@ public class PastebinApplication extends BaseApplication implements ISessionFact
             if (signInPage != null && component instanceof Page
                     && signInPage != component.getClass()) {
 
-//                if(getSecuritySettings().getAuthorizationStrategy().isInstantiationAuthorized(component.getClass())) {
                     // Redirect to intercept page to let the user sign in
                     throw new RestartResponseAtInterceptPageException(signInPage);
-//                }
-
-//                throw new RestartResponseException(getHomePage()); // TODO there must be a better method than returning to the hompage, show error, etc
             } else {
                 // The component was not a page, so throw an exception
                 throw new UnauthorizedInstantiationException(component.getClass());

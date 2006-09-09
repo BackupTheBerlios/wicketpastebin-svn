@@ -69,12 +69,12 @@ public class CreatePrivatePastebinPage extends WebPage {
                 error("Pastebin with that name is reserved");
                 return;
             }
-            
+
             PasteService pasteService = (PasteService)((PastebinApplication)Application.get()).getBean("pasteService");
             pasteService.savePrivatePastebin( privatePastebin );
 
             PastebinSession pastebinSession = (PastebinSession) Session.get();
-            pastebinSession.addPrivatePastebin( privatePastebin );
+            pastebinSession.addPrivatePastebin( privatePastebin );              // TODO debug this, why doesnt it autolog you in?
 
             String privateName = ((PastebinApplication) Application.get()).getPrivatePastebinName();
 
