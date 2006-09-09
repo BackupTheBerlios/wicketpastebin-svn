@@ -8,8 +8,8 @@
     <property name="lib" value="lib" />
     <property name="etc" value="etc" />
     <property name="classes" value="build" />
-    <property name="src" value="src" />
-    <property name="web-inf" value="src/webapp/WEB-INF" />
+    <property name="src" value="src/main/" />
+    <property name="web-inf" value="src/main/webapp/WEB-INF" />
 
     <description>
     Pastebin Build Script
@@ -75,6 +75,8 @@
                 <include name="com/**/*.png" />
                 <include name="com/**/*.jpg" />
                 <include name="com/**/*.gif" />
+                <include name="com/**/*.js" />
+                <include name="com/**/*.css" />
             </fileset>
 
         </copy>
@@ -95,7 +97,7 @@
 
         <war warfile="${dist}/${app.name}.war" webxml="${etc}/web.xml" update="false">
 
-            <fileset dir="src/webapp">
+            <fileset dir="src/main/webapp">
                 <include name="**" />
                 <exclude name="WEB-INF/**" />
                 <exclude name="media/**" />

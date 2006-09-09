@@ -1,7 +1,7 @@
 package com.mysticcoders.pastebin.web.pages.highlighter;
 
-import wicket.MarkupContainer;
 import wicket.AttributeModifier;
+import wicket.MarkupContainer;
 import wicket.behavior.HeaderContributor;
 import wicket.markup.html.PackageResourceReference;
 import wicket.markup.html.form.TextArea;
@@ -11,8 +11,7 @@ import wicket.markup.html.resources.JavaScriptReference;
 import wicket.model.IModel;
 import wicket.model.Model;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * HighlighterTextAreaPanel
@@ -26,7 +25,7 @@ public class HighlighterTextAreaPanel extends Panel {
             HighlighterTextAreaPanel.class, "SyntaxHighlighter.css");
 
 
-    private static Map<String, String> languageMap = new HashMap<String, String>();
+    private static Map<String, String> languageMap = new LinkedHashMap<String, String>();
 
     static {
         languageMap.put("No", "shBrushNoHighlight.js");
@@ -61,16 +60,22 @@ public class HighlighterTextAreaPanel extends Panel {
     }
 
 
+    public static List<String> getLanguageKeys() {
+        return new ArrayList<String>(
+                languageMap.keySet()
+        );
+    }
+
     public HighlighterTextAreaPanel(MarkupContainer parent, String id, IModel model) {
         this(parent, id, model, null);
     }
 
-    public HighlighterTextAreaPanel(MarkupContainer parent, String id, IModel model, String language) {
+    public HighlighterTextAreaPanel(MarkupContainer parent, String id, IModel<String> model, String language) {
         super(parent, id);
 
         add(HeaderContributor.forCss(syntaxHighlighterCSS.getScope(), syntaxHighlighterCSS.getName()));
 
-        TextArea codeTextArea = new TextArea(this, "code", model);
+        TextArea codeTextArea = new TextArea<String>(this, "code", model);
 
         new JavaScriptReference(this, "highlighterCore", HighlighterTextAreaPanel.class, "shCore.js");
 
@@ -81,7 +86,7 @@ public class HighlighterTextAreaPanel extends Panel {
             }
 
             if (languageAliasMap.get(language) != null) {
-                codeTextArea.add(new AttributeModifier("class", true, new Model(languageAliasMap.get(language))));
+                codeTextArea.add(new AttributeModifier("class", true, new Model<String>(languageAliasMap.get(language))));
             }
         }
 

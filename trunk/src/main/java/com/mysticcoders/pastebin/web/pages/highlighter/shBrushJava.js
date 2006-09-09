@@ -9,6 +9,7 @@ dp.sh.Brushes.Java = function()
 			'transient try void volatile while';
 
 	this.regexList = [
+    { regex: new RegExp('^@@.*$', 'gm'),                                       css: 'highlight' },     // highlight keyword
 		{ regex: dp.sh.RegexLib.SingleLineCComments,							css: 'comment' },		// one line comments
 		{ regex: dp.sh.RegexLib.MultiLineCComments,								css: 'comment' },		// multiline comments
 		{ regex: dp.sh.RegexLib.DoubleQuotedString,								css: 'string' },		// strings
@@ -17,7 +18,7 @@ dp.sh.Brushes.Java = function()
 		{ regex: new RegExp('(?!\\@interface\\b)\\@[\\$\\w]+\\b', 'g'),			css: 'annotation' },	// annotation @anno
 		{ regex: new RegExp('\\@interface\\b', 'g'),							css: 'keyword' },		// @interface keyword
 		{ regex: new RegExp(this.GetKeywords(keywords), 'gm'),					css: 'keyword' }		// java keyword
-		];
+        ];
 
 	this.CssClass = 'dp-j';
 }

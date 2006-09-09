@@ -44,6 +44,7 @@ dp.sh.Brushes.Php = function()
 					'__METHOD__ abstract interface public implements extends private protected throw';
 
 	this.regexList = [
+    { regex: new RegExp('^@@.*$', 'gm'),                                       css: 'highlight' }     // highlight keyword
 		{ regex: dp.sh.RegexLib.SingleLineCComments,				css: 'comment' },			// one line comments
 		{ regex: dp.sh.RegexLib.MultiLineCComments,					css: 'comment' },			// multiline comments
 		{ regex: dp.sh.RegexLib.DoubleQuotedString,					css: 'string' },			// double quoted strings

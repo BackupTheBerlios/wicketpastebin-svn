@@ -12,6 +12,8 @@ import java.io.Serializable;
  */
 public class PasteEntry implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+            
     private Long id;
     private PasteEntry parent;
     private Set children;
@@ -25,6 +27,9 @@ public class PasteEntry implements Serializable {
     private int viewCount;
 
     private String highlight;
+
+
+    private PrivatePastebin privatePastebin;
 
     public PasteEntry() {
     }
@@ -124,6 +129,14 @@ public class PasteEntry implements Serializable {
 
     public void setHighlight(String highlight) {
         this.highlight = highlight;
+    }
+
+    public PrivatePastebin getPrivatePastebin() {
+        return privatePastebin;
+    }
+
+    public void setPrivatePastebin(PrivatePastebin privatePastebin) {
+        this.privatePastebin = privatePastebin;
     }
 
 }

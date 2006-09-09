@@ -49,6 +49,7 @@ dp.sh.Brushes.Python = function()
 						'xml xmllib xmlrpclib xreadlines zipfile zlib';
 
 	this.regexList = [
+    { regex: new RegExp('^@@.*$', 'gm'),                                       css: 'highlight' }     // highlight keyword
 		{ regex: new RegExp('#.*$', 'gm'),							css: 'comment' },			// comments
 		{ regex: new RegExp('"""(.|\n)*?"""', 'gm'),					css: 'string' },			// multi-line strings "
 		{ regex: new RegExp("'''(.|\n)*?'''", 'gm'),					css: 'string' },			// multi-line strings '

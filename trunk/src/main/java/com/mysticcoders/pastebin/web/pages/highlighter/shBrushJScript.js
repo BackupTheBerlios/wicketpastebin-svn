@@ -7,6 +7,7 @@ dp.sh.Brushes.JScript = function()
 					'synchronized this throw throws transient true try typeof var void volatile while with';
 
 	this.regexList = [
+    { regex: new RegExp('^@@.*$', 'gm'),                                       css: 'highlight' }     // highlight keyword
 		{ regex: dp.sh.RegexLib.SingleLineCComments,				css: 'comment' },			// one line comments
 		{ regex: dp.sh.RegexLib.MultiLineCComments,					css: 'comment' },			// multiline comments
 		{ regex: dp.sh.RegexLib.DoubleQuotedString,					css: 'string' },			// double quoted strings

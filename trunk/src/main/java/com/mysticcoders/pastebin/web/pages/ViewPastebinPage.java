@@ -81,7 +81,7 @@ public class ViewPastebinPage extends BasePage {
         }
 
 
-        PasteEntryModel pasteEntryModel = new PasteEntryModel(id);
+        PasteEntryModel pasteEntryModel = new PasteEntryModel(id, getPrivatePastebinName());
         final PasteEntry existingEntry = (PasteEntry) pasteEntryModel.getObject();
 
         // Add a diff link in here, only if it includes a parent

@@ -36,9 +36,14 @@ public class PasteEntryModel
      */
     public PasteEntryModel(long id)
     {
-    	super();
+        this(id, null);
+    }
+
+    public PasteEntryModel(long id, String privatePastebin) {
+        super();
         this.id = id;
-    	onAttach();
+        this.privatePastebin = privatePastebin;
+        onAttach();
     }
 
     // MEMBERS
@@ -46,6 +51,7 @@ public class PasteEntryModel
     private PasteEntry pasteEntry;
 
     private long id;
+    private String privatePastebin;
 
     public IModel getNestedModel()
     {
@@ -61,7 +67,7 @@ public class PasteEntryModel
         			"pasteEntryDAO"
         		);
 
-        pasteEntry = dao.lookupPastebinEntry( id );
+        pasteEntry = dao.lookupPastebinEntry( id, privatePastebin);
     }
 
     public void onDetach()

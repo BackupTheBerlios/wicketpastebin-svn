@@ -40,6 +40,7 @@
             <list>
                 <value>/com/mysticcoders/pastebin/model/PasteEntry.hbm.xml</value>
                 <value>/com/mysticcoders/pastebin/model/ImageEntry.hbm.xml</value>
+                <value>/com/mysticcoders/pastebin/model/PrivatePastebin.hbm.xml</value>
             </list>
         </property>
         <property name="hibernateProperties">

@@ -3,6 +3,12 @@
 
 <beans>
 
+    <bean id="privatePastebinDAO" class="com.mysticcoders.pastebin.dao.PrivatePastebinDAOHibernate">
+        <property name="sessionFactory">
+            <ref bean="sessionFactory" />
+        </property>
+    </bean>
+
     <bean id="pasteEntryDAO" class="com.mysticcoders.pastebin.dao.PasteEntryDAOHibernate">
         <property name="sessionFactory">
             <ref bean="sessionFactory" />
@@ -16,9 +22,8 @@
     </bean>
 
     <bean id="pasteService" class="com.mysticcoders.pastebin.core.PasteServiceImpl">
-        <property name="pasteEntryDAO">
-            <ref bean="pasteEntryDAO"/>
-        </property>
+        <property name="pasteEntryDAO" ref="pasteEntryDAO" />
+        <property name="privatePastebinDAO" ref="privatePastebinDAO" />
     </bean>
 
     <bean id="imageService" class="com.mysticcoders.pastebin.core.ImageServiceImpl">
@@ -41,22 +46,6 @@
         <property name="botName" value="${bot.botname}" />
         <property name="message" value="${bot.message}" />
     </bean>
-
-
-    <bean id="codeHighlighter" class="com.mysticcoders.pastebin.web.util.CodeHighlighter">
-        <property name="highlightEngines">
-            <map>
-                <entry key="java"><bean class="com.mysticcoders.pastebin.web.util.JavaHighlighterEngine" /></entry>
-                <entry key="xml"><bean class="com.mysticcoders.pastebin.web.util.XmlHighlighterEngine" /></entry>
-                <entry key="xhtml"><bean class="com.mysticcoders.pastebin.web.util.XmlHighlighterEngine" /></entry>
-                <entry key="html"><bean class="com.mysticcoders.pastebin.web.util.XmlHighlighterEngine" /></entry>
-                <entry key="c/c++"><bean class="com.mysticcoders.pastebin.web.util.CppHighlighterEngine" /></entry>
-                <entry key="groovy"><bean class="com.mysticcoders.pastebin.web.util.GroovyHighlighterEngine" /></entry>
-            </map>
-        </property>
-
-    </bean>
-
 
     <!-- Search Foo -->
     <bean id="indexService" class="com.mysticcoders.pastebin.search.IndexServiceImpl">

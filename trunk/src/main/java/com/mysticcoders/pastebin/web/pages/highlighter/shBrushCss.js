@@ -33,6 +33,7 @@ dp.sh.Brushes.CSS = function()
 	var fonts =		'[mM]onospace [tT]ahoma [vV]erdana [aA]rial [hH]elvetica [sS]ans-serif [sS]erif';
 
 	this.regexList = [
+    { regex: new RegExp('^@@.*$', 'gm'),                                       css: 'highlight' }     // highlight keyword
 		{ regex: dp.sh.RegexLib.MultiLineCComments,					css: 'comment' },	// multiline comments
 		{ regex: dp.sh.RegexLib.DoubleQuotedString,					css: 'string' },	// double quoted strings
 		{ regex: dp.sh.RegexLib.SingleQuotedString,					css: 'string' },	// single quoted strings

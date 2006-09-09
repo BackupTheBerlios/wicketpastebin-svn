@@ -3,9 +3,11 @@ dp.sh.Brushes.NoHighlight = function()
 {
 	var keywords =	'';
 
-	this.regexList = [];
+	this.regexList = [
+        { regex: new RegExp('^@@.*$', 'gm'),                                       css: 'highlight' }     // highlight keyword    
+            ];
 
-//	this.CssClass = 'dp-nohighlight';
+	this.CssClass = 'dp-nohighlight';
 }
 
 dp.sh.Brushes.NoHighlight.prototype	= new dp.sh.Highlighter();

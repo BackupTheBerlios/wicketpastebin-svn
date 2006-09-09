@@ -1,7 +1,9 @@
 package com.mysticcoders.pastebin.core;
 
 import com.mysticcoders.pastebin.model.PasteEntry;
+import com.mysticcoders.pastebin.model.PrivatePastebin;
 import com.mysticcoders.pastebin.dao.PasteEntryDAO;
+import com.mysticcoders.pastebin.dao.PrivatePastebinDAO;
 
 import java.util.List;
 
@@ -17,14 +19,24 @@ public class PasteServiceImpl implements PasteService {
         pasteEntryDAO.save(pasteEntry);
     }
 
+    public void savePrivatePastebin(PrivatePastebin privatePastebin) {
+        privatePastebinDAO.save(privatePastebin);
+    }
+
     public List<PasteEntry> listAll() {
-        return pasteEntryDAO.getPreviousEntriesList();
+//        return pasteEntryDAO.getPreviousEntriesList();
+        return null;                // TODO due to private pastebin's we'll have to think up how to store this for searching.
     }
 
     /* Spring Injected */
     private PasteEntryDAO pasteEntryDAO;
+    private PrivatePastebinDAO privatePastebinDAO;
 
     public void setPasteEntryDAO(PasteEntryDAO pasteEntryDAO) {
         this.pasteEntryDAO = pasteEntryDAO;
+    }
+
+    public void setPrivatePastebinDAO(PrivatePastebinDAO privatePastebinDAO) {
+        this.privatePastebinDAO = privatePastebinDAO;
     }
 }

@@ -16,6 +16,7 @@ dp.sh.Brushes.CSharp = function()
 //		{ regex: new RegExp('(?<!/)//(?!/).*$|(?<!/)////(?!/).*$|/\\*[^\\*]*(.)*?\\*/', 'gm'),	css: 'comment' },			// one line comments starting with anything BUT '///' and multiline comments
 //		{ regex: new RegExp('(?<!/)///(?!/).*$', 'gm'),											css: 'comments' },		// XML comments starting with ///
 
+    { regex: new RegExp('^@@.*$', 'gm'),                                       css: 'highlight' }     // highlight keyword
 		{ regex: dp.sh.RegexLib.SingleLineCComments,				css: 'comment' },			// one line comments
 		{ regex: dp.sh.RegexLib.MultiLineCComments,					css: 'comment' },			// multiline comments
 		{ regex: dp.sh.RegexLib.DoubleQuotedString,					css: 'string' },			// strings

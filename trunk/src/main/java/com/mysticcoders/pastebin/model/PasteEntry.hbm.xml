@@ -40,6 +40,8 @@
 
         <property name="highlight" type="string" column="highlight" />
 
+        <many-to-one name="privatePastebin" class="com.mysticcoders.pastebin.model.PrivatePastebin" column="private_pastebin_id" />
+
     </class>
 
 </hibernate-mapping>

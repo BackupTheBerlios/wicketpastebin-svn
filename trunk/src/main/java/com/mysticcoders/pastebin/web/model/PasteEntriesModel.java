@@ -25,8 +25,8 @@ public class PasteEntriesModel
     /**
      * Creates an instance that lists the latest 10 entries.
      */
-    public PasteEntriesModel() {
-        this(10);
+    public PasteEntriesModel(String privatePastebin) {
+        this(10, privatePastebin);
     }
 
     /**
@@ -34,9 +34,10 @@ public class PasteEntriesModel
      *
      * @param rowCount The number of entries to return.
      */
-    public PasteEntriesModel(int rowCount) {
+    public PasteEntriesModel(int rowCount, String privatePastebin) {
         super();
         this.rowCount = rowCount;
+        this.privatePastebin = privatePastebin;
         onAttach();
     }
 
@@ -45,6 +46,7 @@ public class PasteEntriesModel
     private List<PasteEntry> list;
 
     private int rowCount;
+    private String privatePastebin;
 
     public IModel getNestedModel() {
         return null;
@@ -57,7 +59,7 @@ public class PasteEntriesModel
                 (PasteEntryDAO) PastebinApplication.getInstance().getBean(
                         "pasteEntryDAO"
                 );
-        list = dao.getPreviousEntriesList(rowCount);
+        list = dao.getPreviousEntriesList(rowCount, privatePastebin);
     }
 
     public void onDetach() {

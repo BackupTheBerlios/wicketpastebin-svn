@@ -1,0 +1,65 @@
+<html>
+<head>
+    <title>pastebin - collaborative debugging</title>
+
+    <link rel="stylesheet" type="text/css" media="screen" href="includes/pastebin.css" />
+
+</head>
+<body class="login">
+
+  <div id="login">
+<div title="Account login" id="loginform">
+
+  <h2 align="center">Create Private Pastebin</h2>
+
+  <form wicket:id="createPrivatePastebinForm" method="post">
+      
+      <span wicket:id="feedback">[feedback]</span>
+  <table border="0" cellpadding="0" cellspacing="0" class="login_form" width="100%">
+      <tr>
+        <th><label for="name">* Name It:</label></th>
+        <td><input wicket:id="name" id="name" size="15" type="text" class="biginput"/></td>
+      </tr>
+      <tr>
+          <th>&nbsp;</th>
+          <td align="left">
+              <small>If you want a password protected pastebin, please enter details in both fields below</small>
+          </td>
+      </tr>
+      <tr>
+        <th><label for="email">Email:</label></th>
+
+        <td>
+          <input id="email" wicket:id="email" size="15" type="text" />
+        </td>
+      </tr>
+      <tr>
+        <th><label for="password">Password:</label></th>
+
+        <td>
+          <input id="password" wicket:id="password" size="15" type="password" />
+        </td>
+      </tr>
+      <tr>
+        <th>&nbsp;</th>
+        <td align="left">
+            <small>* denotes a required field</small>
+        </td>
+      </tr>
+      <tr>
+        <th>&nbsp;</th>
+        <td align="left">
+          <input type="submit" value="Create Pastebin" style="font-size: 16px; font-weight: bold;"/>
+        </td>
+
+      </tr>
+  </table>
+  </form>
+
+</div>
+
+
+</div>
+
+</body>
+</html>

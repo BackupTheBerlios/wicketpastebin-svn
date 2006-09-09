@@ -1,0 +1,42 @@
+<html>
+<head>
+    <title>pastebin - collaborative debugging</title>
+
+    <link rel="stylesheet" type="text/css" media="screen" href="includes/pastebin.css" />
+
+</head>
+<body class="login">
+
+  <div id="login">
+<div title="Account login" id="loginform">
+
+    <form wicket:id="loginForm" method="post">
+
+  <h2 align="center">Pastebin: <span wicket:id="name">[private pastebin name]</span></h2>
+
+      <span wicket:id="feedback">[feedback]</span>
+  <table border="0" cellpadding="0" cellspacing="0" class="login_form" width="100%">
+      <tr>
+        <th><label for="password">Password:</label></th>
+
+        <td>
+          <input id="password" wicket:id="password" size="15" type="password" />
+        </td>
+      </tr>
+      <tr>
+        <th>&nbsp;</th>
+        <td align="left">
+          <input type="submit" value="Login" style="font-size: 16px; font-weight: bold;"/>
+        </td>
+
+      </tr>
+  </table>
+  </form>
+
+</div>
+
+
+</div>
+
+</body>
+</html>

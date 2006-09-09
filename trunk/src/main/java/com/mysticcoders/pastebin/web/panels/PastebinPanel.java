@@ -4,13 +4,17 @@ import com.mysticcoders.pastebin.core.ImageService;
 import com.mysticcoders.pastebin.core.PasteService;
 import com.mysticcoders.pastebin.model.ImageEntry;
 import com.mysticcoders.pastebin.model.PasteEntry;
-import com.mysticcoders.pastebin.search.IndexService;
+import com.mysticcoders.pastebin.model.PrivatePastebin;
 import com.mysticcoders.pastebin.util.BotInterface;
 import com.mysticcoders.pastebin.util.CookieUtils;
 import com.mysticcoders.pastebin.web.PastebinApplication;
 import com.mysticcoders.pastebin.web.pages.ViewPastebinPage;
+import com.mysticcoders.pastebin.web.pages.highlighter.HighlighterTextAreaPanel;
+import com.mysticcoders.pastebin.web.util.StringUtils;
+import com.mysticcoders.pastebin.dao.PrivatePastebinDAO;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import wicket.Application;
 import wicket.MarkupContainer;
 import wicket.PageMap;
 import wicket.markup.html.form.*;
@@ -24,8 +28,6 @@ import wicket.model.Model;
 import wicket.protocol.http.WebRequestCycle;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * PastebinPanel
@@ -44,42 +46,13 @@ public class PastebinPanel extends Panel {
         this(parent, id, null);
     }
 
-    public List<String> getHighlightChoices() {
-        List<String> highlightChoices = new ArrayList<String>();
-        highlightChoices.add("No");
-        highlightChoices.add("C#");
-        highlightChoices.add("CSS");
-        highlightChoices.add("Delphi/Pascal");
-        highlightChoices.add("Java");
-        highlightChoices.add("Javascript");
-        highlightChoices.add("PHP");
-        highlightChoices.add("Python");
-        highlightChoices.add("Ruby");
-        highlightChoices.add("SQL");
-        highlightChoices.add("Visual Basic");
-        highlightChoices.add("XML/XHTML");
-
-        return highlightChoices;
-    }
-
     public PastebinPanel(MarkupContainer parent, String id, PasteEntry existingEntry) {
         super(parent, id);
 
         PasteEntry pasteEntry = new PasteEntry();
 
         if (existingEntry != null) {
-            // TODO here we'll find the @@ and remove it
-
-            String code = existingEntry.getCode();
-            String[] splitCode = code.split("\n");
-            StringBuilder codeBuffer = new StringBuilder();
-            for(String codeLine : splitCode) {
-                if(codeLine.startsWith("@@")) {
-                    codeLine = codeLine.substring(2, codeLine.length());
-                }
-                codeBuffer.append(codeLine).append("\n");
-            }
-            pasteEntry.setCode(codeBuffer.toString());
+            pasteEntry.setCode(StringUtils.removeHighlightTag(existingEntry.getCode()));
             pasteEntry.setParent(existingEntry);
         }
 
@@ -100,10 +73,6 @@ public class PastebinPanel extends Panel {
             }
         }
 
-
-        List<String> highlightChoices = getHighlightChoices();
-
-
         if (existingEntry != null) {
             if (existingEntry.getHighlight() == null) {
                 pasteEntry.setHighlight("No");
@@ -114,99 +83,11 @@ public class PastebinPanel extends Panel {
             pasteEntry.setHighlight("No");
         }
 
-
-        Form form = new PastebinForm(this, "pastebinForm", new CompoundPropertyModel(pasteEntry));
-
-        new DropDownChoice<String>(form, "highlight", highlightChoices);
-
-        FileUploadField fuf = new FileUploadField(form, "imageFile");
-//        fuf.setVisible(false); //TODO enable
-
-        new Button(form, "submit") {
-
-            protected void onSubmit() {
-                PasteEntry pasteEntry = (PasteEntry) getForm().getModelObject();
-
-                if (pasteEntry.getName() == null || pasteEntry.getName().length() == 0) {
-                    pasteEntry.setName(getLocalizer().getString("label.AnonymousCoward", this));
-                } else {
-                    CheckBox cb = (CheckBox) getForm().get("rememberMe");
-
-                    Boolean rememberMe = (Boolean) cb.getModelObject();
-
-                    if (rememberMe != null && rememberMe.booleanValue()) {
-                        String channel = pasteEntry.getChannel();
-                        if (channel == null) {
-                            channel = "";
-                        }
-                        CookieUtils.setEncodedCookie(
-                                REMEMBER_ME_COOKIE,
-                                pasteEntry.getName() + REMEMBER_ME_SEP + channel,
-                                (WebRequestCycle) getRequestCycle()
-                        );
-                    }
-                }
-
-                if (pasteEntry.getCode() == null) {
-                    pasteEntry.setCode("");
-                }
-
-                ImageEntry imageEntry = null;
-                FileUpload fupload = null;
-                FileUploadField imageFile = (FileUploadField) getForm().get("imageFile");
-                fupload = imageFile.getFileUpload();
-                if (fupload == null) {
-                    // The FileUpload is null.
-                    if (pasteEntry.getCode().length() == 0) {
-                        getForm().error("Please either paste code, provide an image, or both.");
-                        return;
-                    }
-                } else if (fupload.getSize() == 0) {
-                    getForm().error("The image you attempted to upload is empty.");
-                    return;
-                } else if (! checkContentType(fupload.getContentType())) {
-                    getForm().error("Only images of types png, jpg, and gif are allowed.");
-                    return;
-                } else {
-                    imageEntry = new ImageEntry();
-
-                    imageEntry.setContentType(fupload.getContentType());
-                    imageEntry.setName(fupload.getClientFileName());
-                    imageEntry.setParent(pasteEntry);
-                }
-
-                // Save the data
-                PasteService pasteService = (PasteService) PastebinApplication.getInstance().getBean("pasteService");
-                pasteService.save(pasteEntry);
-                if (imageEntry != null) {
-                    ImageService imageService = (ImageService) PastebinApplication.getInstance().getBean("imageService");
-                    try {
-                        imageService.save(imageEntry, fupload.getInputStream());
-                    } catch (IOException ioe) {
-                        // It'd be nice to have a logger so that we could log the error.
-                        getForm().error("Sorry, there was an error uploading the image.");
-                    }
-                }
-
-                BotInterface botInterface = (BotInterface) PastebinApplication.getInstance().getBean("botInterface");
-                botInterface.send(pasteEntry.getName(), pasteEntry.getChannel(), getPageUrl() + getPage().urlFor(PageMap.forName(PageMap.DEFAULT_NAME), ViewPastebinPage.class, ViewPastebinPage.newPageParameters(pasteEntry.getId())));
-
-/*
-TODO add this back in when there is time.
-                IndexService indexService = (IndexService) PastebinApplication.getInstance().getBean("indexService");
-                try {
-                    indexService.addToIndex(pasteEntry);
-                } catch (Exception e) {
-                    log.error("Unable to add paste entry to index", e);
-                }
-*/
-                //setResponsePage(new RedirectPage("/pastebin/"+pasteEntry.getId()));
-                setResponsePage(ViewPastebinPage.class, ViewPastebinPage.newPageParameters(pasteEntry.getId()));
-            }
-        };
+        new PastebinForm(this, "pastebinForm", new CompoundPropertyModel(pasteEntry));
     }
 
-    private static class PastebinForm extends Form {
+
+    private class PastebinForm extends Form {
 
         public PastebinForm(MarkupContainer parent, String id, IModel model) {
             super(parent, id, model);
@@ -219,8 +100,96 @@ TODO add this back in when there is time.
 
             new CheckBox(this, "rememberMe", new Model<Boolean>(Boolean.FALSE));
 
+            new DropDownChoice<String>(this, "highlight", HighlighterTextAreaPanel.getLanguageKeys());
+
             new TextArea(this, "code");
 
+            new FileUploadField(this, "imageFile");
+        }
+
+        protected void onSubmit() {
+            PasteEntry pasteEntry = (PasteEntry) getModelObject();
+
+            if (pasteEntry.getName() == null || pasteEntry.getName().length() == 0) {
+                pasteEntry.setName(getLocalizer().getString("label.AnonymousCoward", this));
+            } else {
+                CheckBox cb = (CheckBox) get("rememberMe");
+
+                Boolean rememberMe = (Boolean) cb.getModelObject();
+
+                if (rememberMe != null && rememberMe.booleanValue()) {
+                    String channel = pasteEntry.getChannel();
+                    if (channel == null) {
+                        channel = "";
+                    }
+                    CookieUtils.setEncodedCookie(
+                            REMEMBER_ME_COOKIE,
+                            pasteEntry.getName() + REMEMBER_ME_SEP + channel,
+                            (WebRequestCycle) getRequestCycle()
+                    );
+                }
+            }
+
+            if (pasteEntry.getCode() == null) {
+                pasteEntry.setCode("");
+            }
+
+            ImageEntry imageEntry = null;
+            FileUpload fupload = null;
+            FileUploadField imageFile = (FileUploadField) get("imageFile");
+            fupload = imageFile.getFileUpload();
+            if (fupload == null) {
+                // The FileUpload is null.
+                if (pasteEntry.getCode().length() == 0) {
+                    error("Please either paste code, provide an image, or both.");
+                    return;
+                }
+            } else if (fupload.getSize() == 0) {
+                error("The image you attempted to upload is empty.");
+                return;
+            } else if (! checkContentType(fupload.getContentType())) {
+                error("Only images of types png, jpg, and gif are allowed.");
+                return;
+            } else {
+                imageEntry = new ImageEntry();
+
+                imageEntry.setContentType(fupload.getContentType());
+                imageEntry.setName(fupload.getClientFileName());
+                imageEntry.setParent(pasteEntry);
+            }
+
+            PrivatePastebinDAO privatePastebinDAO = (PrivatePastebinDAO) PastebinApplication.getInstance().getBean("privatePastebinDAO");
+            String privatePastebinName = ((PastebinApplication) Application.get()).getPrivatePastebinName();
+            PrivatePastebin privatePastebin = privatePastebinDAO.lookupPrivatePastebin( privatePastebinName );
+            pasteEntry.setPrivatePastebin( privatePastebin );
+            
+            // Save the data
+            PasteService pasteService = (PasteService) PastebinApplication.getInstance().getBean("pasteService");
+            pasteService.save(pasteEntry);
+            if (imageEntry != null) {
+                ImageService imageService = (ImageService) PastebinApplication.getInstance().getBean("imageService");
+                try {
+                    imageService.save(imageEntry, fupload.getInputStream());
+                } catch (IOException ioe) {
+                    // It'd be nice to have a logger so that we could log the error.
+                    error("Sorry, there was an error uploading the image.");
+                }
+            }
+
+            BotInterface botInterface = (BotInterface) PastebinApplication.getInstance().getBean("botInterface");
+            botInterface.send(pasteEntry.getName(), pasteEntry.getChannel(), getPageUrl() + getPage().urlFor(PageMap.forName(PageMap.DEFAULT_NAME), ViewPastebinPage.class, ViewPastebinPage.newPageParameters(pasteEntry.getId())));
+
+/*
+TODO add this back in when there is time.
+                IndexService indexService = (IndexService) PastebinApplication.getInstance().getBean("indexService");
+                try {
+                    indexService.addToIndex(pasteEntry);
+                } catch (Exception e) {
+                    log.error("Unable to add paste entry to index", e);
+                }
+*/
+            //setResponsePage(new RedirectPage("/pastebin/"+pasteEntry.getId()));
+            setResponsePage(ViewPastebinPage.class, ViewPastebinPage.newPageParameters(pasteEntry.getId()));
         }
     }
 

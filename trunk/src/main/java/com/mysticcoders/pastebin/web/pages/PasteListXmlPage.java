@@ -16,9 +16,11 @@ package com.mysticcoders.pastebin.web.pages;
 
 import com.mysticcoders.pastebin.model.PasteEntry;
 import com.mysticcoders.pastebin.web.model.PasteEntriesModel;
+import com.mysticcoders.pastebin.web.PastebinApplication;
 import wicket.AttributeModifier;
 import wicket.PageMap;
 import wicket.PageParameters;
+import wicket.Application;
 import wicket.markup.html.WebPage;
 import wicket.markup.html.basic.Label;
 import wicket.markup.html.list.ListItem;
@@ -45,7 +47,8 @@ public class PasteListXmlPage extends WebPage {
      * Creates a new instance.  No parameters are necessary.
      */
     public PasteListXmlPage() {
-        new ListView<PasteEntry>(this, "pastes", new PasteEntriesModel()) {
+        String privatePastebinName = ((PastebinApplication) Application.get()).getPrivatePastebinName();
+        new ListView<PasteEntry>(this, "pastes", new PasteEntriesModel(privatePastebinName)) {
             private static final long serialVersionUID = 1L;
 
             public void populateItem(ListItem<PasteEntry> item) {

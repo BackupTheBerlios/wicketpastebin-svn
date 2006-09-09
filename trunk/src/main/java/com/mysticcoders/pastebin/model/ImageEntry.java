@@ -16,6 +16,9 @@ import java.io.Serializable;
  */
 public class ImageEntry implements Serializable
 {
+    private static final long serialVersionUID = 1L;
+
+    
     // CONSTRUCTORS
 
     /**

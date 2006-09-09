@@ -14,6 +14,7 @@ dp.sh.Brushes.Delphi = function()
 					'widestring with word write writeln xor';
 
 	this.regexList = [
+    { regex: new RegExp('^@@.*$', 'gm'),                                       css: 'highlight' }     // highlight keyword
 		{ regex: new RegExp('\\(\\*[\\s\\S]*?\\*\\)', 'gm'),		css: 'comment' },  			// multiline comments (* *)
 		{ regex: new RegExp('{(?!\\$)[\\s\\S]*?}', 'gm'),			css: 'comment' },  			// multiline comments { }
 		{ regex: dp.sh.RegexLib.SingleLineCComments,				css: 'comment' },  			// one line

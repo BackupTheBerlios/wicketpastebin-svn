@@ -23,14 +23,14 @@ To highlight particular lines, prefix each line with @@<br />
 	<br />
 
     <strong>Name</strong><br />
-    <input type="text" maxlength="24" size="24" wicket:id="name" name="name" value="" tabindex="2" />
-	<br />
-    <strong>Channel or nick (i.e. ##wicket, ##swing, ##java) </strong><br />
-    <input type="text" maxlength="24" size="24" wicket:id="channel" name="channel" value="" tabindex="3" />
-	<br />
-    <input type="submit" wicket:id="submit" name="submit" value="Send" tabindex="6" />
+    <input type="text" maxlength="24" size="24" wicket:id="name" name="name" value="" tabindex="2" style="font-size: 16px;"/>
+    <input type="checkbox" name="rememberMe" id="rememberMe" wicket:id="rememberMe" value="1" tabindex="5" /><label for="rememberMe">Remember my name in a cookie</label>
+
     <br />
-    <input type="checkbox" name="rememberMe" wicket:id="rememberMe" value="1" tabindex="5" />Remember my name in a cookie
+    <strong>Channel or nick (i.e. ##wicket, ##swing, ##java) </strong><br />
+    <input type="text" maxlength="24" size="24" wicket:id="channel" name="channel" value="" tabindex="3" style="font-size: 16px;"/>
+	<br />
+    <input type="submit" name="submit" value="Send" tabindex="6" />
 
 
 </form>

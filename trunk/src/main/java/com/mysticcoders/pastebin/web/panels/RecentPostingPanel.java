@@ -5,23 +5,18 @@ import com.mysticcoders.pastebin.util.ModelIteratorAdapter;
 import com.mysticcoders.pastebin.web.model.PasteEntriesModel;
 import com.mysticcoders.pastebin.web.pages.PastebinPage;
 import com.mysticcoders.pastebin.web.pages.ViewPastebinPage;
-import com.mysticcoders.pastebin.web.pages.SearchResultsPage;
+import com.mysticcoders.pastebin.web.pages.CreatePrivatePastebinPage;
+import com.mysticcoders.pastebin.web.PastebinApplication;
 import wicket.AttributeModifier;
 import wicket.MarkupContainer;
-import wicket.PageParameters;
+import wicket.Application;
 import wicket.extensions.markup.html.repeater.refreshing.Item;
 import wicket.extensions.markup.html.repeater.refreshing.RefreshingView;
 import wicket.markup.html.basic.Label;
 import wicket.markup.html.link.BookmarkablePageLink;
 import wicket.markup.html.panel.Panel;
-import wicket.markup.html.form.Form;
-import wicket.markup.html.form.TextField;
-import wicket.markup.html.form.Button;
-import wicket.markup.html.list.ListView;
 import wicket.model.IModel;
 import wicket.model.Model;
-import wicket.model.PropertyModel;
-import wicket.model.CompoundPropertyModel;
 
 import java.io.Serializable;
 import java.util.Calendar;
@@ -45,12 +40,15 @@ public class RecentPostingPanel extends Panel {
         super(parent, id);
 
         new BookmarkablePageLink(this, "newPost", PastebinPage.class);
-        
+
+        new BookmarkablePageLink(this, "createPrivatePastebinLink", CreatePrivatePastebinPage.class);
+
         new RefreshingView(this, "recentPosts") {
 
             @Override
             protected Iterator getItemModels() {
-                List<PasteEntry> pasteEntries = (List<PasteEntry>) new PasteEntriesModel().getObject();
+                String privatePastebinName = ((PastebinApplication) Application.get()).getPrivatePastebinName();
+                List<PasteEntry> pasteEntries = (List<PasteEntry>) new PasteEntriesModel(privatePastebinName).getObject();
 
                 return new ModelIteratorAdapter(pasteEntries.iterator()) {
 
@@ -79,8 +77,6 @@ public class RecentPostingPanel extends Panel {
             }
 
         };
-
-
 
 /*
         Form form = new Form(this, "search", new CompoundPropertyModel(new QueryModel()));

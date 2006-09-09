@@ -5,10 +5,12 @@ import wicket.markup.html.basic.Label;
 import wicket.protocol.http.WebRequestCycle;
 import wicket.protocol.http.WebRequest;
 import wicket.protocol.http.servlet.ServletWebRequest;
+import wicket.RequestCycle;
+import wicket.Application;
+import wicket.model.Model;
 import com.mysticcoders.common.BaseApplication;
 import com.mysticcoders.pastebin.core.IncludedContentService;
 import com.mysticcoders.pastebin.web.PastebinApplication;
-import com.mysticcoders.pastebin.web.util.CodeHighlighter;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -24,7 +26,26 @@ public class BasePage extends WebPage {
 	
     public BasePage() {
         super();
-    
+
+/*
+        ServletWebRequest servletWebRequest = (ServletWebRequest) RequestCycle.get().getRequest();
+        HttpServletRequest httpRequest = servletWebRequest.getHttpServletRequest();
+        String serverName = httpRequest.getServerName();
+
+        String[] splitServerName = serverName.split("\\.");
+        int count = splitServerName.length;
+
+        if(count==3 && !serverName.startsWith("www")) {      // check for www, if not, we have a private pastebin
+            System.out.println("PRIVATE PASTEBIN:"+splitServerName[0]);
+            privatePastebinName = splitServerName[0];
+        }
+*/
+
+        String privatePastebinName = getPrivatePastebinName();
+        System.out.println("PRIVATE PASTEBIN:"+privatePastebinName);
+
+        new Label(this, "privateName", new Model<String>((privatePastebinName!=null?privatePastebinName+" ":"")));
+
         IncludedContentService contentService =
         	(IncludedContentService)PastebinApplication.getInstance()
         		.getBean("includedContentService");
@@ -34,23 +55,13 @@ public class BasePage extends WebPage {
         	).setEscapeModelStrings(false).setVisible(s.length() > 0);
     }
 
+    protected String getPrivatePastebinName() {
+        return ((PastebinApplication)Application.get()).getPrivatePastebinName();
+    }
+
     protected Object getBean(String beanName) {
         return ((BaseApplication) getApplication()).getBean(beanName);
     }
-
-    protected CodeHighlighter getCodeHighlighter() {
-        return (CodeHighlighter) ((BaseApplication) getApplication()).getBean("codeHighlighter");
-    }
-/*
-    protected MediaManager getMediaManager() {
-        return (MediaManager) ((BaseApplication) getApplication()).getBean("mediaManager");
-    }
-
-    protected NotifyManager getNotifyManager() {
-        return (NotifyManager) ((BaseApplication) getApplication()).getBean("notifyManager");
-    }
-*/
-
 
     protected StringBuffer humanReadableUrl(final WebRequestCycle cycle) {
         return humanReadableUrl(cycle, false);

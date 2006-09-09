@@ -3,6 +3,7 @@ package com.mysticcoders.pastebin.core;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.mysticcoders.pastebin.model.PasteEntry;
+import com.mysticcoders.pastebin.model.PrivatePastebin;
 
 import java.util.List;
 
@@ -18,4 +19,7 @@ public interface PasteService {
     public void save(PasteEntry pasteEntry);
 
     public List<PasteEntry> listAll();
+
+    @Transactional
+    public void savePrivatePastebin(PrivatePastebin privatePastebin);
 }

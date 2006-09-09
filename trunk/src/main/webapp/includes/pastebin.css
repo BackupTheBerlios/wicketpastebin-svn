@@ -219,3 +219,44 @@ table#diff td {
     white-space: nowrap;
     padding-right: 5px;
 }
+
+/* Login Pages */
+#login {
+        background-color: white;
+        width: 350px;
+        margin: 10% auto;
+        padding: 20px 10px;
+        border: 5px solid #666;
+}
+
+#login h2 {
+  font-size: 20px;
+}
+
+#login small {
+    font-size: 10px;
+}
+    
+input.login {
+  margin-left: 0;
+}
+
+table.login_form {
+}
+
+.biginput {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+table.login_form th {
+  width: 150px;
+  text-align: right;
+  padding: 8px 5px 5px 5px;
+  vertical-align: top;
+}
+
+table.login_form td {
+  padding: 5px;
+  text-align: left;
+}

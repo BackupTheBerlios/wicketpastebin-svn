@@ -176,12 +176,14 @@
 .dp-c .preprocessor { color: gray; }
 .dp-c .keyword { color: blue; }
 .dp-c .vars { color: #d00; }
+.dp-c .highlight { background-color: #CCCCFF; }
 
 .dp-vb {}
 .dp-vb .comment { color: green; }
 .dp-vb .string { color: blue; }
 .dp-vb .preprocessor { color: gray; }
 .dp-vb .keyword { color: blue; }
+.dp-vb .highlight { background-color: #CCCCFF; }
 
 .dp-sql {}
 .dp-sql .comment { color: green; }
@@ -189,6 +191,7 @@
 .dp-sql .keyword { color: blue; }
 .dp-sql .func { color: #ff1493; }
 .dp-sql .op { color: #808080; }
+.dp-sql .highlight { background-color: #CCCCFF; }
 
 .dp-xml {}
 .dp-xml .cdata { color: #ff1493; }
@@ -205,6 +208,7 @@
 .dp-delphi .directive { color: #008284; }
 .dp-delphi .keyword { font-weight: bold; color: navy; }
 .dp-delphi .vars { color: #000; }
+.dp-delphi .highlight { background-color: #CCCCFF; }
 
 .dp-py {}
 .dp-py .comment { color: green; }
@@ -216,6 +220,7 @@
 .dp-py .exceptions { color: brown; }
 .dp-py .types { color: brown; font-style: italic; }
 .dp-py .commonlibs { color: #8A2BE2; font-style: italic; }
+.dp-py .highlight { background-color: #CCCCFF; }
 
 .dp-rb {}
 .dp-rb .comment { color: #c00; }
@@ -223,6 +228,7 @@
 .dp-rb .symbol  { color: #02b902; }
 .dp-rb .keyword { color: #069; }
 .dp-rb .variable { color: #6cf; }
+.dp-rb .highlight { background-color: #CCCCFF; }
 
 .dp-css {}
 .dp-css .comment { color: green; }
@@ -230,6 +236,7 @@
 .dp-css .keyword { color: blue; }
 .dp-css .colors { color: darkred; }
 .dp-css .vars { color: #d00; }
+.dp-css .highlight { background-color: #CCCCFF; }
 
 .dp-j {}
 .dp-j .comment { color: rgb(63,127,95); }
@@ -237,3 +244,7 @@
 .dp-j .keyword { color: rgb(127,0,85); font-weight: bold }
 .dp-j .annotation { color: #646464; }
 .dp-j .number { color: #C00000; }
+.dp-j .highlight { background-color: #CCCCFF; }
+
+.dp-nohighlight {}
+.dp-nohighlight .highlight { background-color: #CCCCFF; }

@@ -1,9 +1,9 @@
 package com.mysticcoders.pastebin.dao;
 
+import com.mysticcoders.pastebin.model.PasteEntry;
+
 import java.util.Iterator;
 import java.util.List;
-
-import com.mysticcoders.pastebin.model.PasteEntry;
 
 /**
  * PasteEntryDAO
@@ -13,15 +13,18 @@ import com.mysticcoders.pastebin.model.PasteEntry;
  */
 public interface PasteEntryDAO {
 
-    public PasteEntry lookupPastebinEntry( Long id );
+    public PasteEntry lookupPastebinEntry(Long id);
 
-    public void save( PasteEntry pasteEntry );
+    public PasteEntry lookupPastebinEntry(Long id, String privatePastebin);
 
-    public void delete( PasteEntry pasteEntry );
+    public void save(PasteEntry pasteEntry);
 
-    public Iterator<PasteEntry> getPreviousEntries(int limit);
+    public void delete(PasteEntry pasteEntry);
 
-    public List<PasteEntry> getPreviousEntriesList(int limit);
+    public Iterator<PasteEntry> getPreviousEntries(int limit, String privatePastebin);
 
-    public List<PasteEntry> getPreviousEntriesList();
+    public List<PasteEntry> getPreviousEntriesList(int limit, String privatePastebin);
+
+    public List<PasteEntry> getPreviousEntriesList(String privatePastebin);
+
 }
