@@ -1,5 +1,6 @@
 package com.mysticcoders.pastebin.web.pages;
 
+import com.mysticcoders.pastebin.web.panels.IncludedContentPanel;
 import com.mysticcoders.pastebin.web.panels.PastebinPanel;
 import com.mysticcoders.pastebin.web.panels.RecentPostingPanel;
 import org.apache.commons.logging.Log;
@@ -23,6 +24,8 @@ public class PastebinPage extends BasePage {
         new RecentPostingPanel(this, "recentPosts").setRenderBodyOnly(true);
 
         new Label(this, "status", getLocalizer().getString("label.newPosting", this));
+        
+        new IncludedContentPanel(this, "headerIncludedContent");
 
         new PastebinPanel(this, "pastebinPanel") {
 

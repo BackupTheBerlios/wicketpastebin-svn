@@ -7,6 +7,9 @@ import com.mysticcoders.pastebin.model.PasteEntry;
 import com.mysticcoders.pastebin.web.PastebinApplication;
 import com.mysticcoders.pastebin.web.pages.highlighter.HighlighterTextAreaPanel;
 import com.mysticcoders.pastebin.web.model.PasteEntryModel;
+import com.mysticcoders.pastebin.web.panels.DiffCodePanel;
+import com.mysticcoders.pastebin.web.panels.IncludedContentPanel;
+import com.mysticcoders.pastebin.web.panels.LineNumberCodePanel;
 import com.mysticcoders.pastebin.web.panels.PastebinPanel;
 import com.mysticcoders.pastebin.web.panels.RecentPostingPanel;
 import wicket.AttributeModifier;
@@ -210,6 +213,8 @@ public class ViewPastebinPage extends BasePage {
 
             new Label(parentPageLink, "parentName", existingEntry.getParent().getName());
         }
+        
+        new IncludedContentPanel(this, "headerIncludedContent");
 
         new HighlighterTextAreaPanel(this, "codePanel", new Model(existingEntry.getCode()),
                 (existingEntry.getHighlight()!=null?existingEntry.getHighlight():"None"))
