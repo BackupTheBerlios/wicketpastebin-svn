@@ -1,13 +1,15 @@
 package com.mysticcoders.pastebin.web.pages;
 
 import wicket.markup.html.WebPage;
+import wicket.markup.html.basic.Label;
 import wicket.protocol.http.WebRequestCycle;
 import wicket.protocol.http.WebRequest;
 import wicket.protocol.http.servlet.ServletWebRequest;
-import wicket.RequestCycle;
 import wicket.Application;
 import wicket.model.Model;
 import com.mysticcoders.common.BaseApplication;
+import com.mysticcoders.pastebin.core.IncludedContentService;
+import com.mysticcoders.pastebin.web.PastebinApplication;
 
 import javax.servlet.http.HttpServletRequest;
 

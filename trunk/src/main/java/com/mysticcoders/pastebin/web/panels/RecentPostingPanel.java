@@ -41,7 +41,7 @@ public class RecentPostingPanel extends Panel {
 
         new BookmarkablePageLink(this, "newPost", PastebinPage.class);
 
-        new BookmarkablePageLink(this, "createPrivatePastebinLink", CreatePrivatePastebinPage.class);
+//TODO        new BookmarkablePageLink(this, "createPrivatePastebinLink", CreatePrivatePastebinPage.class);
 
         new RefreshingView(this, "recentPosts") {
 

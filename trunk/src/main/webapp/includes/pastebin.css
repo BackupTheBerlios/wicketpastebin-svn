@@ -1,5 +1,5 @@
     /* 
-    The cleverer parts of this stylesheet came from
+    The more clever parts of this stylesheet came from
     The Layout Reservoir - well worth a look.
     http://www.bluerobot.com/web/layouts/
     */
@@ -152,12 +152,12 @@
 
 
     #headerIncludedContent {
-        margin-left: 10px;
-        margin-bottom: 10px;
+        margin-left: 4px;
+        margin-bottom: 5px;
         padding:5px;
-        margin-right: 10px;
+        margin-right: 4px;
         background-color: white;
-        border:1px solid black;
+        /* border:1px solid black; */
         /* IE5 Hack */
         voice-family: "\"}\"";
         voice-family:inherit;
