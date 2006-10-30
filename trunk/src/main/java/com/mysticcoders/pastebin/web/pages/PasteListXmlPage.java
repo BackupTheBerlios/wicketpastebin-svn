@@ -66,17 +66,25 @@ public class PasteListXmlPage extends WebPage {
                 label.setEscapeModelStrings(false);
                 label.setRenderBodyOnly(true);
 
-                        // url element
-                        PageParameters parms = new PageParameters();
-                        parms.put("0", entry.getId());
-                        String url =
-                                getPage().urlFor(
-                                        PageMap.forName(PageMap.DEFAULT_NAME),
-                                        ViewPastebinPage.class, parms
-                                ).toString();
-                        label = new Label(item, "url", url);
-                        label.setEscapeModelStrings(false);
-                        label.setRenderBodyOnly(true);
+                // line1 element
+                sb = new StringBuilder("<![CDATA[");
+                sb.append(entry.getCode().split("\\n|\\r\\n")[0]);
+                sb.append("]]>");
+                label = new Label(item, "line1", new Model(sb.toString()));
+                label.setEscapeModelStrings(false);
+                label.setRenderBodyOnly(true);
+
+                // url element
+                PageParameters parms = new PageParameters();
+                parms.put("0", String.valueOf(entry.getId()));
+                String url =
+                        getPage().urlFor(
+                                PageMap.forName(PageMap.DEFAULT_NAME),
+                                ViewPastebinPage.class, parms
+                        ).toString();
+                label = new Label(item, "url", url);
+                label.setEscapeModelStrings(false);
+                label.setRenderBodyOnly(true);
 
                 // user element
                 sb = new StringBuilder("<![CDATA[");
