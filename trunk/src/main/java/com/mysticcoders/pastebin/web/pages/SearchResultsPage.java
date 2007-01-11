@@ -4,8 +4,6 @@ import com.mysticcoders.pastebin.search.SearchService;
 import com.mysticcoders.pastebin.util.ModelIteratorAdapter;
 import com.mysticcoders.pastebin.web.PastebinApplication;
 import com.mysticcoders.pastebin.web.panels.RecentPostingPanel;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.search.Hits;
 import wicket.PageParameters;
@@ -28,11 +26,8 @@ import java.util.Iterator;
  */
 public class SearchResultsPage extends BasePage {
 
-
-    static Log log = LogFactory.getLog(SearchResultsPage.class);
-
     public SearchResultsPage(PageParameters params) {
-        String query = query = params.getString("0");
+        String query = params.getString("0");
 
         if (query == null) {
             throw new RuntimeException("Entry not found");

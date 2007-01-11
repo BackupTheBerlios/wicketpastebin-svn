@@ -30,22 +30,11 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.ImageIcon;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
- * com.mysticcoders.pastebin.core.ImageServiceImpl
- * -
  * An implementation of ImageService.
- *
- * <P><STRONG>Revision History:</STRONG><UL>
- * <LI>Dec 6, 2005 This class was created by pchapman.</LI>
- * <LI>Dec 9, 2005 Refactored some of the logic from ImageResource into here,
- *                 where it belongs.  The logic moved to here includes
- *                 determining whether an image is available, obtaining an
- *                 image's data, obtaining thumbnail data and substituting a
- *                 not available image when necessary.
- * </UL></P>
  *
  * @author pchapman
  */
@@ -53,7 +42,7 @@ public class ImageServiceImpl implements ImageService
 {
 	// CONSTANTS
 	
-    private static final Log logger = LogFactory.getLog(ImageServiceImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(ImageServiceImpl.class);
 	
 	// CONSTRUCTORS
 

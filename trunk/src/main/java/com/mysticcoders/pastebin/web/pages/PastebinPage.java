@@ -3,8 +3,6 @@ package com.mysticcoders.pastebin.web.pages;
 import com.mysticcoders.pastebin.web.panels.IncludedContentPanel;
 import com.mysticcoders.pastebin.web.panels.PastebinPanel;
 import com.mysticcoders.pastebin.web.panels.RecentPostingPanel;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import wicket.markup.html.basic.Label;
 import wicket.protocol.http.WebRequestCycle;
 
@@ -15,8 +13,6 @@ import wicket.protocol.http.WebRequestCycle;
  * Copyright 2004 Mystic Coders, LLC
  */
 public class PastebinPage extends BasePage {
-
-    static Log log = LogFactory.getLog(PastebinPage.class);
 
     public PastebinPage() {
         super();

@@ -1,10 +1,11 @@
 package com.mysticcoders.pastebin.web.pages;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.mysticcoders.pastebin.search.IndexService;
 import com.mysticcoders.pastebin.web.PastebinApplication;
 import com.mysticcoders.pastebin.web.panels.RecentPostingPanel;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import wicket.markup.html.basic.Label;
 
 /**
@@ -15,7 +16,7 @@ import wicket.markup.html.basic.Label;
  */
 public class RebuildSearchIndexPage extends BasePage {
 
-    static Log log = LogFactory.getLog(RebuildSearchIndexPage.class);
+    static Logger log = LoggerFactory.getLogger(RebuildSearchIndexPage.class);
 
     public RebuildSearchIndexPage() {
         super();

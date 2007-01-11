@@ -12,8 +12,6 @@ import com.mysticcoders.pastebin.web.pages.ViewPastebinPage;
 import com.mysticcoders.pastebin.web.pages.highlighter.HighlighterTextAreaPanel;
 import com.mysticcoders.pastebin.web.util.StringUtils;
 import com.mysticcoders.pastebin.dao.PrivatePastebinDAO;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import wicket.Application;
 import wicket.MarkupContainer;
 import wicket.PageMap;
@@ -36,8 +34,6 @@ import java.io.IOException;
  * Copyright 2004 Mystic Coders, LLC
  */
 public class PastebinPanel extends Panel {
-
-    static Log log = LogFactory.getLog(PastebinPanel.class);
 
     public static final String REMEMBER_ME_COOKIE = "pastebin.rememberMe";
     public static final String REMEMBER_ME_SEP = "!||!||!";

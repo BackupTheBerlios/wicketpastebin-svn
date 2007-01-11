@@ -4,8 +4,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author Hani Suleiman (hani@formicary.net)
@@ -17,7 +17,7 @@ import org.apache.commons.logging.LogFactory;
  */
 public class IOUtils
 {
-	private static final Log logger = LogFactory.getLog(IOUtils.class);
+	private static final Logger logger = LoggerFactory.getLogger(IOUtils.class);
 	
     /**
      * Copies data from src into dst.  Neither of the streams are opened or
@@ -36,7 +36,7 @@ public class IOUtils
 	        source.close();
 	        destination.close();
     	} catch (IOException ioe) {
-    		logger.error(ioe);
+    		logger.error("Error copying data from source to destination", ioe);
     		throw ioe;
     	}
     }

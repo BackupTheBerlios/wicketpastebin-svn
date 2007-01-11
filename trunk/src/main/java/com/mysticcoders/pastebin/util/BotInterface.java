@@ -1,14 +1,14 @@
 package com.mysticcoders.pastebin.util;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.text.FieldPosition;
 import java.text.MessageFormat;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * BotInterface
@@ -21,7 +21,7 @@ public class BotInterface {
     private MessageFormat botQuery;
     private MessageFormat messageToSend;
 
-    private static final Log log = LogFactory.getLog(BotInterface.class);
+    private static final Logger log = LoggerFactory.getLogger(BotInterface.class);
 
     public void send(String from, String target, String postLocation) {
         // if this is a channel, then check to make sure its on the list of supported        

@@ -3,10 +3,8 @@ package com.mysticcoders.pastebin.web.pages.highlighter;
 import wicket.AttributeModifier;
 import wicket.MarkupContainer;
 import wicket.behavior.HeaderContributor;
-import wicket.markup.html.PackageResourceReference;
 import wicket.markup.html.form.TextArea;
 import wicket.markup.html.panel.Panel;
-import wicket.markup.html.resources.CompressedPackageResourceReference;
 import wicket.markup.html.resources.JavaScriptReference;
 import wicket.model.IModel;
 import wicket.model.Model;
@@ -20,11 +18,7 @@ import java.util.*;
  * Copyright 2006 Mystic Coders, LLC
  */
 public class HighlighterTextAreaPanel extends Panel {
-
-    private static PackageResourceReference syntaxHighlighterCSS = new CompressedPackageResourceReference(
-            HighlighterTextAreaPanel.class, "SyntaxHighlighter.css");
-
-
+	private static final long serialVersionUID = 1L;
     private static Map<String, String> languageMap = new LinkedHashMap<String, String>();
 
     static {
@@ -72,8 +66,12 @@ public class HighlighterTextAreaPanel extends Panel {
 
     public HighlighterTextAreaPanel(MarkupContainer parent, String id, IModel<String> model, String language) {
         super(parent, id);
-
-        add(HeaderContributor.forCss(syntaxHighlighterCSS.getScope(), syntaxHighlighterCSS.getName()));
+        
+        add(
+        		HeaderContributor.forCss(
+        				HighlighterTextAreaPanel.class, "SyntaxHighlighter.css"
+        			)
+        	);
 
         TextArea codeTextArea = new TextArea<String>(this, "code", model);
 

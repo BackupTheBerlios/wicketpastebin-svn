@@ -6,8 +6,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.mysticcoders.pastebin.util.IOUtils;
 
@@ -20,8 +20,8 @@ import com.mysticcoders.pastebin.util.IOUtils;
  */
 public class IncludedContentServiceImpl implements IncludedContentService
 {
-	private static Log logger =
-		LogFactory.getLog(IncludedContentServiceImpl.class);
+	private static Logger logger =
+		LoggerFactory.getLogger(IncludedContentServiceImpl.class);
 
 	/**
 	 * Creates a new instance.
@@ -56,12 +56,12 @@ public class IncludedContentServiceImpl implements IncludedContentService
 				os.close();
 				return os.toString();
 			} catch (IOException ioe) {
-				logger.error(ioe);
+				logger.error("Error retriving the content " + headerContentUrlString, ioe);
 				if (is != null) {
-					try {is.close();}catch (IOException io) {logger.error(io);}
+					try {is.close();}catch (IOException io) {logger.error("Error closing input stream.", io);}
 				}
 				if (os != null) {
-					try {os.close();}catch (IOException io) {logger.error(io);}
+					try {os.close();}catch (IOException io) {logger.error("Error closing output stream.", io);}
 				}
 			}
 		}

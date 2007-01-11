@@ -3,15 +3,14 @@ package com.mysticcoders.pastebin.search;
 import com.mysticcoders.pastebin.core.PasteService;
 import com.mysticcoders.pastebin.model.PasteEntry;
 import com.mysticcoders.pastebin.model.PasteEntryDocument;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
-import org.apache.lucene.document.Field;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.store.Directory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.List;
@@ -24,7 +23,7 @@ import java.util.List;
  */
 public class IndexServiceImpl implements IndexService {
 
-    static Log log = LogFactory.getLog(IndexServiceImpl.class);
+    static Logger log = LoggerFactory.getLogger(IndexServiceImpl.class);
 
     protected Analyzer analyzer;
 //    private IndexWriter writer;

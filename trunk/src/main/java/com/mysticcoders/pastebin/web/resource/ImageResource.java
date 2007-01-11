@@ -2,8 +2,8 @@ package com.mysticcoders.pastebin.web.resource;
 
 import java.util.Locale;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.mysticcoders.pastebin.core.ImageService;
 import com.mysticcoders.pastebin.dao.ImageEntryDAO;
@@ -17,16 +17,8 @@ import wicket.util.time.Time;
 import wicket.util.value.ValueMap;
 
 /**
- * com.mysticcoders.pastebin.ImageResource
- * -
  * A resource that provides images from the holding dir.  An image can either
  * be a full-size image that has been uploaded, or a thumbnail.
- *
- * <P><STRONG>Revision History:</STRONG><UL>
- * <LI>Dec 7, 2005 This class was created by pchapman.</LI>
- * <LI>Dec 9, 2005 pchapman Refactored all the logic for obtaining image data,
- *                 thumbnail data, etc into ImageServiceImpl.</LI>
- * </UL></P>
  *
  * @author pchapman
  */
@@ -34,7 +26,7 @@ public class ImageResource extends DynamicWebResource
 {
 	// CONSTANTS
 
-	public static final Log logger = LogFactory.getLog(ImageResource.class);
+	public static final Logger logger = LoggerFactory.getLogger(ImageResource.class);
 
 	private static ImageService imageService = (ImageService)PastebinApplication.getInstance().getBean("imageService");
 	
@@ -79,7 +71,7 @@ public class ImageResource extends DynamicWebResource
 	    	}
 	    	return imageEntry;
         } catch (Exception e) {
-        	logger.error(e);
+        	logger.error("Error retrieving the image entry.", e);
         	return null;
         }
     }
@@ -109,7 +101,7 @@ public class ImageResource extends DynamicWebResource
             		state.setData(imageService.getImage(imageEntry));
             	}
             } catch (Exception e) {
-            	logger.error(e);
+            	logger.error("Error parsing parameters", e);
             }
         }
 
