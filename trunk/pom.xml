@@ -182,7 +182,24 @@
             </plugin>
         
         </plugins>
-
+        <resources>
+            <resource>
+                <filtering>false</filtering>
+                <directory>src/main/java</directory>
+                <includes>
+                    <include>**/*.css</include>  
+                    <include>**/*.gif</include>  
+                    <include>**/*.hbm.xml</include>  
+                    <include>**/*.html</include>  
+                    <include>**/*.jpg</include>  
+                    <include>**/*.js</include>
+                </includes>
+           </resource> 
+           <resource>
+               <directory>src/main/resources</directory>
+               <filtering>true</filtering>
+           </resource>
+        </resources>
     </build>
 
     <repositories>
