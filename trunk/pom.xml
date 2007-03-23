@@ -187,10 +187,9 @@
 
     <repositories>
         <repository>
-            <id>mysticcoders.com</id>
-            <name>mysticcoders.com</name>
-            <url>http://www.mysticcoders.com/ivyrep</url>
-            <layout>legacy</layout>
+            <id>wicket</id>
+            <name>wicket</name>
+            <url>http://wicketframework.org/maven2</url>
         </repository>
 	    <repository>
 	        <id>Maven Snapshots</id>
