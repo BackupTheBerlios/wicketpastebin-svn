@@ -119,9 +119,9 @@ public class ViewPastebinPage extends BasePage {
 
                 ResourceReference ref = new ResourceReference("imageResource");
 
-                String url = getRequestCycle().urlFor(ref) + "?imageEntryId=" + image.getId();
+                String url = getRequestCycle().urlFor(ref) + "/imageEntryId/" + image.getId();
                 ExternalLink eLink = new ExternalLink(item, "imageLink", url);
-                url = url + "&amp;thumbnail=true";
+                url = url + "/thumbnail/true";
                 AttributeModifier modifier = new AttributeModifier(
                         "src",
                         new Model(url)
@@ -188,7 +188,7 @@ public class ViewPastebinPage extends BasePage {
 
         ResourceReference ref = new ResourceReference("exportResource");
 
-        String url = getRequestCycle().urlFor(ref) + "?pasteEntryId=" + existingEntry.getId();
+        String url = getRequestCycle().urlFor(ref) + "/pasteEntryId/" + existingEntry.getId();
 
         new ExternalLink(this, "downloadPost", url);
 

@@ -55,9 +55,13 @@ public class PastebinApplication extends BaseApplication implements ISessionFact
 
         Application.get().getSharedResources().add("exportResource",
                 new ExportResource());
-        Application.get().getSharedResources().add("imageResource",
-                new ImageResource());
+        Application.get().getSharedResources().add("imageResource", new ImageResource());
 
+
+        mountSharedResource("/resource/images", new ResourceReference("imageResource").getSharedResourceKey());
+        mountSharedResource("/resource/export", new ResourceReference("exportResource").getSharedResourceKey());
+//        super.mountSharedResource("/image", "imageResource");
+        
         setSignInPage(LoginPage.class);
         getSecuritySettings().setAuthorizationStrategy(authorizationStrategy);
         getSecuritySettings().setUnauthorizedComponentInstantiationListener(unauthorizedComponentInstantiationListener);
@@ -88,7 +92,7 @@ public class PastebinApplication extends BaseApplication implements ISessionFact
      * @since 2.0
      */
     public Session newSession(Request request) {
-        return new PastebinSession(PastebinApplication.this);
+        return new PastebinSession(PastebinApplication.this, request);
     }
 
     public String getPrivatePastebinName() {

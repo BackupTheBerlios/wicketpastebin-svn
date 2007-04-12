@@ -1,6 +1,8 @@
 package com.mysticcoders.pastebin.web;
 
 import wicket.protocol.http.WebSession;
+import wicket.Resource;
+import wicket.Request;
 
 import java.util.Set;
 import java.util.HashSet;
@@ -15,8 +17,8 @@ import com.mysticcoders.pastebin.model.PrivatePastebin;
  */
 public class PastebinSession extends WebSession {
 
-    public PastebinSession(PastebinApplication application) {
-        super(application);
+    public PastebinSession(PastebinApplication application, Request request) {
+        super(application, request);
     }
 
     private Set<PrivatePastebin> activePrivatePastebins = new HashSet<PrivatePastebin>();

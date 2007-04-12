@@ -6,7 +6,7 @@
     <artifactId>pastebin</artifactId>
     <packaging>war</packaging>
     <version>1.0-SNAPSHOT</version>
-    <name>Wicket Paste Bin</name>
+    <name>Wicket Pastebin</name>
     <!--
     <url>http://maven.apache.org</url>
     -->
@@ -29,34 +29,27 @@
             <artifactId>commons-collections</artifactId>
             <version>2.1</version>
         </dependency>
-        <dependency>
+        
+               <dependency>
             <groupId>cglib</groupId>
             <artifactId>cglib-nodep</artifactId>
             <version>2.1_2</version>
         </dependency>
         <dependency>
-            <groupId>hibernate</groupId>
-            <artifactId>hibernate</artifactId>
-            <version>3.0.5</version>
-        </dependency>
-        <dependency>
-            <groupId>hibernate</groupId>
-            <artifactId>antlr</artifactId>
-            <version>2.7.5H3</version>
-        </dependency>
-		<dependency>
-			<groupId>log4j</groupId>
-			<artifactId>log4j</artifactId>
-			<version>1.2.13</version>
-		</dependency>
-        
-        <dependency>
-            <groupId>springframework</groupId>
+            <groupId>org.springframework</groupId>
             <artifactId>spring</artifactId>
-            <version>1.2.5</version>
-            <type>jar</type>
+            <version>2.0.2</version>
         </dependency>
-        
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate</artifactId>
+            <version>3.2.0.cr4</version>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-annotations</artifactId>
+            <version>3.2.0.cr2</version>
+        </dependency> 
         <dependency>
             <groupId>wicket</groupId>
             <artifactId>wicket</artifactId>
@@ -73,13 +66,6 @@
             <groupId>hsqldb</groupId>
             <artifactId>hsqldb</artifactId>
             <version>1.7.3.3</version>
-        </dependency>
-        
-        <dependency>
-            <groupId>ehcache</groupId>
-            <artifactId>ehcache</artifactId>
-            <version>1.1</version>
-            <type>jar</type>
         </dependency>
 
         <dependency>
@@ -104,43 +90,36 @@
         </dependency>
         
         <dependency>
-            <groupId>lucene</groupId>
-            <artifactId>lucene</artifactId>
-            <version>1.9.1</version>
+            <groupId>org.apache.lucene</groupId>
+            <artifactId>lucene-core</artifactId>
+            <version>2.0.0</version>
             <type>jar</type>
         </dependency>
 
-
         <dependency>
-            <groupId>jetty</groupId>
-            <artifactId>org.mortbay.jetty</artifactId>
-            <version>4.2.22</version>
-            <scope>test</scope>
-        </dependency>
-        
-        <dependency>
-            <groupId>jetty</groupId>
-            <artifactId>jasper-runtime</artifactId>
-            <version>4.2.20RC0</version>
-            <type>jar</type>
-            <scope>test</scope>
-        </dependency>
-        
-        <dependency>
-            <groupId>jetty</groupId>
-            <artifactId>jasper-compiler</artifactId>
-            <version>4.2.20RC0</version>
-            <type>jar</type>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>servletapi</groupId>
-            <artifactId>servletapi</artifactId>
+            <groupId>javax.servlet</groupId>
+            <artifactId>servlet-api</artifactId>
             <version>2.3</version>
-            <type>jar</type>
+            <scope>provided</scope>
         </dependency>
-
+        <dependency>
+            <groupId>org.mortbay.jetty</groupId>
+            <artifactId>jetty</artifactId>
+            <version>6.0.1</version>
+            <scope>quickstart</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mortbay.jetty</groupId>
+            <artifactId>jetty-util</artifactId>
+            <version>6.0.1</version>
+            <scope>quickstart</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mortbay.jetty</groupId>
+            <artifactId>servlet-api</artifactId>
+            <version>2.5-6.0.1</version>
+            <scope>quickstart</scope>
+        </dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>

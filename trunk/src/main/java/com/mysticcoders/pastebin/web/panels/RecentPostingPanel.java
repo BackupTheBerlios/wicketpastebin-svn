@@ -10,11 +10,11 @@ import com.mysticcoders.pastebin.web.PastebinApplication;
 import wicket.AttributeModifier;
 import wicket.MarkupContainer;
 import wicket.Application;
-import wicket.extensions.markup.html.repeater.refreshing.Item;
-import wicket.extensions.markup.html.repeater.refreshing.RefreshingView;
 import wicket.markup.html.basic.Label;
 import wicket.markup.html.link.BookmarkablePageLink;
 import wicket.markup.html.panel.Panel;
+import wicket.markup.repeater.RefreshingView;
+import wicket.markup.repeater.Item;
 import wicket.model.IModel;
 import wicket.model.Model;
 

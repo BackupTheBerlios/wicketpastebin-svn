@@ -5,7 +5,6 @@ import wicket.markup.html.pages.RedirectPage;
 import wicket.markup.html.panel.FeedbackPanel;
 import wicket.markup.html.form.TextField;
 import wicket.markup.html.form.Form;
-import wicket.markup.html.form.RequiredTextField;
 import wicket.markup.html.form.PasswordTextField;
 import wicket.model.Model;
 import wicket.model.IModel;
@@ -42,7 +41,7 @@ public class CreatePrivatePastebinPage extends WebPage {
             super(parent, id, model);
 
             new FeedbackPanel(this, "feedback");
-            new RequiredTextField(this, "name");
+            new TextField(this, "name").setRequired( true );
             new TextField(this, "email");
             new PasswordTextField(this, "password").setRequired( false );
         }

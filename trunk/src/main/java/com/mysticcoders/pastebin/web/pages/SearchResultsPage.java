@@ -7,10 +7,10 @@ import com.mysticcoders.pastebin.web.panels.RecentPostingPanel;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.search.Hits;
 import wicket.PageParameters;
-import wicket.extensions.markup.html.repeater.refreshing.Item;
-import wicket.extensions.markup.html.repeater.refreshing.RefreshingView;
 import wicket.markup.html.basic.Label;
 import wicket.markup.html.link.BookmarkablePageLink;
+import wicket.markup.repeater.RefreshingView;
+import wicket.markup.repeater.Item;
 import wicket.model.IModel;
 import wicket.model.Model;
 

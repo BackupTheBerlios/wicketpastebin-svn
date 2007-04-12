@@ -26,6 +26,9 @@ import java.io.IOException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.mortbay.jetty.Server;
+import org.mortbay.jetty.Connector;
+import org.mortbay.jetty.bio.SocketConnector;
+import org.mortbay.jetty.webapp.WebAppContext;
 
 /**
  * Seperate startup class for people that want to run the examples directly.
@@ -40,8 +43,7 @@ public class StartPastebin
     /**
      * Construct.
      */
-    StartPastebin()
-    {
+    StartPastebin() {
         super();
     }
 
@@ -50,51 +52,23 @@ public class StartPastebin
      *
      * @param args
      */
-    public static void main(String[] args)
-    {
-/*
+    public static void main(String[] args) {
+        Server server = new Server();
+        SocketConnector connector = new SocketConnector();
+        connector.setPort(8080);
+        server.setConnectors(new Connector[]{connector});
+
+        WebAppContext ptabs = new WebAppContext();
+        ptabs.setServer(server);
+        ptabs.setContextPath("/pastebin");
+        ptabs.setWar("src/main/webapp");
+
+        server.addHandler(ptabs);
+
         try {
-            Map argsWeb = new HashMap();
-            argsWeb.put("webroot", "src/webapp/"); // or any other command line args, eg port
-            Launcher.initLogger(argsWeb);
-            Launcher winstone = new Launcher(argsWeb); // spawns threads, so your application doesn't block
-            winstone.run();
-
-            // before shutdown
-            winstone.shutdown();
-        } catch(IOException e) {
-            e.printStackTrace();
-
+            server.start();
+        } catch (Exception e) {
+            log.fatal("Unable to start Jetty server", e);
         }
-*/
-
-        Server jettyServer = null;
-		try
-		{
-			URL jettyConfig = new URL("file:test/jetty-config.xml");
-			if (jettyConfig == null)
-			{
-				log.fatal("Unable to locate jetty-test-config.xml on the classpath");
-			}
-			jettyServer = new Server(jettyConfig);
-			jettyServer.start();
-		}
-		catch (Exception e)
-		{
-			log.fatal("Could not start the Jetty server: " + e);
-			if (jettyServer != null)
-			{
-				try
-				{
-					jettyServer.stop();
-				}
-				catch (InterruptedException e1)
-				{
-					log.fatal("Unable to stop the jetty server: " + e1);
-				}
-			}
-		}
-
-
     }
 }

@@ -44,7 +44,16 @@ public class ExportResource extends DynamicWebResource {
                 e.printStackTrace();
             }
         }
-        return new ResourceState();
+        return new ResourceState() {
+
+            public byte[] getData() {
+                return new byte[0];
+            }
+
+            public String getContentType() {
+                return null;
+            }
+        };
     }
 
     private class ExportResourceState extends ResourceState {

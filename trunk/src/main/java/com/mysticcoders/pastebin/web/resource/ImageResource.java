@@ -83,7 +83,16 @@ public class ImageResource extends DynamicWebResource
 
     	ImageEntry imageEntry = getImageEntry(params);
     	if (imageEntry == null) {
-    		return new ResourceState();
+    		return new ResourceState() {
+
+                public byte[] getData() {
+                    return new byte[0];
+                }
+
+                public String getContentType() {
+                    return null;
+                }
+            };
     	}
 		ImageResourceState state =
 			new ImageResourceState(

@@ -3,8 +3,8 @@ package com.mysticcoders.pastebin.web.model;
 import com.mysticcoders.pastebin.dao.PasteEntryDAO;
 import com.mysticcoders.pastebin.model.PasteEntry;
 import com.mysticcoders.pastebin.web.PastebinApplication;
-import wicket.model.AbstractReadOnlyDetachableModel;
 import wicket.model.IModel;
+import wicket.model.AbstractReadOnlyModel;
 
 import java.util.List;
 
@@ -15,7 +15,7 @@ import java.util.List;
  * @author pchapman
  */
 public class PasteEntriesModel
-        extends AbstractReadOnlyDetachableModel {
+        extends AbstractReadOnlyModel {
     // CONSTANTS
 
     private static final long serialVersionUID = 1L;
@@ -67,6 +67,10 @@ public class PasteEntriesModel
     }
 
     public Object onGetObject() {
+        return list;
+    }
+
+    public Object getObject() {
         return list;
     }
 }
