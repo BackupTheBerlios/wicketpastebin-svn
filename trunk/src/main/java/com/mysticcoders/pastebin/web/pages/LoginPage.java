@@ -1,15 +1,15 @@
 package com.mysticcoders.pastebin.web.pages;
 
-import wicket.markup.html.WebPage;
-import wicket.markup.html.basic.Label;
-import wicket.markup.html.panel.FeedbackPanel;
-import wicket.markup.html.form.Form;
-import wicket.markup.html.form.PasswordTextField;
-import wicket.model.IModel;
-import wicket.model.CompoundPropertyModel;
-import wicket.MarkupContainer;
-import wicket.Application;
-import wicket.Session;
+import org.apache.wicket.markup.html.WebPage;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.panel.FeedbackPanel;
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.PasswordTextField;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.MarkupContainer;
+import org.apache.wicket.Application;
+import org.apache.wicket.Session;
 import com.mysticcoders.pastebin.model.PrivatePastebin;
 import com.mysticcoders.pastebin.web.PastebinApplication;
 import com.mysticcoders.pastebin.web.PastebinSession;
@@ -27,17 +27,17 @@ public class LoginPage extends WebPage {
         PrivatePastebin privatePastebin = new PrivatePastebin();
         privatePastebin.setName(((PastebinApplication) Application.get()).getPrivatePastebinName());
 
-        new LoginPageForm(this, "loginForm", new CompoundPropertyModel(privatePastebin));
+        add(new LoginPageForm("loginForm", new CompoundPropertyModel(privatePastebin)));
     }
 
     private class LoginPageForm extends Form {
 
-        public LoginPageForm(MarkupContainer parent, String id, IModel model) {
-            super(parent, id, model);
+        public LoginPageForm(String id, IModel model) {
+            super(id, model);
 
-            new Label(this, "name");
-            new FeedbackPanel(this, "feedback");
-            new PasswordTextField(this, "password");
+            add(new Label("name"));
+            add(new FeedbackPanel("feedback"));
+            add(new PasswordTextField("password"));
 
         }
 

@@ -2,7 +2,7 @@ package com.mysticcoders.pastebin.util;
 
 import java.util.Iterator;
 
-import wicket.model.IModel;
+import org.apache.wicket.model.IModel;
 
 /**
  * Iterator adapter that wraps adaptee's elements with a model

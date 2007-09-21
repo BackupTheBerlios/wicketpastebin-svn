@@ -1,6 +1,6 @@
 package com.mysticcoders.pastebin.web.pages;
 
-import wicket.markup.html.WebPage;
+import org.apache.wicket.markup.html.WebPage;
 
 /**
  * ErrorPage

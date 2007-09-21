@@ -4,10 +4,10 @@ import com.mysticcoders.pastebin.dao.PasteEntryDAO;
 import com.mysticcoders.pastebin.model.PasteEntry;
 import com.mysticcoders.pastebin.web.PastebinApplication;
 import com.mysticcoders.pastebin.web.util.StringUtils;
-import wicket.markup.html.DynamicWebResource;
-import wicket.protocol.http.WebResponse;
-import wicket.util.string.StringValueConversionException;
-import wicket.util.value.ValueMap;
+import org.apache.wicket.markup.html.DynamicWebResource;
+import org.apache.wicket.protocol.http.WebResponse;
+import org.apache.wicket.util.string.StringValueConversionException;
+import org.apache.wicket.util.value.ValueMap;
 
 /**
  * ExportResource

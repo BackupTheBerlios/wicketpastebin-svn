@@ -2,11 +2,11 @@ package com.mysticcoders.pastebin.util;
 
 import javax.servlet.http.HttpServletRequest;
 
-import wicket.RequestCycle;
-import wicket.MarkupContainer;
-import wicket.markup.ComponentTag;
-import wicket.markup.html.WebComponent;
-import wicket.protocol.http.servlet.ServletWebRequest;
+import org.apache.wicket.RequestCycle;
+import org.apache.wicket.MarkupContainer;
+import org.apache.wicket.markup.ComponentTag;
+import org.apache.wicket.markup.html.WebComponent;
+import org.apache.wicket.protocol.http.servlet.ServletWebRequest;
 
 /**
  * Base tag that makes sure all links are relative to the context root no matter the path
@@ -15,8 +15,8 @@ import wicket.protocol.http.servlet.ServletWebRequest;
  */
 public class BaseTag extends WebComponent {
 
-	public BaseTag(MarkupContainer parent,String id) {
-		super(parent, id);
+	public BaseTag(String id) {
+		super(id);
 	}
 	
 	@Override

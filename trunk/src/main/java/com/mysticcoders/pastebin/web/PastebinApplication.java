@@ -6,14 +6,17 @@ import com.mysticcoders.pastebin.web.resource.ExportResource;
 import com.mysticcoders.pastebin.web.resource.ImageResource;
 import com.mysticcoders.pastebin.dao.PrivatePastebinDAO;
 import com.mysticcoders.pastebin.model.PrivatePastebin;
-import wicket.*;
-import wicket.authorization.IUnauthorizedComponentInstantiationListener;
-import wicket.authorization.UnauthorizedInstantiationException;
-import wicket.authorization.IAuthorizationStrategy;
-import wicket.authorization.Action;
-import wicket.protocol.http.WebApplication;
-import wicket.protocol.http.servlet.ServletWebRequest;
-import wicket.request.target.coding.IndexedParamUrlCodingStrategy;
+import org.apache.wicket.*;
+import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
+import org.apache.wicket.authorization.IUnauthorizedComponentInstantiationListener;
+import org.apache.wicket.authorization.UnauthorizedInstantiationException;
+import org.apache.wicket.authorization.IAuthorizationStrategy;
+import org.apache.wicket.authorization.Action;
+import org.apache.wicket.protocol.http.WebApplication;
+import org.apache.wicket.protocol.http.servlet.ServletWebRequest;
+import org.apache.wicket.request.target.coding.IndexedParamUrlCodingStrategy;
+import org.springframework.web.context.support.WebApplicationContextUtils;
+import org.springframework.web.context.WebApplicationContext;
 
 import javax.servlet.http.HttpServletRequest;
 //import com.mysticcoders.pastebin.util.SimpleParamBookmarkablePageEncoder;
@@ -22,13 +25,15 @@ import javax.servlet.http.HttpServletRequest;
  * PastebinApplication <p/> Created by: Andrew Lombardi Copyright 2004 Mystic
  * Coders, LLC
  */
-public class PastebinApplication extends BaseApplication implements ISessionFactory {
+public class PastebinApplication extends WebApplication implements ISessionFactory {
 
     protected void init() {
         super.init();
 
         setSessionFactory(this);
 
+        addComponentInstantiationListener(new SpringComponentInjector(this));
+        
         getApplicationSettings().setPageExpiredErrorPage(ErrorPage.class);
         getApplicationSettings().setInternalErrorPage(ErrorPage.class);
 
@@ -91,7 +96,7 @@ public class PastebinApplication extends BaseApplication implements ISessionFact
      * @return The session
      * @since 2.0
      */
-    public Session newSession(Request request) {
+    public Session newSession(Request request, Response response) {
         return new PastebinSession(PastebinApplication.this, request);
     }
 
@@ -110,6 +115,15 @@ public class PastebinApplication extends BaseApplication implements ISessionFact
         }
 
         return privatePastebinName;
+    }
+
+    public Object getBean(String name) {
+        if (name == null) return null;
+        
+        WebApplicationContext appContext =
+                WebApplicationContextUtils.getRequiredWebApplicationContext(((PastebinApplication)Application.get()).getServletContext());
+
+        return appContext.getBean(name);
     }
 
     private IAuthorizationStrategy authorizationStrategy = new IAuthorizationStrategy() {

@@ -1,21 +1,22 @@
 package com.mysticcoders.pastebin.web.pages;
 
-import wicket.markup.html.WebPage;
-import wicket.markup.html.pages.RedirectPage;
-import wicket.markup.html.panel.FeedbackPanel;
-import wicket.markup.html.form.TextField;
-import wicket.markup.html.form.Form;
-import wicket.markup.html.form.PasswordTextField;
-import wicket.model.Model;
-import wicket.model.IModel;
-import wicket.model.CompoundPropertyModel;
-import wicket.*;
-import wicket.protocol.http.servlet.ServletWebRequest;
-import com.mysticcoders.pastebin.web.PastebinApplication;
-import com.mysticcoders.pastebin.web.PastebinSession;
-import com.mysticcoders.pastebin.model.PrivatePastebin;
 import com.mysticcoders.pastebin.core.PasteService;
 import com.mysticcoders.pastebin.dao.PrivatePastebinDAO;
+import com.mysticcoders.pastebin.model.PrivatePastebin;
+import com.mysticcoders.pastebin.web.PastebinApplication;
+import com.mysticcoders.pastebin.web.PastebinSession;
+import org.apache.wicket.Application;
+import org.apache.wicket.RequestCycle;
+import org.apache.wicket.Session;
+import org.apache.wicket.markup.html.WebPage;
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.PasswordTextField;
+import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.pages.RedirectPage;
+import org.apache.wicket.markup.html.panel.FeedbackPanel;
+import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.protocol.http.servlet.ServletWebRequest;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -31,53 +32,53 @@ public class CreatePrivatePastebinPage extends WebPage {
         PrivatePastebin privatePastebin = new PrivatePastebin();
         privatePastebin.setName(((PastebinApplication) Application.get()).getPrivatePastebinName());
 
-        new CreatePrivatePastebinForm(this, "createPrivatePastebinForm", new CompoundPropertyModel(privatePastebin));
+        add(new CreatePrivatePastebinForm("createPrivatePastebinForm", new CompoundPropertyModel(privatePastebin)));
     }
 
 
     private class CreatePrivatePastebinForm extends Form {
 
-        public CreatePrivatePastebinForm(MarkupContainer parent, String id, IModel model) {
-            super(parent, id, model);
+        public CreatePrivatePastebinForm(String id, IModel model) {
+            super(id, model);
 
-            new FeedbackPanel(this, "feedback");
-            new TextField(this, "name").setRequired( true );
-            new TextField(this, "email");
-            new PasswordTextField(this, "password").setRequired( false );
+            add(new FeedbackPanel("feedback"));
+            add(new TextField("name").setRequired(true));
+            add(new TextField("email"));
+            add(new PasswordTextField("password").setRequired(false));
         }
 
         protected void onSubmit() {
-            PrivatePastebin privatePastebin = (PrivatePastebin)getModelObject();
+            PrivatePastebin privatePastebin = (PrivatePastebin) getModelObject();
 
-            if(privatePastebin.getEmail()!=null && privatePastebin.getPassword()==null) {
+            if (privatePastebin.getEmail() != null && privatePastebin.getPassword() == null) {
                 error("Password is required if creating protected pastebin");
                 return;         // short circuit
-            } else if(privatePastebin.getPassword()!=null && privatePastebin.getEmail()==null) {
+            } else if (privatePastebin.getPassword() != null && privatePastebin.getEmail() == null) {
                 error("Email is required if creating protected pastebin");
                 return;         // short circuit
             }
 
-            PrivatePastebinDAO privatePastebinDAO = (PrivatePastebinDAO)((PastebinApplication)Application.get()).getBean("privatePastebinDAO");
+            PrivatePastebinDAO privatePastebinDAO = (PrivatePastebinDAO) ((PastebinApplication) Application.get()).getBean("privatePastebinDAO");
 
-            if(privatePastebinDAO.lookupPrivatePastebin( privatePastebin.getName() )!=null) {
+            if (privatePastebinDAO.lookupPrivatePastebin(privatePastebin.getName()) != null) {
                 error("Pastebin with that name already exists");
                 return;
             }
 
-            if(privatePastebin.getName().equalsIgnoreCase("www")) {
+            if (privatePastebin.getName().equalsIgnoreCase("www")) {
                 error("Pastebin with that name is reserved");
                 return;
             }
 
-            PasteService pasteService = (PasteService)((PastebinApplication)Application.get()).getBean("pasteService");
-            pasteService.savePrivatePastebin( privatePastebin );
+            PasteService pasteService = (PasteService) ((PastebinApplication) Application.get()).getBean("pasteService");
+            pasteService.savePrivatePastebin(privatePastebin);
 
             PastebinSession pastebinSession = (PastebinSession) Session.get();
-            pastebinSession.addPrivatePastebin( privatePastebin );              // TODO debug this, why doesnt it autolog you in?
+            pastebinSession.addPrivatePastebin(privatePastebin);              // TODO debug this, why doesnt it autolog you in?
 
             String privateName = ((PastebinApplication) Application.get()).getPrivatePastebinName();
 
-            if(privatePastebin.getName().equals(privateName)) {
+            if (privatePastebin.getName().equals(privateName)) {
                 setResponsePage(PastebinPage.class);
             }
 
@@ -90,8 +91,8 @@ public class CreatePrivatePastebinPage extends WebPage {
             finalRedirect.append("http://");
             finalRedirect.append(privatePastebin.getName());
             finalRedirect.append(serverName.substring(serverName.indexOf("."), serverName.length()));
-            if(httpRequest.getServerPort()!=80) {
-                finalRedirect.append(":"+httpRequest.getServerPort());
+            if (httpRequest.getServerPort() != 80) {
+                finalRedirect.append(":" + httpRequest.getServerPort());
             }
             finalRedirect.append(httpRequest.getRequestURI());
 
@@ -100,7 +101,6 @@ public class CreatePrivatePastebinPage extends WebPage {
     }
 
 }
-
 
 /*
 public void onClick()

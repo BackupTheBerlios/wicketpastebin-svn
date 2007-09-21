@@ -1,12 +1,13 @@
 package com.mysticcoders.pastebin.web.pages;
 
-import wicket.markup.html.WebPage;
-import wicket.markup.html.basic.Label;
-import wicket.protocol.http.WebRequestCycle;
-import wicket.protocol.http.WebRequest;
-import wicket.protocol.http.servlet.ServletWebRequest;
-import wicket.Application;
-import wicket.model.Model;
+import org.apache.wicket.markup.html.WebPage;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.protocol.http.WebRequestCycle;
+import org.apache.wicket.protocol.http.WebRequest;
+import org.apache.wicket.protocol.http.servlet.ServletWebRequest;
+import org.apache.wicket.Application;
+import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.apache.wicket.model.Model;
 import com.mysticcoders.common.BaseApplication;
 import com.mysticcoders.pastebin.core.IncludedContentService;
 import com.mysticcoders.pastebin.web.PastebinApplication;
@@ -22,7 +23,10 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class BasePage extends WebPage {
 	private static final long serialVersionUID = 1L;
-	
+
+    @SpringBean
+    private IncludedContentService contentService;
+
     public BasePage() {
         super();
 
@@ -43,23 +47,15 @@ public class BasePage extends WebPage {
         String privatePastebinName = getPrivatePastebinName();
         System.out.println("PRIVATE PASTEBIN:"+privatePastebinName);
 
-        new Label(this, "privateName", new Model<String>((privatePastebinName!=null?privatePastebinName+" ":"")));
+        add(new Label("privateName", new Model((privatePastebinName!=null?privatePastebinName+" ":""))));
 
-        IncludedContentService contentService =
-        	(IncludedContentService)PastebinApplication.getInstance()
-        		.getBean("includedContentService");
         String s = contentService.getHeaderContent();
-        new Label(
-        		this, "headerIncludedContent", s
-        	).setEscapeModelStrings(false).setVisible(s.length() > 0);
+        add(new Label("headerIncludedContent", s
+        	).setEscapeModelStrings(false).setVisible(s.length() > 0));
     }
 
     protected String getPrivatePastebinName() {
         return ((PastebinApplication)Application.get()).getPrivatePastebinName();
-    }
-
-    protected Object getBean(String beanName) {
-        return ((BaseApplication) getApplication()).getBean(beanName);
     }
 
     protected StringBuffer humanReadableUrl(final WebRequestCycle cycle) {

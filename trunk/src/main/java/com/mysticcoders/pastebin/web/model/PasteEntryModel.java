@@ -1,8 +1,8 @@
 package com.mysticcoders.pastebin.web.model;
 
-import wicket.model.IModel;
-import wicket.model.AbstractReadOnlyModel;
-import wicket.Component;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.AbstractReadOnlyModel;
+import org.apache.wicket.Component;
 import com.mysticcoders.pastebin.model.PasteEntry;
 import com.mysticcoders.pastebin.dao.PasteEntryDAO;
 import com.mysticcoders.pastebin.web.PastebinApplication;

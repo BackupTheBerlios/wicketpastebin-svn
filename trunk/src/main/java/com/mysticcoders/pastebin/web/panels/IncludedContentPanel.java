@@ -3,9 +3,10 @@ package com.mysticcoders.pastebin.web.panels;
 import com.mysticcoders.pastebin.core.IncludedContentService;
 import com.mysticcoders.pastebin.web.PastebinApplication;
 
-import wicket.MarkupContainer;
-import wicket.markup.html.basic.Label;
-import wicket.markup.html.panel.Panel;
+import org.apache.wicket.MarkupContainer;
+import org.apache.wicket.spring.injection.annot.SpringBean;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.panel.Panel;
 
 /**
  * A panel that loads content from the IncludedContent service and shows it as
@@ -15,21 +16,19 @@ import wicket.markup.html.panel.Panel;
  */
 public class IncludedContentPanel extends Panel {
 	private static final long serialVersionUID = 1L;
-	
-	/**
+
+    @SpringBean
+    private IncludedContentService contentService;
+
+    /**
 	 * Creates a new instance.
-	 * @param parent The parent to add this Panel to.
 	 * @param name The name of this panel.
 	 */
-	public IncludedContentPanel(MarkupContainer parent, String name) {
-		super(parent, name);
+	public IncludedContentPanel(String name) {
+		super(name);
 	    
-        IncludedContentService contentService =
-        	(IncludedContentService)PastebinApplication.getInstance()
-        		.getBean("includedContentService");
         String s = contentService.getHeaderContent();
-        new Label(
-        		this, "contentLabel", s
-        	).setEscapeModelStrings(false).setVisible(s.length() > 0);
+        add(new Label("contentLabel", s
+        	).setEscapeModelStrings(false).setVisible(s.length() > 0));
 	}
 }

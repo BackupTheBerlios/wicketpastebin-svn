@@ -3,8 +3,8 @@ package com.mysticcoders.pastebin.web.pages;
 import com.mysticcoders.pastebin.web.panels.IncludedContentPanel;
 import com.mysticcoders.pastebin.web.panels.PastebinPanel;
 import com.mysticcoders.pastebin.web.panels.RecentPostingPanel;
-import wicket.markup.html.basic.Label;
-import wicket.protocol.http.WebRequestCycle;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.protocol.http.WebRequestCycle;
 
 /**
  * PastebinPage
@@ -17,20 +17,20 @@ public class PastebinPage extends BasePage {
     public PastebinPage() {
         super();
 
-        new RecentPostingPanel(this, "recentPosts").setRenderBodyOnly(true);
+        add(new RecentPostingPanel("recentPosts").setRenderBodyOnly(true));
 
-        new Label(this, "status", getLocalizer().getString("label.newPosting", this));
+        add(new Label("status", getLocalizer().getString("label.newPosting", this)));
         
-        new IncludedContentPanel(this, "headerIncludedContent");
+        replace(new IncludedContentPanel("headerIncludedContent"));
 
-        new PastebinPanel(this, "pastebinPanel") {
+        add(new PastebinPanel("pastebinPanel") {
 
             protected String getPageUrl() {
                 StringBuffer url = humanReadableUrl((WebRequestCycle) super.getRequestCycle(), true);
                 if (url != null) return url.toString();
                 return "";
             }
-        }.setRenderBodyOnly(true);
+        }.setRenderBodyOnly(true));
 
     }
 

@@ -11,10 +11,10 @@ import com.mysticcoders.pastebin.dao.ImageEntryDAO;
 import com.mysticcoders.pastebin.model.ImageEntry;
 import com.mysticcoders.pastebin.web.PastebinApplication;
 
-import wicket.markup.html.DynamicWebResource;
+import org.apache.wicket.markup.html.DynamicWebResource;
 
-import wicket.util.time.Time;
-import wicket.util.value.ValueMap;
+import org.apache.wicket.util.time.Time;
+import org.apache.wicket.util.value.ValueMap;
 
 /**
  * A resource that provides images from the holding dir.  An image can either

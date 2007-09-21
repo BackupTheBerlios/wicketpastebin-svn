@@ -6,13 +6,13 @@ import com.mysticcoders.pastebin.web.PastebinApplication;
 import com.mysticcoders.pastebin.web.panels.RecentPostingPanel;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.search.Hits;
-import wicket.PageParameters;
-import wicket.markup.html.basic.Label;
-import wicket.markup.html.link.BookmarkablePageLink;
-import wicket.markup.repeater.RefreshingView;
-import wicket.markup.repeater.Item;
-import wicket.model.IModel;
-import wicket.model.Model;
+import org.apache.wicket.PageParameters;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.markup.repeater.RefreshingView;
+import org.apache.wicket.markup.repeater.Item;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -33,14 +33,14 @@ public class SearchResultsPage extends BasePage {
             throw new RuntimeException("Entry not found");
         }
 
-        new RecentPostingPanel(this, "recentPosts").setRenderBodyOnly(true);
+        add(new RecentPostingPanel("recentPosts").setRenderBodyOnly(true));
 
         results(query);
     }
 
 
     private void results(final String query) {
-        new RefreshingView(this, "searchResults") {
+        add(new RefreshingView("searchResults") {
 
             @Override
             protected Iterator getItemModels() {
@@ -61,14 +61,15 @@ public class SearchResultsPage extends BasePage {
             protected void populateItem(Item item) {
                 final Document document = (Document) item.getModelObject();
 
-                BookmarkablePageLink link = ViewPastebinPage.newLink(item, "pastebin", Long.valueOf(document.get("id")));
-
-                new Label(link, "name", document.get("name"));
-                new Label(item, "channel", document.get("channel"));
+                BookmarkablePageLink link = ViewPastebinPage.newLink("pastebin", Long.valueOf(document.get("id")));
+                item.add(link);
+                
+                link.add(new Label("name", document.get("name")));
+                item.add(new Label("channel", document.get("channel")));
 
             }
 
-        };
+        });
 
     }
 

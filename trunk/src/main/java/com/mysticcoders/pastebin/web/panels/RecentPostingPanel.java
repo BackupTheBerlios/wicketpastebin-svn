@@ -7,16 +7,16 @@ import com.mysticcoders.pastebin.web.pages.PastebinPage;
 import com.mysticcoders.pastebin.web.pages.ViewPastebinPage;
 import com.mysticcoders.pastebin.web.pages.CreatePrivatePastebinPage;
 import com.mysticcoders.pastebin.web.PastebinApplication;
-import wicket.AttributeModifier;
-import wicket.MarkupContainer;
-import wicket.Application;
-import wicket.markup.html.basic.Label;
-import wicket.markup.html.link.BookmarkablePageLink;
-import wicket.markup.html.panel.Panel;
-import wicket.markup.repeater.RefreshingView;
-import wicket.markup.repeater.Item;
-import wicket.model.IModel;
-import wicket.model.Model;
+import org.apache.wicket.AttributeModifier;
+import org.apache.wicket.MarkupContainer;
+import org.apache.wicket.Application;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.markup.repeater.RefreshingView;
+import org.apache.wicket.markup.repeater.Item;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 
 import java.io.Serializable;
 import java.util.Calendar;
@@ -32,18 +32,18 @@ import java.util.List;
  */
 public class RecentPostingPanel extends Panel {
 
-    public RecentPostingPanel(MarkupContainer parent, String id) {
-        this(parent, id, null);
+    public RecentPostingPanel(String id) {
+        this(id, null);
     }
 
-    public RecentPostingPanel(MarkupContainer parent, String id, final Long pasteEntryId) {
-        super(parent, id);
+    public RecentPostingPanel(String id, final Long pasteEntryId) {
+        super(id);
 
-        new BookmarkablePageLink(this, "newPost", PastebinPage.class);
+        add(new BookmarkablePageLink("newPost", PastebinPage.class));
 
 //TODO        new BookmarkablePageLink(this, "createPrivatePastebinLink", CreatePrivatePastebinPage.class);
 
-        new RefreshingView(this, "recentPosts") {
+        add(new RefreshingView("recentPosts") {
 
             @Override
             protected Iterator getItemModels() {
@@ -73,12 +73,13 @@ public class RecentPostingPanel extends Panel {
 
                 String elapsedTime = calcElapsedTime((int) timeInMillis);
 
-                BookmarkablePageLink link = ViewPastebinPage.newLink(item, "pastebin", pasteEntry.getId());
-                new Label(link, "name", pasteEntry.getName());
-                new Label(item, "elapsedTime", elapsedTime).setRenderBodyOnly(true);
+                BookmarkablePageLink link = ViewPastebinPage.newLink("pastebin", pasteEntry.getId());
+                item.add(link);
+                link.add(new Label("name", pasteEntry.getName()));
+                item.add(new Label("elapsedTime", elapsedTime).setRenderBodyOnly(true));
             }
 
-        };
+        });
 
 /*
         Form form = new Form(this, "search", new CompoundPropertyModel(new QueryModel()));

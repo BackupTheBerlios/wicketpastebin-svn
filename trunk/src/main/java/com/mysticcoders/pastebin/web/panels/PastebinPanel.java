@@ -2,6 +2,7 @@ package com.mysticcoders.pastebin.web.panels;
 
 import com.mysticcoders.pastebin.core.ImageService;
 import com.mysticcoders.pastebin.core.PasteService;
+import com.mysticcoders.pastebin.dao.PrivatePastebinDAO;
 import com.mysticcoders.pastebin.model.ImageEntry;
 import com.mysticcoders.pastebin.model.PasteEntry;
 import com.mysticcoders.pastebin.model.PrivatePastebin;
@@ -11,19 +12,18 @@ import com.mysticcoders.pastebin.web.PastebinApplication;
 import com.mysticcoders.pastebin.web.pages.ViewPastebinPage;
 import com.mysticcoders.pastebin.web.pages.highlighter.HighlighterTextAreaPanel;
 import com.mysticcoders.pastebin.web.util.StringUtils;
-import com.mysticcoders.pastebin.dao.PrivatePastebinDAO;
-import wicket.Application;
-import wicket.MarkupContainer;
-import wicket.PageMap;
-import wicket.markup.html.form.*;
-import wicket.markup.html.form.upload.FileUpload;
-import wicket.markup.html.form.upload.FileUploadField;
-import wicket.markup.html.panel.FeedbackPanel;
-import wicket.markup.html.panel.Panel;
-import wicket.model.CompoundPropertyModel;
-import wicket.model.IModel;
-import wicket.model.Model;
-import wicket.protocol.http.WebRequestCycle;
+import org.apache.wicket.Application;
+import org.apache.wicket.PageMap;
+import org.apache.wicket.markup.html.form.*;
+import org.apache.wicket.markup.html.form.upload.FileUpload;
+import org.apache.wicket.markup.html.form.upload.FileUploadField;
+import org.apache.wicket.markup.html.panel.FeedbackPanel;
+import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.CompoundPropertyModel;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.protocol.http.WebRequestCycle;
+import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import java.io.IOException;
 
@@ -38,12 +38,22 @@ public class PastebinPanel extends Panel {
     public static final String REMEMBER_ME_COOKIE = "pastebin.rememberMe";
     public static final String REMEMBER_ME_SEP = "!||!||!";
 
-    public PastebinPanel(MarkupContainer parent, String id) {
-        this(parent, id, null);
+
+    @SpringBean
+    private PrivatePastebinDAO privatePastebinDAO;
+    @SpringBean
+    private PasteService pasteService;
+    @SpringBean
+    private ImageService imageService;
+    @SpringBean
+    private BotInterface botInterface;
+
+    public PastebinPanel(String id) {
+        this(id, null);
     }
 
-    public PastebinPanel(MarkupContainer parent, String id, PasteEntry existingEntry) {
-        super(parent, id);
+    public PastebinPanel(String id, PasteEntry existingEntry) {
+        super(id);
 
         PasteEntry pasteEntry = new PasteEntry();
 
@@ -79,28 +89,28 @@ public class PastebinPanel extends Panel {
             pasteEntry.setHighlight("No");
         }
 
-        new PastebinForm(this, "pastebinForm", new CompoundPropertyModel(pasteEntry));
+        add(new PastebinForm("pastebinForm", new CompoundPropertyModel(pasteEntry)));
     }
 
 
     private class PastebinForm extends Form {
 
-        public PastebinForm(MarkupContainer parent, String id, IModel model) {
-            super(parent, id, model);
+        public PastebinForm(String id, IModel model) {
+            super(id, model);
 
             setMultiPart(true);
 
-            new FeedbackPanel(this, "feedback");
-            new TextField(this, "name");
-            new TextField(this, "channel");
+            add(new FeedbackPanel("feedback"));
+            add(new TextField("name"));
+            add(new TextField("channel"));
 
-            new CheckBox(this, "rememberMe", new Model<Boolean>(Boolean.FALSE));
+            add(new CheckBox("rememberMe", new Model(Boolean.FALSE)));
 
-            new DropDownChoice<String>(this, "highlight", HighlighterTextAreaPanel.getLanguageKeys());
+            add(new DropDownChoice("highlight", HighlighterTextAreaPanel.getLanguageKeys()));
 
-            new TextArea(this, "code");
+            add(new TextArea("code"));
 
-            new FileUploadField(this, "imageFile");
+            add(new FileUploadField("imageFile"));
         }
 
         protected void onSubmit() {
@@ -143,7 +153,7 @@ public class PastebinPanel extends Panel {
             } else if (fupload.getSize() == 0) {
                 error("The image you attempted to upload is empty.");
                 return;
-            } else if (! checkContentType(fupload.getContentType())) {
+            } else if (!checkContentType(fupload.getContentType())) {
                 error("Only images of types png, jpg, and gif are allowed.");
                 return;
             } else {
@@ -154,16 +164,13 @@ public class PastebinPanel extends Panel {
                 imageEntry.setParent(pasteEntry);
             }
 
-            PrivatePastebinDAO privatePastebinDAO = (PrivatePastebinDAO) PastebinApplication.getInstance().getBean("privatePastebinDAO");
             String privatePastebinName = ((PastebinApplication) Application.get()).getPrivatePastebinName();
-            PrivatePastebin privatePastebin = privatePastebinDAO.lookupPrivatePastebin( privatePastebinName );
-            pasteEntry.setPrivatePastebin( privatePastebin );
-            
+            PrivatePastebin privatePastebin = privatePastebinDAO.lookupPrivatePastebin(privatePastebinName);
+            pasteEntry.setPrivatePastebin(privatePastebin);
+
             // Save the data
-            PasteService pasteService = (PasteService) PastebinApplication.getInstance().getBean("pasteService");
             pasteService.save(pasteEntry);
             if (imageEntry != null) {
-                ImageService imageService = (ImageService) PastebinApplication.getInstance().getBean("imageService");
                 try {
                     imageService.save(imageEntry, fupload.getInputStream());
                 } catch (IOException ioe) {
@@ -172,7 +179,6 @@ public class PastebinPanel extends Panel {
                 }
             }
 
-            BotInterface botInterface = (BotInterface) PastebinApplication.getInstance().getBean("botInterface");
             botInterface.send(pasteEntry.getName(), pasteEntry.getChannel(), getPageUrl() + getPage().urlFor(PageMap.forName(PageMap.DEFAULT_NAME), ViewPastebinPage.class, ViewPastebinPage.newPageParameters(pasteEntry.getId())));
 
 /*

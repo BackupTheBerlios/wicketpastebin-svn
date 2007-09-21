@@ -1,7 +1,7 @@
 package com.mysticcoders.pastebin.util;
 
-import wicket.protocol.http.WebRequestCycle;
-import wicket.protocol.http.servlet.ServletWebRequest;
+import org.apache.wicket.protocol.http.WebRequestCycle;
+import org.apache.wicket.protocol.http.servlet.ServletWebRequest;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;

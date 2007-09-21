@@ -1,8 +1,8 @@
 package com.mysticcoders.pastebin.web;
 
-import wicket.protocol.http.WebSession;
-import wicket.Resource;
-import wicket.Request;
+import org.apache.wicket.protocol.http.WebSession;
+import org.apache.wicket.Resource;
+import org.apache.wicket.Request;
 
 import java.util.Set;
 import java.util.HashSet;

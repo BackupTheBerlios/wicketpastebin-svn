@@ -1,13 +1,13 @@
 package com.mysticcoders.pastebin.web.pages.highlighter;
 
-import wicket.AttributeModifier;
-import wicket.MarkupContainer;
-import wicket.behavior.HeaderContributor;
-import wicket.markup.html.form.TextArea;
-import wicket.markup.html.panel.Panel;
-import wicket.markup.html.resources.JavaScriptReference;
-import wicket.model.IModel;
-import wicket.model.Model;
+import org.apache.wicket.AttributeModifier;
+import org.apache.wicket.MarkupContainer;
+import org.apache.wicket.behavior.HeaderContributor;
+import org.apache.wicket.markup.html.form.TextArea;
+import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.markup.html.resources.JavaScriptReference;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 
 import java.util.*;
 
@@ -60,12 +60,12 @@ public class HighlighterTextAreaPanel extends Panel {
         );
     }
 
-    public HighlighterTextAreaPanel(MarkupContainer parent, String id, IModel model) {
-        this(parent, id, model, null);
+    public HighlighterTextAreaPanel(String id, IModel model) {
+        this(id, model, null);
     }
 
-    public HighlighterTextAreaPanel(MarkupContainer parent, String id, IModel<String> model, String language) {
-        super(parent, id);
+    public HighlighterTextAreaPanel(String id, IModel model, String language) {
+        super(id);
         
         add(
         		HeaderContributor.forCss(
@@ -73,18 +73,19 @@ public class HighlighterTextAreaPanel extends Panel {
         			)
         	);
 
-        TextArea codeTextArea = new TextArea<String>(this, "code", model);
+        TextArea codeTextArea = new TextArea("code", model);
+        add(codeTextArea);
 
-        new JavaScriptReference(this, "highlighterCore", HighlighterTextAreaPanel.class, "shCore.js");
+        add(new JavaScriptReference("highlighterCore", HighlighterTextAreaPanel.class, "shCore.js"));
 
         if (language != null) {
             if (languageMap.get(language) != null) {
-                new JavaScriptReference(this, "highlighterLanguage", HighlighterTextAreaPanel.class,
-                        languageMap.get(language));
+                add(new JavaScriptReference("highlighterLanguage", HighlighterTextAreaPanel.class,
+                        languageMap.get(language)));
             }
 
             if (languageAliasMap.get(language) != null) {
-                codeTextArea.add(new AttributeModifier("class", true, new Model<String>(languageAliasMap.get(language))));
+                codeTextArea.add(new AttributeModifier("class", true, new Model(languageAliasMap.get(language))));
             }
         }
 

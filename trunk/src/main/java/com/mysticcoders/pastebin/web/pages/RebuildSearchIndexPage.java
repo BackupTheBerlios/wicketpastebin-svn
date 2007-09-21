@@ -6,7 +6,7 @@ import org.slf4j.LoggerFactory;
 import com.mysticcoders.pastebin.search.IndexService;
 import com.mysticcoders.pastebin.web.PastebinApplication;
 import com.mysticcoders.pastebin.web.panels.RecentPostingPanel;
-import wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.basic.Label;
 
 /**
  * RebuildSearchIndexPage
@@ -32,8 +32,8 @@ public class RebuildSearchIndexPage extends BasePage {
             status = "Rebuild not successful, please check logs";
         }
 
-        new RecentPostingPanel(this, "recentPosts").setRenderBodyOnly(true);
+        add(new RecentPostingPanel("recentPosts").setRenderBodyOnly(true));
 
-        new Label(this, "status", status);
+        add(new Label("status", status));
     }
 }
