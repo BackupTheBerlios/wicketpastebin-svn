@@ -2,7 +2,7 @@ package com.mysticcoders.common;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
-import wicket.protocol.http.WebApplication;
+import org.apache.wicket.protocol.http.WebApplication;
 
 import javax.servlet.ServletContext;
 

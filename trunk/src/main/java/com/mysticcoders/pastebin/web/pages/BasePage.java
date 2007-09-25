@@ -63,28 +63,10 @@ public class BasePage extends WebPage {
     }
 
     protected StringBuffer humanReadableUrl(final WebRequestCycle cycle, boolean includeDomain) {
-        return humanReadableUrl(cycle, includeDomain, false);
-    }
-
-    protected StringBuffer humanReadableUrl(final WebRequestCycle cycle, boolean includeDomain, boolean includeContext) {
         final StringBuffer buffer = new StringBuffer();
-        final WebRequest request = cycle.getWebRequest();
 
         if(includeDomain) {
             buffer.append(httpServer(cycle));
-        }
-
-        if (request != null) {
-            if(includeContext) {
-                final String contextPath = request.getContextPath();
-                buffer.append(contextPath);
-
-                String path = request.getServletPath();
-                if (path == null || "".equals(path)) {
-                    path = "/";
-                }
-                buffer.append(path);
-            }
         }
 
         return buffer;

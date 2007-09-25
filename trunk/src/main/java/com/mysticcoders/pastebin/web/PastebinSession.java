@@ -17,8 +17,8 @@ import com.mysticcoders.pastebin.model.PrivatePastebin;
  */
 public class PastebinSession extends WebSession {
 
-    public PastebinSession(PastebinApplication application, Request request) {
-        super(application, request);
+    public PastebinSession(Request request) {
+        super(request);
     }
 
     private Set<PrivatePastebin> activePrivatePastebins = new HashSet<PrivatePastebin>();

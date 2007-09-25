@@ -25,12 +25,10 @@ import javax.servlet.http.HttpServletRequest;
  * PastebinApplication <p/> Created by: Andrew Lombardi Copyright 2004 Mystic
  * Coders, LLC
  */
-public class PastebinApplication extends WebApplication implements ISessionFactory {
+public class PastebinApplication extends WebApplication {
 
     protected void init() {
         super.init();
-
-        setSessionFactory(this);
 
         addComponentInstantiationListener(new SpringComponentInjector(this));
         
@@ -58,8 +56,7 @@ public class PastebinApplication extends WebApplication implements ISessionFacto
 
         mountBookmarkablePage("/private/login", LoginPage.class);
 
-        Application.get().getSharedResources().add("exportResource",
-                new ExportResource());
+        Application.get().getSharedResources().add("exportResource", new ExportResource());
         Application.get().getSharedResources().add("imageResource", new ImageResource());
 
 
@@ -79,7 +76,7 @@ public class PastebinApplication extends WebApplication implements ISessionFacto
     }
 
 
-    public Class<PastebinPage> getHomePage() {
+    public Class getHomePage() {
         return PastebinPage.class;
     }
 
@@ -96,8 +93,9 @@ public class PastebinApplication extends WebApplication implements ISessionFacto
      * @return The session
      * @since 2.0
      */
+    @Override
     public Session newSession(Request request, Response response) {
-        return new PastebinSession(PastebinApplication.this, request);
+        return new PastebinSession(request);
     }
 
     public String getPrivatePastebinName() {
