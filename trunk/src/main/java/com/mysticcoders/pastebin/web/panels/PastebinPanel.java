@@ -26,6 +26,11 @@ import org.apache.wicket.protocol.http.WebRequestCycle;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import java.io.IOException;
+import org.apache.wicket.markup.html.pages.RedirectPage;
+import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.util.value.ValueMap;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * PastebinPanel
@@ -48,6 +53,8 @@ public class PastebinPanel extends Panel {
     @SpringBean
     private BotInterface botInterface;
 
+    static Logger log = LoggerFactory.getLogger(PastebinPanel.class);
+    
     public PastebinPanel(String id) {
         this(id, null);
     }
@@ -94,10 +101,11 @@ public class PastebinPanel extends Panel {
 
 
     private class PastebinForm extends Form {
-
+        private final ValueMap properties = new ValueMap();
+        
         public PastebinForm(String id, IModel model) {
             super(id, model);
-
+            
             setMultiPart(true);
 
             add(new FeedbackPanel("feedback"));
@@ -111,11 +119,28 @@ public class PastebinPanel extends Panel {
             add(new TextArea("code"));
 
             add(new FileUploadField("imageFile"));
+            
+            //spam bot detection, this field is hidden to humans (via css), if 
+            //it is filled out, we know the submission was by a bot
+            TextField botField = new TextField("cylon", new PropertyModel(properties, "cylon"));
+            //To test this functionality, uncomment the following line
+            //botField.setModelValue(new String[]{"Cylon!"});
+            add(botField);
         }
 
         protected void onSubmit() {
             PasteEntry pasteEntry = (PasteEntry) getModelObject();
-
+            //something was entred!  Must be a spam bot as the field is
+            //not visible to users
+            String cylon = properties.getString("cylon");
+            if (cylon == null) cylon = "";
+            boolean isSpamBot = !"".equals(cylon);
+            if (isSpamBot) {
+                String contextPath = ((WebRequestCycle)getRequestCycle())
+                    .getWebRequest().getHttpServletRequest().getContextPath();
+                setResponsePage(new RedirectPage(contextPath + "/NoToasters.html"));
+                return;
+            }
             if (pasteEntry.getName() == null || pasteEntry.getName().length() == 0) {
                 pasteEntry.setName(getLocalizer().getString("label.AnonymousCoward", this));
             } else {
