@@ -3,7 +3,7 @@
 
 <!--
 	Configuration file for spring.
-	
+
 	Revision History:
 	Dec 06, 2005	Hibernate configuration for ImageEntry was added by
 					Philip A. Chapman.
@@ -15,26 +15,28 @@
     <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="locations">
             <list>
-                <value>WEB-INF/locations.properties</value>
+                <value>classpath:application.properties</value>
+                <value>file:./etc/pastebin/application.properties</value>
             </list>
         </property>
+        <property name="ignoreResourceNotFound" value="true" />
     </bean>
 
-<!--
     <bean id="pastebinDS" class="org.springframework.jndi.JndiObjectFactoryBean">
         <property name="jndiName">
             <value>${datasource.jndiName}</value>
         </property>
     </bean>
--->
 
+<!--
     <bean id="pastebinDS" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
         <property name="driverClassName"><value>${jdbc.driver}</value></property>
         <property name="url"><value>${jdbc.url}</value></property>
         <property name="username"><value>${jdbc.username}</value></property>
         <property name="password"><value>${jdbc.password}</value></property>
     </bean>
-    
+-->
+
     <bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
         <property name="mappingResources">
             <list>
@@ -46,7 +48,7 @@
         <property name="hibernateProperties">
             <props>
                 <prop key="hibernate.dialect">${hibernate.dialect}</prop>
-                <prop key="hibernate.show_sql">true</prop>
+                <prop key="hibernate.show_sql">${hibernate.show_sql}</prop>
 <!--
                 <prop key="hibernate.cache.use_second_level_cache">false</prop>
 -->
@@ -59,14 +61,14 @@
                 <prop key="hibernate.cache.provider_class">net.sf.ehcache.hibernate.EhCacheProvider</prop>
             </props>
         </property>
-        
-        <property name="schemaUpdate"><value>true</value></property>
-        
+
+        <property name="schemaUpdate"><value>${hibernate.schemaUpdate}</value></property>
+
         <property name="dataSource">
             <ref bean="pastebinDS"/>
         </property>
     </bean>
-    
+
 
     <!--
     Spring related transactional support
@@ -78,16 +80,78 @@
     </bean>
 
     <bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"/>
-    
+
     <bean class="org.springframework.transaction.interceptor.TransactionAttributeSourceAdvisor">
         <property name="transactionInterceptor" ref="transactionInterceptor"/>
     </bean>
-    
+
     <bean id="transactionInterceptor" class="org.springframework.transaction.interceptor.TransactionInterceptor">
         <property name="transactionManager" ref="pastebinTransactionManager"/>
         <property name="transactionAttributeSource">
             <bean class="org.springframework.transaction.annotation.AnnotationTransactionAttributeSource"/>
         </property>
     </bean>
-    
+
+
+    <!-- Application Libraries -->
+
+    <bean id="privatePastebinDAO" class="com.mysticcoders.pastebin.dao.PrivatePastebinDAOHibernate">
+        <property name="sessionFactory">
+            <ref bean="sessionFactory" />
+        </property>
+    </bean>
+
+    <bean id="pasteEntryDAO" class="com.mysticcoders.pastebin.dao.PasteEntryDAOHibernate">
+        <property name="sessionFactory">
+            <ref bean="sessionFactory" />
+        </property>
+    </bean>
+
+    <bean id="imageEntryDAO" class="com.mysticcoders.pastebin.dao.ImageEntryDAOHibernate">
+        <property name="sessionFactory">
+            <ref bean="sessionFactory" />
+        </property>
+    </bean>
+
+    <bean id="pasteService" class="com.mysticcoders.pastebin.core.PasteServiceImpl">
+        <property name="pasteEntryDAO" ref="pasteEntryDAO" />
+        <property name="privatePastebinDAO" ref="privatePastebinDAO" />
+    </bean>
+
+    <bean id="imageService" class="com.mysticcoders.pastebin.core.ImageServiceImpl">
+		<property name="imageDir" value="${imageDir}" />
+        <property name="imageEntryDAO">
+            <ref bean="imageEntryDAO"/>
+        </property>
+		<property name="thumbnailSize" value="128" />
+    </bean>
+
+    <bean id="includedContentService" class="com.mysticcoders.pastebin.core.IncludedContentServiceImpl">
+		<property name="headerContentUrl" value="${header.content.url}" />
+    </bean>
+
+    <bean id="botInterface" class="com.mysticcoders.pastebin.util.BotInterface">
+        <property name="url" value="${bot.boturl}" />
+        <property name="channels" value="${bot.channels}" />
+        <property name="user" value="${bot.user}" />
+        <property name="password" value="${bot.password}" />
+        <property name="botName" value="${bot.botname}" />
+        <property name="message" value="${bot.message}" />
+    </bean>
+
+    <!-- Search Foo -->
+    <bean id="indexService" class="com.mysticcoders.pastebin.search.IndexServiceImpl">
+        <constructor-arg value="${index.path}" />
+        <constructor-arg><bean class="org.apache.lucene.analysis.standard.StandardAnalyzer" /></constructor-arg>
+
+        <property name="pasteService" ref="pasteService" />
+    </bean>
+
+    <bean id="searchService" class="com.mysticcoders.pastebin.search.SearchServiceImpl">
+        <constructor-arg value="${index.path}" />
+        <constructor-arg><bean class="org.apache.lucene.analysis.standard.StandardAnalyzer" /></constructor-arg>
+    </bean>
+
+
+
 </beans>
