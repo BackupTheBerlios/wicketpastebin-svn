@@ -16,26 +16,26 @@
         <property name="locations">
             <list>
                 <value>classpath:application.properties</value>
-                <value>file:./etc/pastebin/application.properties</value>
+                <value>classpath:application.properties</value>
             </list>
         </property>
         <property name="ignoreResourceNotFound" value="true" />
     </bean>
 
+    <!--
     <bean id="pastebinDS" class="org.springframework.jndi.JndiObjectFactoryBean">
         <property name="jndiName">
             <value>${datasource.jndiName}</value>
         </property>
     </bean>
-
-<!--
-    <bean id="pastebinDS" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
-        <property name="driverClassName"><value>${jdbc.driver}</value></property>
-        <property name="url"><value>${jdbc.url}</value></property>
-        <property name="username"><value>${jdbc.username}</value></property>
-        <property name="password"><value>${jdbc.password}</value></property>
-    </bean>
 -->
+
+    <bean id="pastebinDS" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+        <property name="driverClassName"><value>org.postgresql.Driver</value></property>
+        <property name="url"><value>jdbc:postgresql://localhost/projectmgr</value></property>
+        <property name="username"><value>pchapman</value></property>
+        <property name="password"><value>b11b0bagg1n5</value></property>
+    </bean>
 
     <bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
         <property name="mappingResources">

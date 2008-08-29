@@ -18,11 +18,6 @@
  */
 package quickstart;
 
-import java.net.URL;
-import java.util.Map;
-import java.util.HashMap;
-import java.io.IOException;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.mortbay.jetty.Server;

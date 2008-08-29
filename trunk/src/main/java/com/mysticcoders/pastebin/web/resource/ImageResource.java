@@ -96,8 +96,9 @@ public class ImageResource extends DynamicWebResource
     	}
 		ImageResourceState state =
 			new ImageResourceState(
-					Time.valueOf(
-							imageService.getLastModifyTime(imageEntry)
+                    imageEntry.getId(),
+                    Time.valueOf(
+                            imageService.getLastModifyTime(imageEntry)
 						)
 			);
         if (imageEntry != null) {
@@ -125,11 +126,14 @@ public class ImageResource extends DynamicWebResource
 	class ImageResourceState extends ResourceState
 	{
 		// CONSTRUCTORS
-		
-		ImageResourceState(Time lastModified)
+
+        private long imageid;
+
+        ImageResourceState(long imageid, Time lastModified)
 		{
 			super();
-			this.lastModified = lastModified;
+            this.imageid = imageid;
+            this.lastModified = lastModified;
 		}
 		
 		// MEMBERS
@@ -153,7 +157,11 @@ public class ImageResource extends DynamicWebResource
 		}
 		void setData(byte[] data)
 		{
-			this.data = data;
+            Logger logger = LoggerFactory.getLogger(getClass());
+            if (logger.isDebugEnabled()) {
+                logger.debug("Data size for image " + imageid + " is " + data.length + " bytes.");
+            }
+            this.data = data;
 		}
 
 		@Override

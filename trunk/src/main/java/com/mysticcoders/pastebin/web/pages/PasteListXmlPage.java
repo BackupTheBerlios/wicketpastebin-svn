@@ -21,12 +21,14 @@ import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.PageMap;
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.Application;
+import org.apache.wicket.protocol.http.WebRequest;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.Model;
 
+import javax.servlet.http.HttpServletRequest;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
@@ -77,14 +79,24 @@ public class PasteListXmlPage extends WebPage {
                 label.setRenderBodyOnly(true);
 
                 // url element
+                HttpServletRequest req = ((WebRequest)getRequest()).getHttpServletRequest();
+                StringBuilder url = new StringBuilder();
+//                StringBuilder url = new StringBuilder("http://");
+//                url.append(req.getServerName());
+//                if (req.getServerPort() != 80) {
+//                    url.append(':').append(req.getServerPort());
+//                }
+                url.append(req.getContextPath());
+                url.append('/');
                 PageParameters parms = new PageParameters();
                 parms.put("0", String.valueOf(entry.getId()));
-                String url =
+                url.append(
                         getPage().urlFor(
                                 PageMap.forName(PageMap.DEFAULT_NAME),
                                 ViewPastebinPage.class, parms
-                        ).toString();
-                label = new Label("url", url);
+                        )
+                );
+                label = new Label("url", url.toString());
                 item.add(label);
                 label.setEscapeModelStrings(false);
                 label.setRenderBodyOnly(true);

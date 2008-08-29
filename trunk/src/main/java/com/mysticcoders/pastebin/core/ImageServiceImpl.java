@@ -75,17 +75,33 @@ public class ImageServiceImpl implements ImageService
 	
 	public Date getLastModifyTime(ImageEntry imageEntry)
 	{
-		File f = new File(imageEntry.getFileName());
-		return new Date(f.lastModified());
-	}
+        if (isImageAvailable(imageEntry)) {
+            File f = new File(imageEntry.getFileName());
+	    	return new Date(f.lastModified());
+        } else {
+            return new Date();
+        }
+    }
 
 	public boolean isImageAvailable(ImageEntry imageEntry)
 	{
-		return (
-				new File(imageEntry.getFileName()).exists() &&
-				new File(imageEntry.getThumbName()).exists()
-			);
-	}
+        Logger logger = LoggerFactory.getLogger(getClass());
+        boolean retvalue = new File(imageEntry.getFileName()).exists();
+        if (!retvalue) {
+            if (logger.isDebugEnabled()) {
+                logger.debug("The image file " + imageEntry.getFileName() + " does not exist.");
+            }
+            return false;
+        }
+        retvalue = new File(imageEntry.getThumbName()).exists();
+        if (!retvalue) {
+            if (logger.isDebugEnabled()) {
+                logger.debug("The thumbnail file " + imageEntry.getFileName() + " does not exist.");
+            }
+            return false;
+        }
+        return retvalue;
+    }
 	
     /* Spring Injected */
     private File imageDir;
@@ -167,7 +183,7 @@ public class ImageServiceImpl implements ImageService
         return out.toByteArray();
     }
 
-	/** @see ImageService#save(ImageEntry) */
+	/** @see ImageService#save(ImageEntry, InputStream) */
     public void save(ImageEntry imageEntry, InputStream imageStream)
     	throws IOException
     {
