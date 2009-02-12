@@ -79,7 +79,7 @@ public class PasteEntryDAOHibernate implements PasteEntryDAO {
         if(privatePastebin==null) {
             query = "from PasteEntry as pasteEntry WHERE pasteEntry.privatePastebin IS NULL order by pasteEntry.created desc";
         } else {
-            query = "from PasteEntry as pasteEntry where pasteEntry.privatePastebin.name = :privatePastebinName";
+        	query = "from PasteEntry as pasteEntry where pasteEntry.privatePastebin.name = :privatePastebinName order by pasteEntry.created desc";
         }
 
         Query q = getSession().createQuery( query );

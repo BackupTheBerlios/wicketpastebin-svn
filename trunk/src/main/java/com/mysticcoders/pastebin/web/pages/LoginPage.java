@@ -57,7 +57,9 @@ public class LoginPage extends WebPage {
 
             pastebinSession.addPrivatePastebin(privatePastebinDAO.lookupPrivatePastebin( privatePastebin.getName() ));
 
-            setResponsePage(PastebinPage.class);
+            if(!continueToOriginalDestination()) {
+            	setResponsePage(PastebinPage.class);
+            }
         }
     }
 }
