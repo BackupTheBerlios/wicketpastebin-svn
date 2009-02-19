@@ -9,11 +9,13 @@ import com.mysticcoders.pastebin.model.PrivatePastebin;
 import com.mysticcoders.pastebin.util.BotInterface;
 import com.mysticcoders.pastebin.util.CookieUtils;
 import com.mysticcoders.pastebin.web.PastebinApplication;
+import com.mysticcoders.pastebin.web.pages.SpamPage;
 import com.mysticcoders.pastebin.web.pages.ViewPastebinPage;
 import com.mysticcoders.pastebin.web.pages.highlighter.HighlighterTextAreaPanel;
 import com.mysticcoders.pastebin.web.util.StringUtils;
 import org.apache.wicket.Application;
 import org.apache.wicket.PageMap;
+import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.*;
 import org.apache.wicket.markup.html.form.upload.FileUpload;
 import org.apache.wicket.markup.html.form.upload.FileUploadField;
@@ -26,7 +28,8 @@ import org.apache.wicket.protocol.http.WebRequestCycle;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 
 import java.io.IOException;
-import org.apache.wicket.markup.html.pages.RedirectPage;
+import java.util.Random;
+
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.util.value.ValueMap;
 import org.slf4j.Logger;
@@ -39,6 +42,11 @@ import org.slf4j.LoggerFactory;
  * Copyright 2004 Mystic Coders, LLC
  */
 public class PastebinPanel extends Panel {
+
+	/**
+	 * The Random class used to generate random values.
+	 */
+	private static final Random RANDOM = new Random();
 
     public static final String REMEMBER_ME_COOKIE = "pastebin.rememberMe";
     public static final String REMEMBER_ME_SEP = "!||!||!";
@@ -102,6 +110,8 @@ public class PastebinPanel extends Panel {
 
     private class PastebinForm extends Form {
         private final ValueMap properties = new ValueMap();
+        private final IModel<Integer> num1model;
+        private final IModel<Integer> num2model;
         
         public PastebinForm(String id, IModel model) {
             super(id, model);
@@ -118,29 +128,49 @@ public class PastebinPanel extends Panel {
 
             add(new TextArea("code"));
 
-            add(new FileUploadField("imageFile"));
+            add(new FileUploadField("imageFile", new PropertyModel(properties, "imageFile")));
             
             //spam bot detection, this field is hidden to humans (via css), if 
             //it is filled out, we know the submission was by a bot
-            TextField botField = new TextField("cylon", new PropertyModel(properties, "cylon"));
+            TextField botField = new TextField("cylon", new PropertyModel(properties, "ai"));
             //To test this functionality, uncomment the following line
             //botField.setModelValue(new String[]{"Cylon!"});
             add(botField);
+
+            // more anti-spam protection.  we randomly chose two numbers
+            // between 1 and 10.  we then ask the user to add them.
+            num1model = new Model<Integer>(computeRandom(1, 10));
+            num2model = new Model<Integer>(computeRandom(1, 10));
+            add(new Label("num1", num1model));
+            add(new Label("num2", num2model));
+            add(new TextField("basicmath", new PropertyModel(properties, "basicmath")));
         }
 
         protected void onSubmit() {
-            PasteEntry pasteEntry = (PasteEntry) getModelObject();
-            //something was entred!  Must be a spam bot as the field is
-            //not visible to users
-            String cylon = properties.getString("cylon");
-            if (cylon == null) cylon = "";
-            boolean isSpamBot = !"".equals(cylon);
-            if (isSpamBot) {
-                String contextPath = ((WebRequestCycle)getRequestCycle())
-                    .getWebRequest().getHttpServletRequest().getContextPath();
-                setResponsePage(new RedirectPage(contextPath + "/NoToasters.html"));
+        	// Test for Spam
+            // If something was entred into the "ai" field, which is not
+        	// visibile to users, we must have a spam bot.
+            String teststring = properties.getString("ai");
+            boolean isspam = (teststring != null && teststring.length() > 1);
+            // Test to see if the user answered the basic math question correctly
+            teststring = properties.getString("basicmath");
+            if (teststring == null || teststring.length() == 0) {
+            	isspam = true;
+            } else {
+            	try {
+            		Integer answer = Integer.valueOf(teststring);
+            		isspam = isspam || (answer != num1model.getObject() + num2model.getObject());
+            	} catch (NumberFormatException nfe) {
+            		isspam = true;
+            	}
+            }
+            if (isspam) {
+            	// Spam bot detected
+                setResponsePage(SpamPage.class);
                 return;
             }
+            
+            PasteEntry pasteEntry = (PasteEntry) getModelObject();
             if (pasteEntry.getName() == null || pasteEntry.getName().length() == 0) {
                 pasteEntry.setName(getLocalizer().getString("label.AnonymousCoward", this));
             } else {
@@ -236,4 +266,39 @@ TODO add this back in when there is time.
         }
         return false;
     }
+    
+	/**
+	 * Uses @see #RANDOM to calculate a random integer number.
+	 * @param minValue The minimum random number to be generated.  Should be
+	 *                 zero or positive and less than the maxValue parameter.
+	 * @param maxValue The maximum random number to be generated.  Should be
+	 *                 positive and greater than the minValue parameter.
+	 * @return
+	 */
+	public int computeRandom(int minValue, int maxValue)
+	{
+		if (minValue < 0) {
+			throw new IllegalArgumentException(
+					"A minimum value less than zero is not supported."
+				);
+		} else if (maxValue < 1) {
+			throw new IllegalArgumentException(
+					"A maximum value less than one is not supported."
+				);
+		} else if (maxValue < minValue) {
+			throw new IllegalArgumentException(
+					"The maximum value cannot be less than the minimum value."
+				);
+		}
+		int r = (int)(RANDOM.nextFloat() * maxValue + minValue);
+		if (r < minValue || r > maxValue) {
+			// Because Random returns a value between 0 and 1 inclusive
+			// and because of rounding, the above calculation can
+			// sometimes produce values outside the range we want.  If it
+			// does, try again.  This call will be recursive until a
+			// suitable value is generated.
+			r = computeRandom(minValue, maxValue);
+		}
+		return r;
+	}
 }

@@ -8,6 +8,8 @@ import org.apache.wicket.protocol.http.servlet.ServletWebRequest;
 import org.apache.wicket.Application;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.apache.wicket.model.Model;
+import org.slf4j.LoggerFactory;
+
 import com.mysticcoders.common.BaseApplication;
 import com.mysticcoders.pastebin.core.IncludedContentService;
 import com.mysticcoders.pastebin.web.PastebinApplication;
@@ -30,22 +32,8 @@ public class BasePage extends WebPage {
     public BasePage() {
         super();
 
-/*
-        ServletWebRequest servletWebRequest = (ServletWebRequest) RequestCycle.get().getRequest();
-        HttpServletRequest httpRequest = servletWebRequest.getHttpServletRequest();
-        String serverName = httpRequest.getServerName();
-
-        String[] splitServerName = serverName.split("\\.");
-        int count = splitServerName.length;
-
-        if(count==3 && !serverName.startsWith("www")) {      // check for www, if not, we have a private pastebin
-            System.out.println("PRIVATE PASTEBIN:"+splitServerName[0]);
-            privatePastebinName = splitServerName[0];
-        }
-*/
-
         String privatePastebinName = getPrivatePastebinName();
-        System.out.println("PRIVATE PASTEBIN:"+privatePastebinName);
+        LoggerFactory.getLogger(getClass()).debug("PRIVATE PASTEBIN: {}", privatePastebinName);
 
         add(new Label("privateName", new Model((privatePastebinName!=null?privatePastebinName+" ":""))));
 

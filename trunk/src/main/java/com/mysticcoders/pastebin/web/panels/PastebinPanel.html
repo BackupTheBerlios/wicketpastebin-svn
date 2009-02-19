@@ -19,20 +19,24 @@ To highlight particular lines, prefix each line with @@<br />
     <br />
 
 	<strong>Image</strong><br />
-	<input type="file" wicket:id="imageFile" name="imageFile" tabindex="4"></input>
+	<input type="file" wicket:id="imageFile" name="imageFile" tabindex="1"></input>
 	<br />
 
     <strong>Name</strong><br />
     <input type="text" maxlength="24" size="24" wicket:id="name" name="name" value="" tabindex="2" style="font-size: 16px;"/>
-    <input type="checkbox" name="rememberMe" id="rememberMe" wicket:id="rememberMe" value="1" tabindex="5" /><label for="rememberMe">Remember my name in a cookie</label>
+    <input type="checkbox" name="rememberMe" id="rememberMe" wicket:id="rememberMe" value="1" tabindex="3" /><label for="rememberMe">Remember my name in a cookie</label>
 
     <br />
-    <strong>Channel or nick (i.e. ##wicket, ##swing, ##java) </strong><br />
-    <input type="text" maxlength="24" size="24" wicket:id="channel" name="channel" value="" tabindex="3" style="font-size: 16px;"/>
+    <strong>Channel (i.e. ##wicket, ##swing, ##java) </strong><br />
+    <input type="text" maxlength="24" size="24" wicket:id="channel" name="channel" value="" tabindex="4" style="font-size: 16px;"/>
 	<br />
-    <input type="submit" name="submit" value="Send" tabindex="6" />
-    <span style="visibility:collapse;">
-        <input type="text" wicket:id="cylon" name="cylon" value="If this is filled out, we have ourselves a sp@m b0t" />
+	<strong>Excercise your brain!</strong><br />
+	<span wicket:id="num1">#</span> + <span wicket:id="num2">#</span> =
+    <input type="text" maxlength="4" size="4" wicket:id="basicmath" name="basicmath" value="" tabindex="5" style="font-size: 16px;"/>
+	<br />
+    <input type="submit" name="submit" value="Post" tabindex="6" />
+    <span class="ai">
+        <input type="text" wicket:id="cylon" name="ai" />
     </span>
     
 </form>

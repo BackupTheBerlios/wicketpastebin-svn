@@ -1,6 +1,5 @@
 package com.mysticcoders.pastebin.web;
 
-import com.mysticcoders.common.BaseApplication;
 import com.mysticcoders.pastebin.web.pages.*;
 import com.mysticcoders.pastebin.web.resource.ExportResource;
 import com.mysticcoders.pastebin.web.resource.ImageResource;
@@ -19,7 +18,6 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 import org.springframework.web.context.WebApplicationContext;
 
 import javax.servlet.http.HttpServletRequest;
-//import com.mysticcoders.pastebin.util.SimpleParamBookmarkablePageEncoder;
 
 /**
  * PastebinApplication <p/> Created by: Andrew Lombardi Copyright 2004 Mystic
@@ -37,8 +35,6 @@ public class PastebinApplication extends WebApplication {
 
         getMarkupSettings().setStripWicketTags(true);
 
-        mountBookmarkablePage("/home", PastebinPage.class);
-
         mount(new IndexedParamUrlCodingStrategy(
                 "/view", ViewPastebinPage.class, null
         )
@@ -48,13 +44,19 @@ public class PastebinApplication extends WebApplication {
                 "/search", SearchResultsPage.class, null
         ));
 
-        mountBookmarkablePage("/pastelist", PasteListXmlPage.class);
+        mountBookmarkablePage("/error", ErrorPage.class);
 
-        mountBookmarkablePage("/rebuild", RebuildSearchIndexPage.class);
+        mountBookmarkablePage("/home", PastebinPage.class);
+
+        mountBookmarkablePage("/nospam", SpamPage.class);
+
+        mountBookmarkablePage("/pastelist", PasteListXmlPage.class);
 
         mountBookmarkablePage("/private/create", CreatePrivatePastebinPage.class);
 
         mountBookmarkablePage("/private/login", LoginPage.class);
+
+        mountBookmarkablePage("/rebuild", RebuildSearchIndexPage.class);
 
         Application.get().getSharedResources().add("exportResource", new ExportResource());
         Application.get().getSharedResources().add("imageResource", new ImageResource());

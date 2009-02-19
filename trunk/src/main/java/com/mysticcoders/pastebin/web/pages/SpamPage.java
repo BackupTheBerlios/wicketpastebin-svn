@@ -4,13 +4,13 @@ import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 
 /**
- * ErrorPage
- * <p/>
- * Created by: Andrew Lombardi
- * Copyright 2006 Mystic Coders, LLC
+ * The page to be shown when spam detection has detected a possible spam posting.
+ * 
+ * @author pchapman
  */
-public class ErrorPage extends WebPage {
-	public ErrorPage() {
+public class SpamPage extends WebPage {
+
+	public SpamPage() {
 		super();
 		add(new BookmarkablePageLink<Void>("homelink", PastebinPage.class));
 	}

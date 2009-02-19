@@ -260,3 +260,7 @@ table.login_form td {
   padding: 5px;
   text-align: left;
 }
+
+span.ai {
+	display: none;
+}
